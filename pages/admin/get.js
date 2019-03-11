@@ -12,7 +12,9 @@ class GetReward extends Component {
         loading: false,
         errorMessage: '',
         reward: '',
-        getCheckReward: '',
+        getPlayer: '',
+        getPrize: '',
+        total: '',
         show: true
     }
 
@@ -43,44 +45,52 @@ class GetReward extends Component {
         }
 
         const getCheckReward = await period.methods.getCheckReward().call();
-        getCheckReward === '' ? null : this.setState({ getCheckReward: getCheckReward, show: !this.state.show })
+        console.log(getCheckReward);
+        getCheckReward === '' ? 0 : this.setState({ show: !this.state.show, getPlayer: getCheckReward[1], getPrize: getCheckReward[0] })
+        
         // console.log(getCheckReward[0], getCheckReward[1]);
 
-        this.setState({ loading: false })
+        this.setState({ loading: false, total: (this.state.getPlayer * this.state.getPrize) })
     }
 
-    // onShow = async () => {
-    //     this.setState({ show: !this.state.show })
+    onSendHandler = async event => {
+        event.preventDefault()
 
-    //     const getCheckReward = await period.methods.getCheckReward().call();
-    //     console.log(getCheckReward[0]);
-    //     console.log(getCheckReward[1]);
+        const period = Period(this.props.address)
+        const accounts = await web3.eth.getAccounts();
 
-    //     this.setState({ getCheckReward: getCheckReward });
-    // }
+        try {
+            await period.methods.sendReward().send({
+                value: web3.utils.toWei(this.state.reward, 'ether'),
+                from: accounts[0]
+            })
 
-    onSendHandler = async () => {
-
+            Router.pushRoute(`/admin/${this.props.address}`)
+        } catch (err) {
+            this.setState({ errorMessage: err.message })
+        }
+        this.setState({ prizeNumber: '', prizeReward: '', loading: false, errorMessage: '', reward: '', getPlayer: '',getPrize: '', total: '', show: true })
     }
     
     render() {
-        const { errorMessage, prizeNumber, prizeReward, loading, show, getCheckReward, reward } = this.state;
-        const getPlayer = parseInt(getCheckReward[1]);
-        const getPrize = parseInt(getCheckReward[0]);
-        // const getPrizeReward = web3.utils.toWei(getPrize, 'ether');
+        const { errorMessage, prizeNumber, prizeReward, loading, show, getPlayer, getPrize, total } = this.state;
+
+        const isEnabled = !isNaN(prizeNumber) && prizeNumber !== '' && prizeNumber.length === 6
+        && !isNaN(prizeReward) && prizeReward !== '' && this.state.show ? false : true;
 
         return (
             <App>
                 <Link route={`/admin/${this.props.address}`}>
                     <a>Back</a>
                 </Link>
-                <h3>Add Reward Number</h3>
+                <h3>Reward!</h3>
                 <Form onSubmit={this.onSubmit} error={!!errorMessage}>
                     <Form.Group widths='equal'>
                         <Form.Input fluid 
                             label='Number Lottery Reward' 
                             placeholder='000000'
                             value={prizeNumber}
+                            error={isNaN(prizeNumber)}
                             onChange={event => this.setState({ prizeNumber: event.target.value })}
                         />
 
@@ -88,12 +98,13 @@ class GetReward extends Component {
                             label='Value Prize (ether)' 
                             placeholder='0.001' 
                             value={prizeReward}
+                            error={isNaN(prizeReward)}
                             onChange={event => this.setState({ prizeReward: event.target.value })}
                         />
                     </Form.Group>
 
                     <Message error header="Oops!" content={errorMessage} />
-                    <Button primary loading={loading} floated="right">Add Reward!</Button>
+                    <Button primary loading={loading} disabled={isEnabled} floated="right">Add Reward!</Button>
                 </Form>
 
                 {/* <Button primary loading={loading} floated="right" onClick={this.onShow}>Test Button</Button> */}
@@ -104,16 +115,15 @@ class GetReward extends Component {
                     <div>
                         <Message success header="Reward Infomation!" 
                                 list={[
-                                    `player win : ${getPlayer} player`, `value prize : ${getPrize} wei` ]}
+                                    `player win : ${getPlayer} player`, `value prize : ${web3.utils.fromWei((getPrize).toString(), 'ether')} ether` ]}
                         />
-                        <Message success header={`You must send reward : ${getPlayer * getPrize} wei`} />
+                        <Message success header={`You must send reward :  ${web3.utils.fromWei((total).toString(), 'ether')} ether`} />
                         <Form onSubmit={this.onSendHandler} error={!!errorMessage} style={{ float: "right" }} >
                             <Form.Field inline>
                                 <Input  
-                                    label='Value Prize (ether)'
-                                    placeholder='2000000000000000' 
+                                    label='ETH'
+                                    placeholder='total value prize' 
                                     labelPosition="right"
-                                    value={reward}
                                     onChange={event => this.setState({ reward: event.target.value })}
                                 />
 
@@ -129,3 +139,16 @@ class GetReward extends Component {
 }
 
 export default GetReward
+
+
+
+
+// onShow = async () => {
+//     this.setState({ show: !this.state.show })
+
+//     const getCheckReward = await period.methods.getCheckReward().call();
+//     console.log(getCheckReward[0]);
+//     console.log(getCheckReward[1]);
+
+//     this.setState({ getCheckReward: getCheckReward });
+// }

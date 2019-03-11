@@ -27,7 +27,7 @@ class AdminNewPeriod extends Component {
 
             await factory.methods
                 .createPeriod(
-                    this.state.priceLottery, 
+                    web3.utils.toWei(this.state.priceLottery, 'ether'), 
                     this.state.lotteryPerNum, 
                     this.state.closingTime)
                 .send({ from: accounts[0] })
@@ -59,8 +59,8 @@ class AdminNewPeriod extends Component {
                 <Form onSubmit={this.onSubmit} error={!!errorMessage}>
                     <Form.Group widths='equal'>
                         <Form.Input fluid 
-                        label='Price Lottery (wei)' 
-                        placeholder='2000000000'
+                        label='Price Lottery (ether)' 
+                        placeholder='0.001'
                         value={priceLottery}
                         error={isNaN(priceLottery)}
                         onChange={event => this.setState({ priceLottery: event.target.value })} />
