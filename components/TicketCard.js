@@ -6,7 +6,7 @@ import web3 from '../ethereum/web3';
 class TicketCard extends Component {
 
     renderCards() {
-        const { playerLot } = this.props;        
+        const { playerLot } = this.props;      
     
         const items = playerLot.reverse().map(playerLot => {
             return {
@@ -16,7 +16,7 @@ class TicketCard extends Component {
             }
         });
     
-        return <Card.Group items={items} />
+        return <Card.Group items={items} textAlign='center' />
     }
     
     render() {

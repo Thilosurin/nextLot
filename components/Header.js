@@ -6,20 +6,19 @@ import {
   Dropdown,
   Image,
   Menu,
-  Segment,
+  Button,
   Visibility,
 } from 'semantic-ui-react'
 
 const menuStyle = {
-  border: '1px solid #ddd',
-  borderRadius: 0,
   boxShadow: 'none',
   marginBottom: '1em',
+  backgroundColor: '#fff',
   transition: 'box-shadow 0.5s ease, padding 0.5s ease',
 }
 
 const fixedMenuStyle = {
-  backgroundColor: '#fff',
+  backgroundColor: '#fbfcf7',
   border: '1px solid #ddd',
   boxShadow: '0px 3px 5px rgba(0, 0, 0, 0.2)',
 }
@@ -60,7 +59,7 @@ export default class StickyLayout extends Component {
       <div>
         <style>{`
           html, body {
-            background: #fff;
+            background: #f4f2f1;
           }
         `}</style>
 
@@ -70,15 +69,20 @@ export default class StickyLayout extends Component {
           once={false}
         >
           <Menu
+            size='large'
             borderless
             fixed={menuFixed ? 'top' : undefined}
             style={menuFixed ? fixedMenuStyle : menuStyle}
           >
-            <Container text>
+            <Container>
               <Menu.Item>
                 {/* <Image size='mini' src='/logo.png' /> */}
               </Menu.Item>
-              <Menu.Item header>Project Lottery</Menu.Item>
+              <Menu.Item header>
+                <Link prefetch href="/">
+                  NextLottery
+                </Link>
+              </Menu.Item>
               <Menu.Item as='a'>
                 {authenticated &&
                     <Link prefetch href="/user">
@@ -124,7 +128,7 @@ export default class StickyLayout extends Component {
                 <Menu.Item as='a'>
                 {!authenticated && pathname !== "/auth/login" ? (
                     <Link prefetch href="/auth/login">
-                        Login
+                        <Button inverted><a>Sign Up</a></Button>
                     </Link>
                 ) : (
                     <Link prefetch href="/auth/register">

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import factory from '../ethereum/factory'
-import { Card, Button } from 'semantic-ui-react'
+import { Card, Button, Segment } from 'semantic-ui-react'
 import App from '../components/App'
 import { Link } from '../routes'
 
@@ -16,16 +16,18 @@ class PeriodInfo extends Component {
         let j = 1;
         const items = this.props.periods.map(address => {
             return {
+                link: 'http://localhost:3000/${address}',
                 header: `period : ${j++}`,
                 meta: `period address => ${address}`,
                 description: (
-                    <Button floated='right'>
+                    <Button floated='right' inverted color='black'>
                         <Link route={`/${address}`}>
                             <a>Go to Period</a>
                         </Link>
                     </Button>
                 ),
-                fluid: true
+                fluid: true,
+                // href: `/${address}`
             }
         }).reverse();
 
@@ -33,13 +35,34 @@ class PeriodInfo extends Component {
     }
     
     render() {
+        const date = new Date().toLocaleString();
+        const admin = true;
+
         return (
             <App>
                 <div>
-                    <h3>Periods</h3>
+                    <Segment raised color={admin ? 'green' : 'blue'}>
+                        <h3>Periods</h3>
+                        <h5>{date}</h5>
+
+                        {admin ? (
+                            <Link route="/admin/new">
+                                <a>
+                                    <Button 
+                                        content="Create Period"
+                                        icon="add circle"
+                                        positive
+                                    />
+                                </a>
+                            </Link>
+                        ) : (
+                            <h5>Hi : user!</h5>
+                        )}
+                    </Segment>
+                    
 
                     {/* admin only */}
-                    <Link route="/admin/new">
+                    {/* <Link route="/admin/new">
                     <a>
                         <Button 
                             floated="right"
@@ -48,7 +71,7 @@ class PeriodInfo extends Component {
                             primary
                         />
                     </a>
-                    </Link>
+                    </Link> */}
 
                     {this.renderPeriod()}
                 </div>

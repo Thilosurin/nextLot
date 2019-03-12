@@ -45,9 +45,9 @@ class AdminNewPeriod extends Component {
         const { errorMessage, loading, priceLottery, lotteryPerNum, closingTime } = this.state;
        
         const isEnabled = !isNaN(priceLottery) && priceLottery !== ''
-        && !isNaN(lotteryPerNum) && lotteryPerNum !== '' 
-        && !isNaN(closingTime) && closingTime !== '' 
-        && closingTime.length === 10 ? false : true;
+                            && !isNaN(lotteryPerNum) && lotteryPerNum !== '' 
+                            && !isNaN(closingTime) && closingTime !== '' 
+                            && closingTime.length === 10 ? false : true;
 
         return (
             <App>
@@ -59,25 +59,25 @@ class AdminNewPeriod extends Component {
                 <Form onSubmit={this.onSubmit} error={!!errorMessage}>
                     <Form.Group widths='equal'>
                         <Form.Input fluid 
-                        label='Price Lottery (ether)' 
-                        placeholder='0.001'
-                        value={priceLottery}
-                        error={isNaN(priceLottery)}
-                        onChange={event => this.setState({ priceLottery: event.target.value })} />
+                            label='Price Lottery (ether)' 
+                            placeholder='0.001'
+                            value={priceLottery}
+                            error={isNaN(priceLottery)}
+                            onChange={event => this.setState({ priceLottery: event.target.value })} />
                 
                         <Form.Input fluid 
-                        label='Amount Lottery / Number' 
-                        placeholder='2' 
-                        value={lotteryPerNum}
-                        error={isNaN(lotteryPerNum)}
-                        onChange={event => this.setState({ lotteryPerNum: event.target.value })} />
+                            label='Amount Lottery / Number' 
+                            placeholder='2' 
+                            value={lotteryPerNum}
+                            error={isNaN(lotteryPerNum)}
+                            onChange={event => this.setState({ lotteryPerNum: event.target.value })} />
 
                         <Form.Input fluid 
-                        label='Time Out (sec)' 
-                        placeholder='1552115292' 
-                        value={closingTime}
-                        error={isNaN(closingTime)}
-                        onChange={event => this.setState({ closingTime: event.target.value })} />
+                            label='Time Out (sec)' 
+                            placeholder='1552115292' 
+                            value={closingTime}
+                            error={isNaN(closingTime)}
+                            onChange={event => this.setState({ closingTime: event.target.value })} />
                     </Form.Group>
 
                     <Message error header="Oops!" content={errorMessage} />
