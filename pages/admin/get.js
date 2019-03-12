@@ -80,7 +80,7 @@ class GetReward extends Component {
 
         return (
             <App>
-                <Link route={`/admin/${this.props.address}`}>
+                <Link prefetch route={`/${this.props.address}/transection`}>
                     <a>Back</a>
                 </Link>
                 <h3>Reward!</h3>
@@ -106,8 +106,6 @@ class GetReward extends Component {
                     <Message error header="Oops!" content={errorMessage} />
                     <Button primary loading={loading} disabled={isEnabled} floated="right">Add Reward!</Button>
                 </Form>
-
-                {/* <Button primary loading={loading} floated="right" onClick={this.onShow}>Test Button</Button> */}
                 <br/><br/><br/>
 
                 

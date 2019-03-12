@@ -20,8 +20,8 @@ class PeriodInfo extends Component {
                 header: `period : ${j++}`,
                 meta: `period address => ${address}`,
                 description: (
-                    <Button floated='right' inverted color='black'>
-                        <Link route={`/${address}`}>
+                    <Button floated='right' inverted color="grey">
+                        <Link prefetch route={`/${address}`}>
                             <a>Go to Period</a>
                         </Link>
                     </Button>
@@ -35,7 +35,9 @@ class PeriodInfo extends Component {
     }
     
     render() {
-        const date = new Date().toLocaleString();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const date = new Date().toLocaleString('thai', options);
+        const time = new Date().toLocaleTimeString();
         const admin = true;
 
         return (
@@ -43,14 +45,13 @@ class PeriodInfo extends Component {
                 <div>
                     <Segment raised color={admin ? 'green' : 'blue'}>
                         <h3>Periods</h3>
-                        <h5>{date}</h5>
-
                         {admin ? (
-                            <Link route="/admin/new">
+                            <Link prefetch route="/admin/new">
                                 <a>
                                     <Button 
                                         content="Create Period"
                                         icon="add circle"
+                                        floated="right"
                                         positive
                                     />
                                 </a>
@@ -58,20 +59,9 @@ class PeriodInfo extends Component {
                         ) : (
                             <h5>Hi : user!</h5>
                         )}
-                    </Segment>
-                    
+                        <h5>{time}<br/>{date}</h5>
 
-                    {/* admin only */}
-                    {/* <Link route="/admin/new">
-                    <a>
-                        <Button 
-                            floated="right"
-                            content="Create Period"
-                            icon="add circle"
-                            primary
-                        />
-                    </a>
-                    </Link> */}
+                    </Segment>
 
                     {this.renderPeriod()}
                 </div>

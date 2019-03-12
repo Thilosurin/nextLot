@@ -1,9 +1,9 @@
 import { Component } from 'react'
 import { Button, Table, Form, Message, Input } from 'semantic-ui-react'
-import { Link } from '../../routes'
-import App from '../../components/App'
-import Period from '../../ethereum/period'
-import LotteryRow from '../../components/LotteryRow'
+import { Link } from '../routes'
+import App from '../components/App'
+import Period from '../ethereum/period'
+import LotteryRow from '../components/LotteryRow'
 
 class Transection extends Component {
     state = {
@@ -28,38 +28,6 @@ class Transection extends Component {
         return { address, lotteries, lotteriesCount, period }
     }
 
-    onCheck = async () => {
-        const { period } = this.props;
-
-        const getCheckReward = await period.methods.getCheckReward().call();
-        // console.log(getCheckReward[0]);
-        // console.log(getCheckReward[1]);
-    }
-
-    //////////////////////////////////////////////////////////
-    onSubmit = async (event) => {
-        event.preventDefault()
-
-        const { period } = this.props;
-        
-        this.setState({ loading: true, errorMessage: '' })
-
-        try {
-            const accounts = await web3.eth.getAccounts()
-            await period.methods.sendReward().send({
-                from: accounts[0],
-                value: web3.utils.toWei(this.state.reward, 'ether')
-            })
-
-            Router.replaceRoute(`/admin/${this.props.address}`)
-        } catch (err) {
-            this.setState({ errorMessage: err.message })
-        }
-
-        this.setState({ loading: false, reward: '', show: false })
-    }
-    /////////////////////////////////////////////////////////////
-
     renderRows() {
         return this.props.lotteries.map((lottery, index) => {
             return <LotteryRow 
@@ -75,12 +43,12 @@ class Transection extends Component {
 
         return (
             <App>
-                <Link route={`/${this.props.address}`}>
+                <Link prefetch route={`/${this.props.address}`}>
                     <a>Back</a>
                 </Link>
                 <h3>Transection</h3>
                 {!this.state.show ? (
-                    <Link route={`/admin/${this.props.address}/get`}>
+                    <Link prefetch route={`/admin/${this.props.address}/get`}>
                     <a>
                         <Button primary floated="right" style={{ marginBottom: "10px" }}>Add Reward</Button>
                     </a>
@@ -88,23 +56,6 @@ class Transection extends Component {
                 ) : (
                     <Button primary floated="right" loading={this.state.loading} style={{ marginBottom: "10px" }} >true Reward!</Button>
                 )}
-
-                {/* {!!this.state.show ? null : (
-                    <Form onSubmit={this.onSubmit} error={!!this.state.errorMessage} style={{ float: "right" }}>
-                        <Form.Field inline>
-                            <Input 
-                                label='Value Prize (wei)' 
-                                placeholder='2000000000000000' 
-                                labelPosition="right"
-                                value={this.state.reward}
-                                onChange={event => this.setState({ reward: event.target.value })}
-                            />
-
-                            <Message error header="Oops!" content={this.state.errorMessage} />
-                            <Button color='green' loading={this.state.loading}  style={{ marginBottom: "10px" }}>Send Reward!</Button>
-                        </Form.Field>
-                    </Form>
-                )} */}
 
                 <Table>
                     <Header>

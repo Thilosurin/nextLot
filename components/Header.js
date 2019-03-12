@@ -115,7 +115,7 @@ export default class StickyLayout extends Component {
               </Menu.Item>
               
               <Menu.Menu position='right'>
-              {authenticated ? (
+              {/* {authenticated ? ( */}
                 <Dropdown text='shit' pointing className='link item'>
                   <Dropdown.Menu>
                     <Dropdown.Item>List Item</Dropdown.Item>
@@ -124,7 +124,7 @@ export default class StickyLayout extends Component {
                     <Dropdown.Item>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-              ) : (
+              {/* ) : ( */}
                 <Menu.Item as='a'>
                 {!authenticated && pathname !== "/auth/login" ? (
                     <Link prefetch href="/auth/login">
@@ -136,7 +136,7 @@ export default class StickyLayout extends Component {
                     </Link>
                 )}
                 </Menu.Item>
-              )}
+              {/* )} */}
               </Menu.Menu>
             </Container>
           </Menu>

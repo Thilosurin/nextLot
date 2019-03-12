@@ -51,7 +51,7 @@ class AdminNewPeriod extends Component {
 
         return (
             <App>
-                <Link route={'/'}>
+                <Link prefetch route={'/'}>
                     <a>Back</a>
                 </Link>
                 <h3>Create a Period!</h3>
@@ -81,7 +81,7 @@ class AdminNewPeriod extends Component {
                     </Form.Group>
 
                     <Message error header="Oops!" content={errorMessage} />
-                    <Button loading={loading} disabled={isEnabled} primary>Create!</Button>
+                    <Button loading={loading} floated="right" disabled={isEnabled} primary>Create!</Button>
                 </Form>
             </App>
         )

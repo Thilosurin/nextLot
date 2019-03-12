@@ -6,17 +6,20 @@ import web3 from '../ethereum/web3';
 class TicketCard extends Component {
 
     renderCards() {
-        const { playerLot } = this.props;      
-    
+        const { playerLot } = this.props;
+        
         const items = playerLot.reverse().map(playerLot => {
+            const ticketColor = playerLot.reward ? 'green' : '';
+
             return {
                 header: playerLot.numberLottery,
                 description: 'prize : ' + web3.utils.fromWei(playerLot.prize, 'ether'),
+                color: ticketColor,
                 fluid: true
             }
         });
     
-        return <Card.Group items={items} textAlign='center' />
+        return <Card.Group items={items} />
     }
     
     render() {

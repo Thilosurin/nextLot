@@ -4,7 +4,7 @@ routes
     .add('/:address', '/show')
     .add('/admin/new', '/admin/new')
     .add('/user/new', '/user/new')
-    .add('/admin/:address', '/admin/index')
+    .add('/:address/transection', '/transection')
     .add('/admin/:address/get', '/admin/get');
 
 module.exports = routes;

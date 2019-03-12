@@ -52,6 +52,12 @@ export default class ShowPeriod extends Component {
         creator
     } = this.props;
 
+    const myDate = new Date(timeOut*1000);
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateTimeOut = myDate.toLocaleString('thai', options);
+    const timeTimeOut = myDate.toLocaleTimeString();
+    console.log(dateTimeOut);
+    
     const items = [
         {
             header: numPeriod,
@@ -70,7 +76,7 @@ export default class ShowPeriod extends Component {
             meta: 'Status Period'
         },
         {
-            header: timeOut,
+            header: `${dateTimeOut} .... ${timeTimeOut}`,
             meta: 'Time to Stop Buy Lottery (sec)'
         },
         {
@@ -87,7 +93,7 @@ export default class ShowPeriod extends Component {
 
     return (
       <App>
-        <Link route={`/`}>
+        <Link prefetch route={`/`}>
             <a>Back</a>
         </Link>
         <h3>Period Infomation</h3>
@@ -96,7 +102,7 @@ export default class ShowPeriod extends Component {
                   <Grid.Column width={10}>
                       {this.renderCards()}
 
-                    <Link route={`/admin/${this.props.address}`} >
+                    <Link prefetch route={`/${this.props.address}/transection`} >
                         <a>
                             <Button primary style={{ marginTop: '1.5rem' }}>View Transaction</Button>
                         </a>
