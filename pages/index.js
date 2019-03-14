@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import factory from '../ethereum/factory'
 import { Card, Button, Segment } from 'semantic-ui-react'
-import App from '../components/App'
+import BaseLayout from '../components/layouts/BaseLayout'
 import { Link } from '../routes'
 
 class PeriodInfo extends Component {
@@ -41,7 +41,7 @@ class PeriodInfo extends Component {
         const admin = true;
 
         return (
-            <App>
+            <BaseLayout {...this.props.auth}>
                 <div>
                     <Segment raised color={admin ? 'green' : 'blue'}>
                         <h3>Periods</h3>
@@ -65,7 +65,7 @@ class PeriodInfo extends Component {
 
                     {this.renderPeriod()}
                 </div>
-            </App>
+            </BaseLayout>
         )
     }
 }

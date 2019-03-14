@@ -1,8 +1,8 @@
 import { Component } from 'react'
 import { Form, Input, Message, Button, Card } from 'semantic-ui-react'
-import Period from '../ethereum/period'
-import web3 from '../ethereum/web3'
-import { Router } from '../routes'
+import Period from '../../ethereum/period'
+import web3 from '../../ethereum/web3'
+import { Router } from '../../routes'
 
 class CreateTicket extends Component {
     state = {

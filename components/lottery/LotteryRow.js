@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'semantic-ui-react';
-import web3 from '../ethereum/web3';
+import web3 from '../../ethereum/web3';
 
 class LotteryRow extends Component {
 

@@ -2,13 +2,15 @@ import { Component } from "react";
 import Period from '../ethereum/period';
 import web3 from '../ethereum/web3';
 import { Card, Grid, Button } from 'semantic-ui-react';
-import App from "../components/App";
+import BaseLayout from '../components/layouts/BaseLayout'
 import { Link } from '../routes';
 
-import TicketCard from '../components/TicketCard';
-import CreateTicket from '../components/CreateTicket';
+import TicketCard from '../components/lottery/TicketCard';
+import CreateTicket from '../components/lottery/CreateTicket';
 
-export default class ShowPeriod extends Component {
+import withAuth from '../components/hoc/withAuth';
+
+class ShowPeriod extends Component {
 
   static async getInitialProps(props) {
     const period = Period(props.query.address)
@@ -92,7 +94,7 @@ export default class ShowPeriod extends Component {
   render() {
 
     return (
-      <App>
+      <BaseLayout {...this.props.auth}>
         <Link prefetch route={`/`}>
             <a>Back</a>
         </Link>
@@ -129,7 +131,9 @@ export default class ShowPeriod extends Component {
                   {/* </Grid.Column> */}
               {/* </Grid.Row> */}
           </Grid>
-      </App>
+      </BaseLayout>
     );
   }
 }
+
+export default withAuth()(ShowPeriod)

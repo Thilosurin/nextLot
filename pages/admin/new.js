@@ -1,10 +1,12 @@
 import { Component } from 'react'
 import PropTypes from 'prop-types';
 import { Form, Input, Button, Message } from 'semantic-ui-react'
-import App from '../../components/App'
+import BaseLayout from '../../components/layouts/BaseLayout'
 import factory from '../../ethereum/factory'
 import web3 from '../../ethereum/web3'
 import { Link, Router } from '../../routes'
+
+import withAuth from '../../components/hoc/withAuth';
 
 class AdminNewPeriod extends Component {
     // static 
@@ -50,7 +52,7 @@ class AdminNewPeriod extends Component {
                             && closingTime.length === 10 ? false : true;
 
         return (
-            <App>
+            <BaseLayout {...this.props.auth}>
                 <Link prefetch route={'/'}>
                     <a>Back</a>
                 </Link>
@@ -83,7 +85,7 @@ class AdminNewPeriod extends Component {
                     <Message error header="Oops!" content={errorMessage} />
                     <Button loading={loading} floated="right" disabled={isEnabled} primary>Create!</Button>
                 </Form>
-            </App>
+            </BaseLayout>
         )
     }
 }
@@ -94,4 +96,4 @@ AdminNewPeriod.propTypes = {
     closingTime: PropTypes.number,
 };
 
-export default AdminNewPeriod
+export default withAuth()(AdminNewPeriod)

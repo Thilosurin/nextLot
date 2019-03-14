@@ -1,9 +1,11 @@
 import { Component } from 'react'
 import { Button, Table, Form, Message, Input } from 'semantic-ui-react'
 import { Link } from '../routes'
-import App from '../components/App'
+import BaseLayout from '../components/layouts/BaseLayout'
 import Period from '../ethereum/period'
-import LotteryRow from '../components/LotteryRow'
+import LotteryRow from '../components/lottery/LotteryRow'
+
+import withAuth from '../components/hoc/withAuth';
 
 class Transection extends Component {
     state = {
@@ -42,7 +44,7 @@ class Transection extends Component {
         const { Header, Row, HeaderCell, Body } = Table
 
         return (
-            <App>
+            <BaseLayout {...this.props.auth}>
                 <Link prefetch route={`/${this.props.address}`}>
                     <a>Back</a>
                 </Link>
@@ -71,9 +73,9 @@ class Transection extends Component {
                     <Body>{this.renderRows()}</Body>
                 </Table>
                 <div>Found {this.props.lotteriesCount} Lotteries.</div>
-            </App>
+            </BaseLayout>
         )
     }
 }
 
-export default Transection
+export default withAuth()(Transection)

@@ -4,7 +4,7 @@
 import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import App from '../components/App'
+import BaseLayout from '../components/layouts/BaseLayout'
 import { Container } from 'semantic-ui-react'
 // import Styles from '../css/index.scss'
 import { withRouter } from 'next/router'
@@ -29,7 +29,7 @@ class ErrorPage extends React.Component {
       case 200: // Also display a 404 if someone requests /_error explicitly
       case 404:
         response = (
-          <App>
+          <BaseLayout>
             <Head>
               {/* <style dangerouslySetInnerHTML={{__html: Styles}}/> */}
             </Head>
@@ -38,12 +38,12 @@ class ErrorPage extends React.Component {
               <p>The page <strong>{ this.props.router.pathname }</strong> does not exist.</p>
               <p><Link href="/"><a>Home</a></Link></p>
             </Container>
-          </App>
+          </BaseLayout>
         )
         break
       case 500:
         response = (
-          <App>
+          <BaseLayout>
             <div>
               <Head>
                 {/* <style dangerouslySetInnerHTML={{__html: Styles}}/> */}
@@ -53,12 +53,12 @@ class ErrorPage extends React.Component {
                 <p>An internal server error occurred.</p>
               </Container>
             </div>
-          </App>
+          </BaseLayout>
         )
         break
       default:
         response = (
-          <App>
+          <BaseLayout>
             <div>
               <Head>
                 {/* <style dangerouslySetInnerHTML={{__html: Styles}}/> */}
@@ -71,7 +71,7 @@ class ErrorPage extends React.Component {
                 </p>
               </Container>
             </div>
-          </App>
+          </BaseLayout>
         )
     }
 

@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { Card } from 'semantic-ui-react'
-import web3 from '../ethereum/web3';
+import web3 from '../../ethereum/web3';
 
 
 class TicketCard extends Component {

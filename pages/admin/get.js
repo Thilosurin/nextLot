@@ -3,7 +3,9 @@ import { Form, Button, Message, Input } from 'semantic-ui-react'
 import Period from '../../ethereum/period'
 import web3 from '../../ethereum/web3'
 import { Link, Router } from '../../routes'
-import App from '../../components/App'
+import BaseLayout from '../../components/layouts/BaseLayout'
+
+import withAuth from '../../components/hoc/withAuth';
 
 class GetReward extends Component {
     state = {
@@ -65,7 +67,7 @@ class GetReward extends Component {
                 from: accounts[0]
             })
 
-            Router.pushRoute(`/admin/${this.props.address}`)
+            Router.pushRoute(`/${this.props.address}/transection`)
         } catch (err) {
             this.setState({ errorMessage: err.message })
         }
@@ -79,7 +81,7 @@ class GetReward extends Component {
         && !isNaN(prizeReward) && prizeReward !== '' && this.state.show ? false : true;
 
         return (
-            <App>
+            <BaseLayout {...this.props.auth}>
                 <Link prefetch route={`/${this.props.address}/transection`}>
                     <a>Back</a>
                 </Link>
@@ -131,22 +133,9 @@ class GetReward extends Component {
                         </Form>
                     </div>
                 )}
-            </App>
+            </BaseLayout>
         )
     }
 }
 
-export default GetReward
-
-
-
-
-// onShow = async () => {
-//     this.setState({ show: !this.state.show })
-
-//     const getCheckReward = await period.methods.getCheckReward().call();
-//     console.log(getCheckReward[0]);
-//     console.log(getCheckReward[1]);
-
-//     this.setState({ getCheckReward: getCheckReward });
-// }
+export default withAuth()(GetReward)
