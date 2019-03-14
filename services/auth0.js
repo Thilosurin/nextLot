@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import { getCookieFromReq } from '../helpers/utils';
 
-const CLIENT_ID = process.env.CLIENT_ID;
+// const CLIENT_ID = process.env.CLIENT_ID;
 
 class Auth0 {
 
@@ -13,7 +13,9 @@ class Auth0 {
         this.auth0 = new auth0.WebAuth({
             domain: 'dev-thilosurin.auth0.com',
             clientID: 'FhQe5Mn7ssbosOoEcSD3AuATnR2alA1r',
+            // clientID: CLIENT_ID,
             redirectUri: 'http://localhost:3000/callback',
+            // redirectUri: `${process.env.BASE_URL}/callback`,
             responseType: 'token id_token',
             scope: 'openid profile'
         });
@@ -21,7 +23,6 @@ class Auth0 {
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.handleAuthentication = this.handleAuthentication.bind(this);
-        this.isAuthenticated = this.isAuthenticated.bind(this);
     }
 
     handleAuthentication() {
@@ -44,32 +45,21 @@ class Auth0 {
         // Set the time that the access token will expire at
         const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
 
-        // localStorage.setItem('access_token', authResult.accessToken)
-        Cookies.set('user', authResult.idTokenPayload);
         Cookies.set('jwt', authResult.idToken);
-        Cookies.set('expiresAt', expiresAt);
     }
 
     logout() {
-        Cookies.remove('user');
         Cookies.remove('jwt');
-        Cookies.remove('expiresAt');
 
         this.auth0.logout({
             returnTo: '',
+            // returnTo: process.env.BASE_URL,
             clientID: 'FhQe5Mn7ssbosOoEcSD3AuATnR2alA1r'
         })
     }
 
     login() {
         this.auth0.authorize();
-    }
-
-    isAuthenticated() {
-        // Check whether the current time is past the
-        // access token's expiry time
-        const expiresAt = Cookies.getJSON('expiresAt');
-        return new Date().getTime() < expiresAt;
     }
 
     async getJWKS() {

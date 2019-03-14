@@ -9,12 +9,15 @@ export default class MyApp extends App {
     let pageProps = {};
     const user = process.browser ? await auth0.clientAuth() : await auth0.serverAuth(ctx.req);
 
+    const nameUndefined = !!user ? user : 'No User!';
+    const admin =  nameUndefined.name === 'Th!losurin' ? true : false;
+
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
     }
 
     const isSiteOwner = user && user[process.env.NAMESPACE + '/role'] === 'siteOwner';
-    const auth = { user, isAuthenticated: !!user, isSiteOwner };
+    const auth = { user, admin, isAuthenticated: !!user, isSiteOwner };
 
     return { pageProps, auth }
   }

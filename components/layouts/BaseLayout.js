@@ -4,8 +4,9 @@ import Head from 'next/head';
 import { Container } from 'semantic-ui-react'
 
 const BaseLayout = (props) => {
-  const { children, isAuthenticated, user, isSiteOwner } = props;
+  const { children, isAuthenticated, user, admin, isSiteOwner } = props;
   const title = props.title || 'NextLottery';
+
   return (
     <React.Fragment>
       <Head>
@@ -22,6 +23,7 @@ const BaseLayout = (props) => {
         <Header
           isAuthenticated={isAuthenticated}
           user={user}
+          admin={admin}
           isSiteOwner={isSiteOwner}/>
         <main>
           <div>

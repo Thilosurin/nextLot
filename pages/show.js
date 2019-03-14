@@ -5,6 +5,7 @@ import { Card, Grid, Button } from 'semantic-ui-react';
 import BaseLayout from '../components/layouts/BaseLayout'
 import { Link } from '../routes';
 
+import Summary from '../components/lottery/Summary'
 import TicketCard from '../components/lottery/TicketCard';
 import CreateTicket from '../components/lottery/CreateTicket';
 
@@ -17,6 +18,8 @@ class ShowPeriod extends Component {
     const lotteriesCount = await period.methods.getLotteriesCount().call()
     const periodInfo = await period.methods.getPeriodInfo().call()    
 
+    const summary = await period.methods.getSummary().call()    
+
     const accounts = await web3.eth.getAccounts()
     const player = accounts[0];
     
@@ -27,13 +30,13 @@ class ShowPeriod extends Component {
     )
 
     const playerLot = lotteries.filter(el => el.players === player)
-    
     // console.log(lotteries[0].players);
     // console.log(lotteries[0].players === player); // true
     
     
     return { 
         playerLot,
+        summary,
         address: props.query.address,
         numPeriod: periodInfo[0], 
         priceLottery: periodInfo[1],
@@ -58,7 +61,6 @@ class ShowPeriod extends Component {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const dateTimeOut = myDate.toLocaleString('thai', options);
     const timeTimeOut = myDate.toLocaleTimeString();
-    console.log(dateTimeOut);
     
     const items = [
         {
@@ -74,12 +76,14 @@ class ShowPeriod extends Component {
             meta: 'Amount / Number'
         },
         {
-            header: runStatus.toString(),
-            meta: 'Status Period'
+            header: `${runStatus.toString() === 'true' ? 'OPEN' : 'CLOSED'}`,
+            meta: 'Status Period',
+            color: `${runStatus.toString() === 'true' ? 'blue' : 'red'}`
         },
         {
             header: `${dateTimeOut} .... ${timeTimeOut}`,
-            meta: 'Time to Stop Buy Lottery (sec)'
+            meta: 'Time to Stop Buy Lottery (sec)',
+            color: `${runStatus.toString() === 'true' ? 'blue' : 'red'}`
         },
         {
             header: creator,
@@ -92,6 +96,7 @@ class ShowPeriod extends Component {
   }
 
   render() {
+    const { admin } = this.props.auth;
 
     return (
       <BaseLayout {...this.props.auth}>
@@ -111,25 +116,18 @@ class ShowPeriod extends Component {
                     </Link>
                   </Grid.Column>
 
-                  <Grid.Column width={6}>
-                        {/* User */}
-                      <CreateTicket address={this.props.address} />
-                      <br/>
-                      <TicketCard address={this.props.address} playerLot={this.props.playerLot}/>
-                  </Grid.Column>
+                {admin ? (
+                    <Grid.Column width={6}>
+                        <Summary summary={this.props.summary}/>
+                    </Grid.Column>
+                ) : (
+                    <Grid.Column width={6}>
+                        <CreateTicket address={this.props.address} />
+                        <br/>
+                        <TicketCard address={this.props.address} playerLot={this.props.playerLot}/>
+                    </Grid.Column>
+                )}
               </Grid.Row>
-
-              {/* <Grid.Row> */}
-                  {/* <Grid.Column> */}
-                    {/* Admin */}
-                      {/* <Link route={`/admin/${this.props.address}`}>
-                      <a>
-                          <Button primary>View Transaction</Button>
-                      </a>
-                      </Link> */}
-
-                  {/* </Grid.Column> */}
-              {/* </Grid.Row> */}
           </Grid>
       </BaseLayout>
     );

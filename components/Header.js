@@ -32,27 +32,10 @@ export default class Header extends Component {
 
   unStickTopMenu = () => this.setState({ menuFixed: false })
 
-  // renderAdminMenu() {
-  //   const { isSiteOwner } = this.props;
-
-  //   if (isSiteOwner) {
-  //     return (
-        
-  //     )
-  //   }
-
-  //   return (
-  //     <NavItem className="port-navbar-item">
-  //       <BsNavLink route="/blogs" title="Blog" />
-  //     </NavItem>
-  //   )
-  // }
-
   render() {
     const { menuFixed } = this.state
-    const { pathname, user, isAuthenticated, query = false } = this.props;
-
-    console.log(user);
+    const { user, isAuthenticated, admin } = this.props;
+    // console.log(user);
     
     return (
       <div>
@@ -74,33 +57,34 @@ export default class Header extends Component {
             style={menuFixed ? fixedMenuStyle : menuStyle}
           >
             <Container>
-              <Menu.Item>
-                {/* <Image size='mini' src='/logo.png' /> */}
-              </Menu.Item>
               <Menu.Item header>
                 <Link prefetch href="/">
-                  NextLottery
+                  <a style={{ color: `${admin ? 'green' : 'blue'}` }}>NextLottery</a>
                 </Link>
               </Menu.Item>    
               
               <Menu.Menu position='right'>
               {isAuthenticated ? (
-                <Dropdown text={user.name} pointing className='link item'>
+                <Dropdown text={user.name} pointing className='link item' style={{ color: `${admin ? 'green' : 'blue'}` }}>
                   <Dropdown.Menu>
                     <Dropdown.Item>
                       <Link prefetch href="/">
-                          Home
+                          <a>something</a>
                       </Link>
                     </Dropdown.Item>
-                    <Dropdown.Item>List Item</Dropdown.Item>
+                    <Dropdown.Item>
+                      <Link prefetch href="/">
+                          <a>something</a>
+                      </Link>
+                    </Dropdown.Item>
                     <Dropdown.Divider />
-                    <Dropdown.Item onClick={auth0.logout}>LogOut</Dropdown.Item>
+                    <Dropdown.Item onClick={auth0.logout}>logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               ) : (
                 <Menu.Item as='a'>
                   <Link>
-                      <Button onClick={auth0.login} inverted><a>LogIn</a></Button>
+                      <Button onClick={auth0.login} inverted><a>login</a></Button>
                   </Link>
                 </Menu.Item>
               )}

@@ -13,40 +13,23 @@ class TicketCard extends Component {
 
             return {
                 header: playerLot.numberLottery,
-                description: 'prize : ' + web3.utils.fromWei(playerLot.prize, 'ether'),
+                meta: 'reward : ' + web3.utils.fromWei(playerLot.prize, 'ether') + ' ether',
                 color: ticketColor,
                 fluid: true
             }
         });
-    
         return <Card.Group items={items} />
     }
     
     render() {
-        // const { address, lottery } = this.props;
         
         return(
             <div>
                 <h3>Your Ticket</h3>
-                {/* <h1>Hello { address }</h1> */}
                 {this.renderCards()}
             </div>
         )
     }
-        
-
-    // const items = await period.methods.reverse().map(address => {
-    //     return {
-    //         header: address,
-    //         description: (
-    //             <Link route={`/${address}`}>
-    //                 <a>View Period</a>
-    //             </Link>
-    //         ),
-    //         fluid: true
-    //     }
-    // });
-
 }
 
 export default TicketCard

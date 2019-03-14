@@ -12,7 +12,6 @@ class Transection extends Component {
         reward: '',
         loading: false,
         errorMessage: '',
-        show: false
     }
 
     static async getInitialProps(props) {
@@ -42,6 +41,7 @@ class Transection extends Component {
     
     render() {
         const { Header, Row, HeaderCell, Body } = Table
+        const { admin } = this.props.auth;
 
         return (
             <BaseLayout {...this.props.auth}>
@@ -49,15 +49,12 @@ class Transection extends Component {
                     <a>Back</a>
                 </Link>
                 <h3>Transection</h3>
-                {!this.state.show ? (
-                    <Link prefetch route={`/admin/${this.props.address}/get`}>
+                {admin &&
+                <Link prefetch route={`/admin/${this.props.address}/get`}>
                     <a>
                         <Button primary floated="right" style={{ marginBottom: "10px" }}>Add Reward</Button>
                     </a>
-                    </Link>
-                ) : (
-                    <Button primary floated="right" loading={this.state.loading} style={{ marginBottom: "10px" }} >true Reward!</Button>
-                )}
+                </Link>}
 
                 <Table>
                     <Header>

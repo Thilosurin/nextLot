@@ -1,6 +1,5 @@
 import { Component } from 'react'
-import PropTypes from 'prop-types';
-import { Form, Input, Button, Message } from 'semantic-ui-react'
+import { Form, Button, Message } from 'semantic-ui-react'
 import BaseLayout from '../../components/layouts/BaseLayout'
 import factory from '../../ethereum/factory'
 import web3 from '../../ethereum/web3'
@@ -9,8 +8,6 @@ import { Link, Router } from '../../routes'
 import withAuth from '../../components/hoc/withAuth';
 
 class AdminNewPeriod extends Component {
-    // static 
-    
     state = {
         priceLottery: '',
         lotteryPerNum: '',
@@ -89,11 +86,5 @@ class AdminNewPeriod extends Component {
         )
     }
 }
-
-AdminNewPeriod.propTypes = {
-    priceLottery: PropTypes.number,
-    lotteryPerNum: PropTypes.number,
-    closingTime: PropTypes.number,
-};
 
 export default withAuth()(AdminNewPeriod)

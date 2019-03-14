@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 contract PeriodManager {
     address[] public deployedPeriods;
-    uint public periodNumber = 0;
+    uint public periodNumber = 1;
     
     function createPeriod(uint priceLottery, uint16 lotteryPerNum, uint closingTime) public {
         address newPeriod = new Period(periodNumber, priceLottery, lotteryPerNum, true, closingTime, msg.sender);

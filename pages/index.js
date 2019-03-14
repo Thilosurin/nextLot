@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import factory from '../ethereum/factory'
 import { Card, Button, Segment } from 'semantic-ui-react'
-import BaseLayout from '../components/layouts/BaseLayout'
 import { Link } from '../routes'
+import BaseLayout from '../components/layouts/BaseLayout'
 
 class PeriodInfo extends Component {
     static async getInitialProps() {
@@ -27,10 +27,8 @@ class PeriodInfo extends Component {
                     </Button>
                 ),
                 fluid: true,
-                // href: `/${address}`
             }
         }).reverse();
-
         return <Card.Group items={items} />
     }
     
@@ -38,7 +36,8 @@ class PeriodInfo extends Component {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const date = new Date().toLocaleString('thai', options);
         const time = new Date().toLocaleTimeString();
-        const admin = true;
+        const { admin, user } = this.props.auth;
+        const nameUndefined = !!user ? user : 'No User!';
 
         return (
             <BaseLayout {...this.props.auth}>
@@ -57,7 +56,7 @@ class PeriodInfo extends Component {
                                 </a>
                             </Link>
                         ) : (
-                            <h5>Hi : user!</h5>
+                            <h4>Hi : {nameUndefined.name}!</h4>
                         )}
                         <h5>{time}<br/>{date}</h5>
 
