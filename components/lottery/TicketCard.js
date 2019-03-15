@@ -10,10 +10,13 @@ class TicketCard extends Component {
         
         const items = playerLot.reverse().map(playerLot => {
             const ticketColor = playerLot.reward ? 'green' : '';
+            const showReward = web3.utils.fromWei(playerLot.prize, 'ether') === '0' ? '' :  web3.utils.fromWei(playerLot.prize, 'ether') + ' ETH';
 
             return {
                 header: playerLot.numberLottery,
-                meta: 'reward : ' + web3.utils.fromWei(playerLot.prize, 'ether') + ' ether',
+                description: showReward,
+                meta: 'time',
+                meta: new Date(playerLot.timeBuy*1000).toLocaleString(),
                 color: ticketColor,
                 fluid: true
             }

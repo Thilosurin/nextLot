@@ -15,7 +15,11 @@ class TicketCard extends Component {
             },
             {
                 header: web3.utils.fromWei(summary[1], 'ether'),
-                meta: 'Total from Buy Lottery (ether)'
+                meta: 'Total Buy Lotteries (ether)'
+            },
+            {
+                header: web3.utils.fromWei(summary[2], 'ether'),
+                meta: 'Total Rewards (ether)'
             }
         ]
         return <Card.Group items={items} />

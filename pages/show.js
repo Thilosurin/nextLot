@@ -18,7 +18,9 @@ class ShowPeriod extends Component {
     const lotteriesCount = await period.methods.getLotteriesCount().call()
     const periodInfo = await period.methods.getPeriodInfo().call()    
 
-    const summary = await period.methods.getSummary().call()    
+    const summary = await period.methods.getSummary().call()
+
+    const defuseAlarm  = await period.methods.defuseAlarm().call()
 
     const accounts = await web3.eth.getAccounts()
     const player = accounts[0];
@@ -37,11 +39,11 @@ class ShowPeriod extends Component {
     return { 
         playerLot,
         summary,
+        defuseAlarm,
         address: props.query.address,
         numPeriod: periodInfo[0], 
         priceLottery: periodInfo[1],
         lotteryPerNum: periodInfo[2],
-        runStatus: periodInfo[3],
         timeOut: periodInfo[4],
         creator: periodInfo[5]
     }
@@ -49,10 +51,10 @@ class ShowPeriod extends Component {
 
   renderCards() {
     const {
+        defuseAlarm,
         numPeriod,
         priceLottery,
         lotteryPerNum,
-        runStatus,
         timeOut,
         creator
     } = this.props;
@@ -76,14 +78,14 @@ class ShowPeriod extends Component {
             meta: 'Amount / Number'
         },
         {
-            header: `${runStatus.toString() === 'true' ? 'OPEN' : 'CLOSED'}`,
+            header: `${!defuseAlarm === true ? 'OPEN' : 'CLOSED'}`,
             meta: 'Status Period',
-            color: `${runStatus.toString() === 'true' ? 'blue' : 'red'}`
+            color: `${!defuseAlarm === true ? 'blue' : 'red'}`
         },
         {
             header: `${dateTimeOut} .... ${timeTimeOut}`,
             meta: 'Time to Stop Buy Lottery (sec)',
-            color: `${runStatus.toString() === 'true' ? 'blue' : 'red'}`
+            color: `${!defuseAlarm === true ? 'blue' : 'red'}`
         },
         {
             header: creator,

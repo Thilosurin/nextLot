@@ -16,9 +16,11 @@ contract PeriodManager {
 }
 
 contract Period {
+    uint constant private salt =  block.timestamp;
     Lottery[] public lotteries;
     uint public lotteryCount;
-    uint public priceCount;
+    uint public totalPrice;
+    uint public totalReward;
 
     struct Lottery {
         uint id;
@@ -27,6 +29,7 @@ contract Period {
         uint prize;
         bool reward;
         uint repeat;
+        uint timeBuy;
     }
     
     address public creator;
@@ -61,13 +64,14 @@ contract Period {
           players: msg.sender,
           prize: 0,
           reward: false,
-          repeat: 1
+          repeat: 1,
+          timeBuy: salt
         });
         lotteries.push(newLottery);
     }
     function incrementCount() internal {
         lotteryCount += 1;
-        priceCount += price;
+        totalPrice += price;
     }
     function checkPerNum(uint num) internal  {
         for (uint p = 0; p < lotteries.length; p++) {
@@ -78,11 +82,22 @@ contract Period {
         }
     }
     modifier closingTime() {
-        require(block.timestamp <= timeOut);
-        if (block.timestamp > timeOut) {
-            runStatus = false;
-        }
+        require(salt <= timeOut);
         _;
+    }
+    modifier rewardTime() {
+        require(salt > timeOut);
+        _;
+    }
+
+    function defuseAlarm() public returns(bool) {
+        if (timeOut <= salt) {
+            runStatus = false;
+            return runStatus;
+        } else {
+            runStatus = true;
+            return runStatus;
+        }
     }
     
     event MultiTransfer(
@@ -93,7 +108,7 @@ contract Period {
     );
     uint public countReward = 0;
     uint public checkCoin = 0;
-    function checkReward(uint prizeNumber, uint prizeReward) public restricted {
+    function checkReward(uint prizeNumber, uint prizeReward) public restricted rewardTime {
         if (countReward != 0 && checkCoin != 0) { countReward = 0; checkCoin = 0; }
         for (uint p = 0; p < lotteries.length; p++) {
             if (lotteries[p].numberLottery == prizeNumber) {
@@ -121,6 +136,7 @@ contract Period {
     function _safeTransfer(address _to, uint _amount) internal {
         require(_to != 0);
         _to.transfer(_amount);
+        totalReward += _amount;
     }
     
     
@@ -153,12 +169,12 @@ contract Period {
         );
     }
     function getSummary() public view returns (
-        uint, uint, bool
+        uint, uint, uint
     ) {
         return (
             lotteryCount,
-            priceCount,
-            runStatus
+            totalPrice,
+            totalReward
         );
     }
 

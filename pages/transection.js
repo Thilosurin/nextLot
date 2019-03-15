@@ -33,7 +33,6 @@ class Transection extends Component {
         return this.props.lotteries.map((lottery, index) => {
             return <LotteryRow 
                 key={index}
-                no={index}
                 lottery={lottery}
             />
         })
@@ -61,7 +60,7 @@ class Transection extends Component {
                         <Row>
                             <HeaderCell>No.</HeaderCell>
                             <HeaderCell>Player</HeaderCell>
-                            <HeaderCell>ID</HeaderCell>
+                            <HeaderCell>Date</HeaderCell>
                             <HeaderCell>LotteryNumber</HeaderCell>
                             <HeaderCell>Reward</HeaderCell>
                             <HeaderCell>Prize (ETH)</HeaderCell>
