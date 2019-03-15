@@ -98,7 +98,7 @@ class GetReward extends Component {
 
                         <Form.Input fluid 
                             label='Value Prize (ether)' 
-                            placeholder='0.001' 
+                            placeholder='1' 
                             value={prizeReward}
                             error={isNaN(prizeReward)}
                             onChange={event => this.setState({ prizeReward: event.target.value })}

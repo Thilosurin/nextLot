@@ -14,10 +14,10 @@ class LotteryRow extends Component {
         positive={lottery.prize > 0}
       >
         <Cell>{lottery.id}</Cell>
-        <Cell>{lottery.players}</Cell>
-        <Cell>{new Date(playerLot.timeBuy*1000).toLocaleString()}</Cell>
-        {/* <Cell>{'20/04/2540'}</Cell> */}
         <Cell>{lottery.numberLottery}</Cell>
+        <Cell>{lottery.players}</Cell>
+        <Cell>{new Date(lottery.timeBuy*1000).toLocaleString()}</Cell>
+        {/* <Cell>{'20/04/2540'}</Cell> */}
         <Cell>{lottery.reward.toString()}</Cell>
         <Cell>{web3.utils.fromWei(lottery.prize, 'ether')}</Cell>
       </Row>
