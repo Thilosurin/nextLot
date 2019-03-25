@@ -36,7 +36,8 @@ class CreateTicket extends Component {
 
     render() {
         const { errorMessage, value, loading } = this.state;
-        const isEnabled = value.length === 6 && !isNaN(value) ? false : true;
+        const { defuseAlarm } = this.props;
+        const isEnabled = value.length === 6 && !isNaN(value) && !defuseAlarm ? false : true;
 
         return (
             <div>
@@ -47,6 +48,7 @@ class CreateTicket extends Component {
                             label="6 digits" 
                             labelPosition="right"
                             value={value}
+                            disabled={defuseAlarm}
                             error={isEnabled}
                             onChange={event => this.setState({ value: event.target.value })}
                         />

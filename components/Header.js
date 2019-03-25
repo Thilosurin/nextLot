@@ -61,7 +61,7 @@ export default class Header extends Component {
                 <Link prefetch href="/">
                   <a style={{ color: `${admin ? 'green' : 'blue'}` }}>NextLottery</a>
                 </Link>
-              </Menu.Item>    
+              </Menu.Item> 
               
               <Menu.Menu position='right'>
               {isAuthenticated ? (
@@ -82,11 +82,18 @@ export default class Header extends Component {
                   </Dropdown.Menu>
                 </Dropdown>
               ) : (
-                <Menu.Item as='a'>
-                  <Link>
-                      <Button onClick={auth0.login} inverted><a>login</a></Button>
-                  </Link>
-                </Menu.Item>
+                <div>
+                  <Menu.Item as="a" style={{display: 'inline-block'}}>
+                    <Link>
+                        <Button onClick={auth0.login} inverted><a>login</a></Button>
+                    </Link>
+                  </Menu.Item>
+                  <Menu.Item as="a" style={{display: 'inline-block'}}>
+                    <Link prefetch href="/auth/signin">
+                        <Button inverted><a>signin</a></Button>
+                    </Link>
+                  </Menu.Item>
+                </div>
               )}
               </Menu.Menu>
             </Container>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import Period from '../ethereum/period';
 import factory from '../ethereum/factory'
+import web3 from '../ethereum/web3';
 import { Card, Button, Segment } from 'semantic-ui-react'
 import { Link } from '../routes'
 import BaseLayout from '../components/layouts/BaseLayout'
@@ -8,13 +10,23 @@ class PeriodInfo extends Component {
     static async getInitialProps() {
         const periods = await factory.methods.getDeployedPeriods().call()
 
+        const arrDefuseAlarm = periods.map(async address => {
+            const period = Period(address)
+            const defuseAlarm = await period.methods.defuseAlarm().call()
+            console.log(defuseAlarm);
+            
+            const accounts = await web3.eth.getAccounts()
+            const player = accounts[0];
+        })
+        console.log(arrDefuseAlarm);
+
         return { periods }
     }
 
     renderPeriod() {
-        // let i = this.props.periods.length;
         let j = 1;
         const items = this.props.periods.map(address => {
+
             return {
                 link: 'http://localhost:3000/${address}',
                 header: `period : ${j++}`,
@@ -27,6 +39,7 @@ class PeriodInfo extends Component {
                     </Button>
                 ),
                 fluid: true,
+                // color: `${defuseAlarm === true ? '' : 'green'}`
             }
         }).reverse();
         return <Card.Group items={items} />
@@ -38,9 +51,12 @@ class PeriodInfo extends Component {
         const time = new Date().toLocaleTimeString();
         const { admin, user } = this.props.auth;
         const nameUndefined = !!user ? user : 'No User!';
+        console.log(user);
+        
 
         return (
             <BaseLayout {...this.props.auth}>
+                {user ? (
                 <div>
                     <Segment raised color={admin ? 'green' : 'blue'}>
                         <h3>Periods</h3>
@@ -59,11 +75,13 @@ class PeriodInfo extends Component {
                             <h4>Hi : {nameUndefined.name}!</h4>
                         )}
                         <h5>{time}<br/>{date}</h5>
-
                     </Segment>
 
                     {this.renderPeriod()}
                 </div>
+                ) : (
+                    <h1>No User</h1>
+                )}
             </BaseLayout>
         )
     }

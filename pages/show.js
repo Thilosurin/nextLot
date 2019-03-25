@@ -20,7 +20,7 @@ class ShowPeriod extends Component {
 
     const summary = await period.methods.getSummary().call()
 
-    const defuseAlarm  = await period.methods.defuseAlarm().call()
+    const defuseAlarm = await period.methods.defuseAlarm().call()
 
     const accounts = await web3.eth.getAccounts()
     const player = accounts[0];
@@ -124,7 +124,7 @@ class ShowPeriod extends Component {
                     </Grid.Column>
                 ) : (
                     <Grid.Column width={6}>
-                        <CreateTicket address={this.props.address} />
+                        <CreateTicket address={this.props.address} defuseAlarm={this.props.defuseAlarm} />
                         <br/>
                         <TicketCard address={this.props.address} playerLot={this.props.playerLot}/>
                     </Grid.Column>
