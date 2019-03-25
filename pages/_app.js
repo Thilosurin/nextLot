@@ -2,12 +2,23 @@ import React from 'react';
 import App, { Container } from 'next/app';
 
 import auth0 from '../services/auth0';
+import { getSessionFromClient, getSessionFromServer } from '../lib/auth'
 
 export default class MyApp extends App {
 
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
-    const user = process.browser ? await auth0.clientAuth() : await auth0.serverAuth(ctx.req);
+
+    const currentPath = ctx.req ? ctx.req.url : window.location.pathname;
+    console.log(currentPath);
+    
+    let user;
+    if (currentPath !== "/auth/signin") {
+      user = process.browser ? await auth0.clientAuth() : await auth0.serverAuth(ctx.req);
+    } else {
+      const auth = ctx.req ? getSessionFromServer(ctx.req) : getSessionFromClient();
+      user = auth.user;
+    }
 
     const nameUndefined = !!user ? user : 'No User!';
     const admin =  nameUndefined.name === 'Th!losurin' ? true : false;

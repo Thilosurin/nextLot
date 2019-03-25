@@ -8,6 +8,7 @@ import {
   Visibility,
 } from 'semantic-ui-react'
 import auth0 from '../services/auth0'
+import { signoutUser } from '../lib/auth';
 
 const menuStyle = {
   boxShadow: 'none',
@@ -65,22 +66,30 @@ export default class Header extends Component {
               
               <Menu.Menu position='right'>
               {isAuthenticated ? (
-                <Dropdown text={user.name} pointing className='link item' style={{ color: `${admin ? 'green' : 'blue'}` }}>
-                  <Dropdown.Menu>
-                    <Dropdown.Item>
-                      <Link prefetch href="/">
-                          <a>something</a>
-                      </Link>
-                    </Dropdown.Item>
-                    <Dropdown.Item>
-                      <Link prefetch href="/">
-                          <a>something</a>
-                      </Link>
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item onClick={auth0.logout}>logout</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <div>
+
+                  <Dropdown text={user.name} pointing className='link item' style={{ color: `${admin ? 'green' : 'blue'}`, display: 'inline-block' }}>
+                    <Dropdown.Menu>
+                      <Dropdown.Item>
+                        <Link prefetch href="/">
+                            <a>something</a>
+                        </Link>
+                      </Dropdown.Item>
+                      <Dropdown.Item>
+                        <Link prefetch href="/">
+                            <a>something</a>
+                        </Link>
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item onClick={auth0.logout}>logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  <Menu.Item as="a" style={{display: 'inline-block'}}>
+                    <Link>
+                        <Button onClick={signoutUser} inverted><a>signout</a></Button>
+                    </Link>
+                  </Menu.Item>
+                </div>
               ) : (
                 <div>
                   <Menu.Item as="a" style={{display: 'inline-block'}}>

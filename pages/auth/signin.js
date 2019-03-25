@@ -49,7 +49,7 @@ class Signin extends React.Component {
           <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
             <Grid.Column style={{ maxWidth: 450 }}>
               <Header as='h2' color='blue' textAlign='center'>
-                Log-in to your account
+                LogIn to your account
               </Header>
               <Form size='large' onSubmit={this.handleSubmit}>
                 <Segment stacked>

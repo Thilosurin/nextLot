@@ -60,7 +60,7 @@ class Signup extends React.Component {
                   <Segment stacked>
                     <Form.Input 
                       fluid 
-                      name="username"
+                      name="name"
                       icon='user' 
                       iconPosition='left' 
                       placeholder='Username' 
@@ -73,6 +73,7 @@ class Signup extends React.Component {
                       iconPosition='left' 
                       placeholder='E-mail address' 
                       type='email'
+                      // error={true}
                       onChange={this.handleChange}
                     />
                     <Form.Input
@@ -91,6 +92,7 @@ class Signup extends React.Component {
                       iconPosition='left'
                       placeholder='Confirm Password'
                       type='password'
+                      // error={true}
                       onChange={this.handleChange}
                     />
                     <Button color='blue' fluid size='large' disabled={isLoading}>

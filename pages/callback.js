@@ -23,8 +23,7 @@ class Callback extends React.Component {
   }
 }
 
-// client ID : 815828311533-37stqgkpa9u28m4kvr2p5oq62sln63nt.apps.googleusercontent.com
-
-// client secret : V828CJUyKR1sVcwwcjZuAPWu
-
 export default withRouter(Callback);
+
+// client ID : 815828311533-37stqgkpa9u28m4kvr2p5oq62sln63nt.apps.googleusercontent.com
+// client secret : V828CJUyKR1sVcwwcjZuAPWu
