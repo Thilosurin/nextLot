@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { Button, Table, Form, Message, Input } from 'semantic-ui-react'
-import { Link } from '../routes'
+import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 import Period from '../ethereum/period'
 import LotteryRow from '../components/lottery/LotteryRow'
@@ -49,7 +49,7 @@ class Transection extends Component {
                 </Link>
                 <h3>Transection</h3>
                 {admin &&
-                <Link prefetch route={`/admin/${this.props.address}/get`}>
+                <Link prefetch route={`/admin/${this.props.address}/reward`}>
                     <a>
                         <Button primary floated="right" style={{ marginBottom: "10px" }}>Add Reward</Button>
                     </a>

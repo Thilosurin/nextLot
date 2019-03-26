@@ -20,7 +20,8 @@ const dev = process.env.NODE_ENV !== "production";
 const port = process.env.PORT || 3000;
 const ROOT_URL = dev ? `http://localhost:${port}` : process.env.PRODUCTION_URL;
 const app = next({ dev });
-const handle = app.getRequestHandler();
+const addRoutes = require('./routes/routes');
+const handler = addRoutes.getRequestHandler(app);
 
 const mongooseOptions = {
   useNewUrlParser: true,
@@ -56,11 +57,11 @@ app.prepare().then(() => {
 
   /* give all Next.js's requests to Next.js server */
   server.get("/_next/*", (req, res) => {
-    handle(req, res);
+    handler(req, res);
   });
 
   server.get("/static/*", (req, res) => {
-    handle(req, res);
+    handler(req, res);
   });
 
   const MongoStore = mongoSessionStore(session);
@@ -124,11 +125,11 @@ app.prepare().then(() => {
   });
 
   /* default route
-     - allows Next to handle all other routes
-     - includes the numerous `/_next/...` routes which must    be exposedfor the next app to work correctly
+     - allows Next to handler all other routes
+     - includes the numerous `/_next/...` routes which must be exposedfor the next app to work correctly
      - includes 404'ing on unknown routes */
   server.get("*", (req, res) => {
-    handle(req, res);
+    handler(req, res);
   });
 
   server.listen(port, err => {

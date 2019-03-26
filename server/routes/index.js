@@ -49,4 +49,10 @@ router.get(
   catchErrors(userController.getUserFeed)
 );
 
+
+// router.get("/:address", "/show");
+// router.get("/:address/transection", "/transection");
+// router.get("/admin/period", "/admin/period");
+// router.get("/admin/:address/reward", "/admin/reward");
+
 module.exports = router;

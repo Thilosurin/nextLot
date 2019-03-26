@@ -3,7 +3,7 @@ import Period from '../ethereum/period';
 import factory from '../ethereum/factory'
 import web3 from '../ethereum/web3';
 import { Card, Button, Segment } from 'semantic-ui-react'
-import { Link } from '../routes'
+import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 
 class PeriodInfo extends Component {
@@ -61,7 +61,7 @@ class PeriodInfo extends Component {
                     <Segment raised color={admin ? 'green' : 'blue'}>
                         <h3>Periods</h3>
                         {admin ? (
-                            <Link prefetch route="/admin/new">
+                            <Link prefetch route="/admin/period">
                                 <a>
                                     <Button 
                                         content="Create Period"

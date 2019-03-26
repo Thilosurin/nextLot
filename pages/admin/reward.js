@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { Form, Button, Message, Input } from 'semantic-ui-react'
 import Period from '../../ethereum/period'
 import web3 from '../../ethereum/web3'
-import { Link, Router } from '../../routes'
+import { Link, Router } from '../../server/routes/routes'
 import BaseLayout from '../../components/layouts/BaseLayout'
 
 import withAuth from '../../components/hoc/withAuth';

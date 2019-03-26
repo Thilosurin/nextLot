@@ -3,7 +3,7 @@ const routes = require('next-routes')();
 routes
     .add('/:address', '/show')
     .add('/:address/transection', '/transection')
-    .add('/admin/new', '/admin/new')
-    .add('/admin/:address/get', '/admin/get');
+    // .add('/admin/period', '/admin/period')
+    .add('/admin/:address/reward', '/admin/reward');
 
 module.exports = routes;

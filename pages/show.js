@@ -3,7 +3,7 @@ import Period from '../ethereum/period';
 import web3 from '../ethereum/web3';
 import { Card, Grid, Button } from 'semantic-ui-react';
 import BaseLayout from '../components/layouts/BaseLayout'
-import { Link } from '../routes';
+import { Link } from '../server/routes/routes'
 
 import Summary from '../components/lottery/Summary'
 import TicketCard from '../components/lottery/TicketCard';

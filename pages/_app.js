@@ -10,7 +10,6 @@ export default class MyApp extends App {
     let pageProps = {};
 
     const currentPath = ctx.req ? ctx.req.url : window.location.pathname;
-    console.log(currentPath);
     
     let user;
     if (currentPath !== "/auth/signin") {
