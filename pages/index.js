@@ -6,6 +6,8 @@ import { Card, Button, Segment } from 'semantic-ui-react'
 import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 
+import DeleteUser from '../components/admin/DeleteUser'
+
 class PeriodInfo extends Component {
     static async getInitialProps() {
         const periods = await factory.methods.getDeployedPeriods().call()
@@ -51,7 +53,7 @@ class PeriodInfo extends Component {
         const time = new Date().toLocaleTimeString();
         const { admin, user } = this.props.auth;
         const nameUndefined = !!user ? user : 'No User!';
-        console.log(user);
+        // console.log(user);
         
 
         return (
@@ -75,6 +77,8 @@ class PeriodInfo extends Component {
                             <h4>Hi : {nameUndefined.name}!</h4>
                         )}
                         <h5>{time}<br/>{date}</h5>
+                        
+                        <DeleteUser user={user}/>
                     </Segment>
 
                     {this.renderPeriod()}

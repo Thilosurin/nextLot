@@ -1,6 +1,6 @@
 import BaseLayout from '../../components/layouts/BaseLayout'
 import { Button, Form, Grid, Header, Message, Segment, Modal, Icon } from 'semantic-ui-react'
-import { Link } from '../../routes'
+import { Link } from '../../server/routes/routes'
 import Router from "next/router";
 import { signinUser } from "../../lib/auth";
 
@@ -28,11 +28,8 @@ class Signin extends React.Component {
 
     signinUser(user)
       .then(() => {
-        (user.email === "roninchayakorn@gmail.com") ? Router.push('/admin') : Router.push('/');
+        Router.push('/');
       }).catch(this.showError);
-      // .then(() => {
-      //   Router.push('/');
-      // }).catch(this.showError);
   };
 
   showError = err => {

@@ -51,7 +51,7 @@ class Transection extends Component {
                 {admin &&
                 <Link prefetch route={`/admin/${this.props.address}/reward`}>
                     <a>
-                        <Button primary floated="right" style={{ marginBottom: "10px" }}>Add Reward</Button>
+                        <Button primary floated="right" style={{ marginBottom: "10px", clear: 'right' }}>Add Reward</Button>
                     </a>
                 </Link>}
 
@@ -68,7 +68,7 @@ class Transection extends Component {
                     </Header>
                     <Body>{this.renderRows()}</Body>
                 </Table>
-                <div>Found {this.props.lotteriesCount} Lotteries.</div>
+                <div style={{float: 'right'}}>Found {this.props.lotteriesCount} Lotteries.</div>
             </BaseLayout>
         )
     }
