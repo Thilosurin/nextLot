@@ -70,7 +70,7 @@ class Auth0 {
 
     async verifyToken(token) {
         if (token) {
-          const decodedToken = jwt.decode(token, { complete: true});
+          const decodedToken = jwt.decode(token, { complete: true });
     
           if (!decodedToken) { return undefined; }
     
@@ -106,7 +106,6 @@ class Auth0 {
     
     async serverAuth(req) {
         if (req.headers.cookie) {
-
             const token = getCookieFromReq(req, 'jwt');
             const verifiedToken = await this.verifyToken(token);
 

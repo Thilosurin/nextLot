@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import Link from "next/link";
+import { Link } from '../server/routes/routes'
+
 import {
   Container,
   Dropdown,
@@ -24,7 +25,6 @@ const fixedMenuStyle = {
 }
 
 export default class Header extends Component {
-
   state = {
     menuFixed: false
   }
@@ -35,8 +35,7 @@ export default class Header extends Component {
 
   render() {
     const { menuFixed } = this.state
-    const { user, isAuthenticated, admin } = this.props;
-    // console.log(user);
+    const { user, isAuthenticated, admin, router } = this.props;
     
     return (
       <div>
@@ -59,49 +58,57 @@ export default class Header extends Component {
           >
             <Container>
               <Menu.Item header>
-                <Link prefetch href="/">
+                <Link prefetch route="/">
                   <a style={{ color: `${admin ? 'green' : 'blue'}` }}>NextLottery</a>
                 </Link>
               </Menu.Item> 
               
               <Menu.Menu position='right'>
-              {isAuthenticated ? (
+              {isAuthenticated && user ? (
                 <div>
-
                   <Dropdown text={user.name} pointing className='link item' style={{ color: `${admin ? 'green' : 'blue'}`, display: 'inline-block' }}>
                     <Dropdown.Menu>
                       <Dropdown.Item>
-                        <Link prefetch href="/">
-                            <a>something</a>
+                        <Link prefetch route="/profile">
+                            <a>profile</a>
                         </Link>
                       </Dropdown.Item>
                       <Dropdown.Item>
-                        <Link prefetch href="/">
+                        <Link prefetch route="/show">
                             <a>something</a>
                         </Link>
                       </Dropdown.Item>
                       <Dropdown.Divider />
-                      <Dropdown.Item onClick={auth0.logout}>logout</Dropdown.Item>
+                      {/* <Dropdown.Item onClick={auth0.logout}>logout</Dropdown.Item> */}
+                      <Dropdown.Item onClick={signoutUser}>signout</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
-                  <Menu.Item as="a" style={{display: 'inline-block'}}>
+                  {/* <Menu.Item as="a" style={{display: 'inline-block'}}>
                     <Link>
                         <Button onClick={signoutUser} inverted><a>signout</a></Button>
                     </Link>
-                  </Menu.Item>
+                  </Menu.Item> */}
                 </div>
               ) : (
                 <div>
-                  <Menu.Item as="a" style={{display: 'inline-block'}}>
+                  {/* <Menu.Item as="a" style={{display: 'inline-block'}}>
                     <Link>
                         <Button onClick={auth0.login} inverted><a>login</a></Button>
                     </Link>
-                  </Menu.Item>
-                  <Menu.Item as="a" style={{display: 'inline-block'}}>
-                    <Link prefetch href="/auth/signin">
-                        <Button inverted><a>signin</a></Button>
-                    </Link>
-                  </Menu.Item>
+                  </Menu.Item> */}
+                  {router.pathname === "/auth/signin" ? (
+                    <Menu.Item as="a" style={{display: 'inline-block'}}>
+                      <Link prefetch route="/auth/signup">
+                          <Button inverted><a>sign up</a></Button>
+                      </Link>
+                    </Menu.Item>
+                  ) : (
+                    <Menu.Item as="a" style={{display: 'inline-block'}}>
+                      <Link prefetch route="/auth/signin">
+                          <Button inverted><a>sign in</a></Button>
+                      </Link>
+                    </Menu.Item>
+                  )}
                 </div>
               )}
               </Menu.Menu>

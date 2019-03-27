@@ -41,7 +41,7 @@ class Signin extends React.Component {
     const { error, openError, isLoading } = this.state;
     
     return (
-      <BaseLayout>
+      <BaseLayout {...this.props.auth}>
         <div>
           <Grid textAlign='center' style={{ height: '100%' }} verticalAlign='middle'>
             <Grid.Column style={{ maxWidth: 450 }}>

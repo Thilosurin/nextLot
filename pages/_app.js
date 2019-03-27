@@ -8,26 +8,25 @@ export default class MyApp extends App {
 
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {};
+        
+    // const userLog = process.browser ? await auth0.clientAuth() : await auth0.serverAuth(ctx.req);
 
-    const currentPath = ctx.req ? ctx.req.url : window.location.pathname;
-    
-    let user;
-    if (currentPath !== "/auth/signin") {
-      user = process.browser ? await auth0.clientAuth() : await auth0.serverAuth(ctx.req);
-    } else {
-      const auth = ctx.req ? getSessionFromServer(ctx.req) : getSessionFromClient();
-      user = auth.user;
-    }
+    const authSign = ctx.req ? getSessionFromServer(ctx.req) : getSessionFromClient();
+    const user = authSign.user;
+
+    // const user = userLog ? userLog : userSign;
 
     const nameUndefined = !!user ? user : 'No User!';
-    const admin =  nameUndefined.name === 'Th!losurin' ? true : false;
+    const admin =  nameUndefined.email === 'roninchayakorn@gmail.com' ? true : false;
 
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
     }
 
+    const checkUser = JSON.stringify(user) == "{}" ? false : true;
+   
     const isSiteOwner = user && user[process.env.NAMESPACE + '/role'] === 'siteOwner';
-    const auth = { user, admin, isAuthenticated: !!user, isSiteOwner };
+    const auth = { user, admin, isAuthenticated: checkUser, isSiteOwner, router };
 
     return { pageProps, auth }
   }

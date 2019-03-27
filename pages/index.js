@@ -6,8 +6,6 @@ import { Card, Button, Segment } from 'semantic-ui-react'
 import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 
-import DeleteUser from '../components/admin/DeleteUser'
-
 class PeriodInfo extends Component {
     static async getInitialProps() {
         const periods = await factory.methods.getDeployedPeriods().call()
@@ -15,12 +13,12 @@ class PeriodInfo extends Component {
         const arrDefuseAlarm = periods.map(async address => {
             const period = Period(address)
             const defuseAlarm = await period.methods.defuseAlarm().call()
-            console.log(defuseAlarm);
+            // console.log(defuseAlarm);
             
             const accounts = await web3.eth.getAccounts()
             const player = accounts[0];
         })
-        console.log(arrDefuseAlarm);
+        // console.log(arrDefuseAlarm);
 
         return { periods }
     }
@@ -51,14 +49,12 @@ class PeriodInfo extends Component {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const date = new Date().toLocaleString('thai', options);
         const time = new Date().toLocaleTimeString();
-        const { admin, user } = this.props.auth;
+        const { admin, user, isAuthenticated } = this.props.auth;
         const nameUndefined = !!user ? user : 'No User!';
-        // console.log(user);
-        
 
         return (
             <BaseLayout {...this.props.auth}>
-                {user ? (
+                {isAuthenticated && user ? (
                 <div>
                     <Segment raised color={admin ? 'green' : 'blue'}>
                         <h3>Periods</h3>
@@ -77,8 +73,6 @@ class PeriodInfo extends Component {
                             <h4>Hi : {nameUndefined.name}!</h4>
                         )}
                         <h5>{time}<br/>{date}</h5>
-                        
-                        <DeleteUser user={user}/>
                     </Segment>
 
                     {this.renderPeriod()}

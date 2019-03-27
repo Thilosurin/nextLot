@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { Container } from 'semantic-ui-react'
 
 const BaseLayout = (props) => {
-  const { children, isAuthenticated, user, admin, isSiteOwner } = props;
+  const { children, isAuthenticated, user, admin, isSiteOwner, router } = props;
   const title = props.title || 'NextLottery';
 
   return (
@@ -24,6 +24,7 @@ const BaseLayout = (props) => {
           isAuthenticated={isAuthenticated}
           user={user}
           admin={admin}
+          router={router}
           isSiteOwner={isSiteOwner}/>
         <main>
           <div>

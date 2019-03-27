@@ -132,7 +132,7 @@ app.prepare().then(() => {
     handler(req, res);
   });
 
-  server.listen(port, err => {
+  server.use(handler).listen(port, err => {
     if (err) throw err;
     console.log(`Server listening on ${ROOT_URL}`);
   });
