@@ -2,6 +2,7 @@ import { Button, Header, Modal, Icon } from 'semantic-ui-react'
 
 import { signoutUser } from "../../lib/auth";
 import { deleteUser } from "../../lib/api";
+import Router from "next/router";
 
 class DeleteUser extends React.Component {
   state = {
@@ -10,17 +11,27 @@ class DeleteUser extends React.Component {
   };
 
   handleDeleteUser = () => {
-    const { user } = this.props;
+    const { user, player } = this.props;
 
     this.setState({ isDeleting: true });
 
-    deleteUser(user._id)
-      .then(() => {
-        signoutUser();
-      }).catch(err => {
-        console.error(err);
-        this.setState({ isDeleting: false });
-      });
+    if (!!player) {
+      deleteUser(player._id)
+        .then(() => {
+          Router.replace('/');
+        }).catch(err => {
+          console.error(err);
+          this.setState({ isDeleting: false });
+        });
+    } else {
+      deleteUser(user._id)
+        .then(() => {
+          signoutUser();
+        }).catch(err => {
+          console.error(err);
+          this.setState({ isDeleting: false });
+        });
+    }
   };
 
   handleOpen = () => this.setState({ open: true });

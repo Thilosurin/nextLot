@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-// const { ObjectId } = mongoose.Schema;
+const { ObjectId } = mongoose.Schema;
 const mongodbErrorHandler = require("mongoose-mongodb-errors");
 const passportLocalMongoose = require("passport-local-mongoose");
 
@@ -25,16 +25,10 @@ const userSchema = new mongoose.Schema(
       required: "Avatar image is required",
       default: "/static/images/profile-image.jpg"
     },
-    account: {
-      type: String,
-      trim: true,
-      unique: true,
-      minlength: 16,
-      maxlength: 64,
-    },
-    // account: [{ type: ObjectId, ref: "User" }],
+    account: [{ type: ObjectId, ref: "Account" }],
     status: {
       type: Number,
+      default: 0,
       required: true
     }
     /* we wrap 'following' and 'followers' in array so that when they are populated as objects, they are put in an array (to more easily iterate over them) */

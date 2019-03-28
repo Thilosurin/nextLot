@@ -4,15 +4,13 @@ import { Link } from '../../server/routes/routes'
 import BaseLayout from '../../components/layouts/BaseLayout'
 import Period from '../../ethereum/period'
 
-import PlayersRow from '../../components/admin/PlayersRow'
-
+import PlayerRow from '../../components/admin/PlayerRow'
+import { getUserFeed } from "../../lib/api";
 import withAuth from '../../components/hoc/withAuth';
 
 class ManagePlayers extends Component {
     state = {
-        reward: '',
-        loading: false,
-        errorMessage: '',
+        players: [],
     }
 
     static async getInitialProps(props) {
@@ -20,19 +18,16 @@ class ManagePlayers extends Component {
         return {  }
     }
 
-    // renderRows() {
-    //     return this.props.players.map((player, index) => {
-    //         return <PlayersRow 
-    //             key={index}
-    //             user={user}
-    //             player={player}
-    //         />
-    //     })
-    // }
+    componentDidMount() {
+        const { auth } = this.props;
+    
+        getUserFeed(auth.user._id).then(players => this.setState({ players }));
+    }
     
     render() {
         const { Header, Row, HeaderCell, Body } = Table
-        const { admin, user } = this.props.auth;
+        const { players } = this.state;
+        const { admin } = this.props.auth;
 
         return (
             <BaseLayout {...this.props.auth}>
@@ -42,20 +37,22 @@ class ManagePlayers extends Component {
                     <a>Back</a>
                 </Link>
                 <h3>Manage Players</h3>
-                <div style={{float: 'right'}}>Found {} Players.</div>
+                <div style={{float: 'right'}}>Found {players.length} Players.</div>
                 <Table>
                     <Header>
                         <Row>
                             <HeaderCell>No.</HeaderCell>
                             <HeaderCell>Username</HeaderCell>
                             <HeaderCell>Account</HeaderCell>
-                            <HeaderCell>Status</HeaderCell>
+                            <HeaderCell>Change Status</HeaderCell>
                             <HeaderCell>Delete User</HeaderCell>
                         </Row>
                     </Header>
+
+                    {players.map((player, index) => (
+                        <PlayerRow key={player._id} index={index} player={player} />
+                    ))}
                     
-                    <PlayersRow key={1} user={user} />
-                    {/* <Body>{this.renderRows()}</Body> */}
                 </Table>
             </div>
             }

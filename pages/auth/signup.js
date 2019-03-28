@@ -9,6 +9,7 @@ class Signup extends React.Component {
     name: '',
     email: '',
     password: '',
+    confirmPassword: '',
     error: "",
     createdUser: "",
     openError: false,
@@ -46,7 +47,9 @@ class Signup extends React.Component {
   };
   
   render() {
-    const { error, openError, openSuccess, createdUser, isLoading } = this.state;
+    const { error, openError, openSuccess, createdUser, isLoading, password, confirmPassword } = this.state;
+    const validatePassword = password !== confirmPassword;
+    const disabledSubmit = password === confirmPassword && password !== '' && confirmPassword !== '' ? false : true;
     
     return (
         <BaseLayout {...this.props.auth}>
@@ -92,10 +95,10 @@ class Signup extends React.Component {
                       iconPosition='left'
                       placeholder='Confirm Password'
                       type='password'
-                      // error={true}
+                      error={validatePassword}
                       onChange={this.handleChange}
                     />
-                    <Button color='blue' fluid size='large' disabled={isLoading}>
+                    <Button color='blue' fluid size='large' disabled={disabledSubmit}>
                       {isLoading ? "Signing up..." : "Sign up"}
                     </Button>
                   </Segment>

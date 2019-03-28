@@ -70,25 +70,25 @@ export default class Header extends Component {
                     <Dropdown.Menu>
                       <Dropdown.Item>
                         <Link prefetch route="/profile">
-                            <a>profile</a>
+                            <a>Profile</a>
                         </Link>
                       </Dropdown.Item>
                       {isAuthenticated && admin ? (
                         <Dropdown.Item>
                           <Link prefetch route="/admin/user">
-                              <a>manage user</a>
+                              <a>Users</a>
                           </Link>
                         </Dropdown.Item>
                       ) : (
                         <Dropdown.Item>
                           <Link prefetch route="/show">
-                              <a>something</a>
+                              <a>Something</a>
                           </Link>
                         </Dropdown.Item>
                       )}
                       <Dropdown.Divider />
                       {/* <Dropdown.Item onClick={auth0.logout}>logout</Dropdown.Item> */}
-                      <Dropdown.Item onClick={signoutUser}>signout</Dropdown.Item>
+                      <Dropdown.Item onClick={signoutUser}>SIGN OUT</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
                   {/* <Menu.Item as="a" style={{display: 'inline-block'}}>

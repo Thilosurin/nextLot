@@ -41,11 +41,8 @@ exports.getUserProfile = (req, res) => {
 };
 
 exports.getUserFeed = async (req, res) => {
-    const { following, _id } = req.profile;
-
-    following.push(_id);
-    const users = await User.find({ _id: { $nin: following } })
-                .select('_id name avatar')
+    const users = await User.find()
+                .select('_id name account status')
     res.json(users);
 };
 
@@ -91,11 +88,11 @@ exports.updateUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     const { userId } = req.params;
 
-    if (!req.isAuthUser) {
-        return res.status(400).json({
-            message: "You are not authorized to perform this action"
-        })
-    }
+    // if (!req.isAuthUser) {
+    //     return res.status(400).json({
+    //         message: "You are not authorized to perform this action"
+    //     })
+    // }
     const deletedUser = await User.findOneAndDelete({ _id: userId });
     res.json(deletedUser);
 };

@@ -17,8 +17,8 @@ export default class MyApp extends App {
     // const user = userLog ? userLog : userSign;
 
     const nameUndefined = !!user ? user : 'No User!';
-    const admin =  nameUndefined.email === 'roninchayakorn@gmail.com' ? true : false;
-    // const admin =  nameUndefined.status === 1 ? true : false;
+    // const admin =  nameUndefined.email === 'roninchayakorn@gmail.com' ? true : false;
+    const admin =  nameUndefined.status === 1 ? true : false;
 
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
