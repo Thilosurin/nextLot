@@ -34,7 +34,8 @@ router
     authController.checkAuth,
     userController.uploadAvatar,
     catchErrors(userController.resizeAvatar),
-    catchErrors(userController.updateUser)
+    catchErrors(userController.updateUser),
+    catchErrors(userController.updateStatusUser)
   )
   .delete(authController.checkAuth, catchErrors(userController.deleteUser));
 

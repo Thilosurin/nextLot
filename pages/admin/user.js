@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { Button, Table, Form, Message, Input } from 'semantic-ui-react'
+import { Table } from 'semantic-ui-react'
 import { Link } from '../../server/routes/routes'
 import BaseLayout from '../../components/layouts/BaseLayout'
 import Period from '../../ethereum/period'
@@ -10,22 +10,15 @@ import withAuth from '../../components/hoc/withAuth';
 
 class ManagePlayers extends Component {
     state = {
-        players: [],
-    }
-
-    static async getInitialProps(props) {
-
-        return {  }
+        players: []
     }
 
     componentDidMount() {
-        const { auth } = this.props;
-    
-        getUserFeed(auth.user._id).then(players => this.setState({ players }));
+        getUserFeed(this.props.auth.user._id).then(players => this.setState({ players }));
     }
     
     render() {
-        const { Header, Row, HeaderCell, Body } = Table
+        const { Header, Row, HeaderCell } = Table
         const { players } = this.state;
         const { admin } = this.props.auth;
 

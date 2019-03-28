@@ -18,7 +18,7 @@ class DeleteUser extends React.Component {
     if (!!player) {
       deleteUser(player._id)
         .then(() => {
-          Router.replace('/');
+          Router.replace('/admin/user');
         }).catch(err => {
           console.error(err);
           this.setState({ isDeleting: false });

@@ -107,13 +107,13 @@ export default class Header extends Component {
                   {router.pathname === "/auth/signin" ? (
                     <Menu.Item as="a" style={{display: 'inline-block'}}>
                       <Link prefetch route="/auth/signup">
-                          <Button inverted><a>sign up</a></Button>
+                          <Button inverted style={{color: 'blue'}}>sign up</Button>
                       </Link>
                     </Menu.Item>
                   ) : (
                     <Menu.Item as="a" style={{display: 'inline-block'}}>
                       <Link prefetch route="/auth/signin">
-                          <Button inverted><a>sign in</a></Button>
+                          <Button inverted style={{color: 'blue'}}>sign in</Button>
                       </Link>
                     </Menu.Item>
                   )}

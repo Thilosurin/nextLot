@@ -85,6 +85,25 @@ exports.updateUser = async (req, res) => {
     res.json(updatedUser);
 };
 
+exports.updateStatusUser = async (req, res) => {
+    req.body.updateAt = new Date().toISOString();
+    // const { userId, userStatus } = req.params;
+
+    const updateStatusUser = await User.findOneAndUpdate(
+        { _id: req.user._id },
+        { $set: { status: req.user.status } },
+
+        function(err){
+            if(err){
+               return res.send(err);
+            }
+            console.log({message:"status updated"});
+       }
+
+    );
+    res.json(updateStatusUser);
+};
+
 exports.deleteUser = async (req, res) => {
     const { userId } = req.params;
 

@@ -27,9 +27,8 @@ const userSchema = new mongoose.Schema(
     },
     account: [{ type: ObjectId, ref: "Account" }],
     status: {
-      type: Number,
-      default: 0,
-      required: true
+      type: Boolean,
+      default: false
     }
     /* we wrap 'following' and 'followers' in array so that when they are populated as objects, they are put in an array (to more easily iterate over them) */
 
