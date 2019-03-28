@@ -32,10 +32,7 @@ class ShowPeriod extends Component {
     )
 
     const playerLot = lotteries.filter(el => el.players === player)
-    // console.log(lotteries[0].players);
-    // console.log(lotteries[0].players === player); // true
-    
-    
+
     return { 
         playerLot,
         summary,

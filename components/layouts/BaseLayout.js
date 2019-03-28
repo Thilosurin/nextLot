@@ -18,6 +18,7 @@ const BaseLayout = (props) => {
         <meta property="og:type" content="website"/>
         <meta property="og:description" content="This is my ethereum lottery thesis project"/>
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.1/dist/semantic.min.css"/>
+        <link rel="shortcut icon" href="#" />
       </Head>
       <div>
         <Header

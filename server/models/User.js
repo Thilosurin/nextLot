@@ -25,10 +25,18 @@ const userSchema = new mongoose.Schema(
       required: "Avatar image is required",
       default: "/static/images/profile-image.jpg"
     },
-    about: {
+    account: {
       type: String,
-      trim: true
+      trim: true,
+      unique: true,
+      minlength: 16,
+      maxlength: 64,
     },
+    // account: [{ type: ObjectId, ref: "User" }],
+    status: {
+      type: Number,
+      required: true
+    }
     /* we wrap 'following' and 'followers' in array so that when they are populated as objects, they are put in an array (to more easily iterate over them) */
 
     // following: [{ type: ObjectId, ref: "User" }],

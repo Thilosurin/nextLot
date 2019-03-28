@@ -3,6 +3,7 @@ import { Button, Table, Form, Message, Input } from 'semantic-ui-react'
 import { Link } from '../../server/routes/routes'
 import BaseLayout from '../../components/layouts/BaseLayout'
 import Period from '../../ethereum/period'
+
 import PlayersRow from '../../components/admin/PlayersRow'
 
 import withAuth from '../../components/hoc/withAuth';
@@ -20,17 +21,18 @@ class ManagePlayers extends Component {
     }
 
     // renderRows() {
-    //     return this.props.lotteries.map((lottery, index) => {
+    //     return this.props.players.map((player, index) => {
     //         return <PlayersRow 
     //             key={index}
-    //             lottery={lottery}
+    //             user={user}
+    //             player={player}
     //         />
     //     })
     // }
     
     render() {
         const { Header, Row, HeaderCell, Body } = Table
-        const { admin } = this.props.auth;
+        const { admin, user } = this.props.auth;
 
         return (
             <BaseLayout {...this.props.auth}>
@@ -47,10 +49,13 @@ class ManagePlayers extends Component {
                             <HeaderCell>No.</HeaderCell>
                             <HeaderCell>Username</HeaderCell>
                             <HeaderCell>Account</HeaderCell>
-                            <HeaderCell>Delete</HeaderCell>
+                            <HeaderCell>Status</HeaderCell>
+                            <HeaderCell>Delete User</HeaderCell>
                         </Row>
                     </Header>
-                    {/* <Body>{this.renderRows()}</Body>                     */}
+                    
+                    <PlayersRow key={1} user={user} />
+                    {/* <Body>{this.renderRows()}</Body> */}
                 </Table>
             </div>
             }

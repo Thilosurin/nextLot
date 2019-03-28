@@ -6,7 +6,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 import BaseLayout from '../components/layouts/BaseLayout'
 import { Container } from 'semantic-ui-react'
-// import Styles from '../css/index.scss'
 import { withRouter } from 'next/router'
 
 class ErrorPage extends React.Component {
@@ -23,13 +22,13 @@ class ErrorPage extends React.Component {
     return {errorCode}
   }
 
-  render() {
+  render() {    
     var response
     switch (this.props.errorCode) {
       case 200: // Also display a 404 if someone requests /_error explicitly
       case 404:
         response = (
-          <BaseLayout>
+          <BaseLayout {...this.props.auth}>
             <Head>
               {/* <style dangerouslySetInnerHTML={{__html: Styles}}/> */}
             </Head>
@@ -43,7 +42,7 @@ class ErrorPage extends React.Component {
         break
       case 500:
         response = (
-          <BaseLayout>
+          <BaseLayout {...this.props.auth}>
             <div>
               <Head>
                 {/* <style dangerouslySetInnerHTML={{__html: Styles}}/> */}
@@ -58,7 +57,7 @@ class ErrorPage extends React.Component {
         break
       default:
         response = (
-          <BaseLayout>
+          <BaseLayout {...this.props.auth}>
             <div>
               <Head>
                 {/* <style dangerouslySetInnerHTML={{__html: Styles}}/> */}

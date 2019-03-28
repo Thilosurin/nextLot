@@ -10,14 +10,14 @@ class PeriodInfo extends Component {
     static async getInitialProps() {
         const periods = await factory.methods.getDeployedPeriods().call()
 
-        const arrDefuseAlarm = periods.map(async address => {
-            const period = Period(address)
-            const defuseAlarm = await period.methods.defuseAlarm().call()
-            // console.log(defuseAlarm);
+        // const arrDefuseAlarm = periods.map(async address => {
+        //     const period = Period(address)
+        //     const defuseAlarm = await period.methods.defuseAlarm().call()
+        //     console.log(defuseAlarm);
             
-            const accounts = await web3.eth.getAccounts()
-            const player = accounts[0];
-        })
+        //     // const accounts = await web3.eth.getAccounts()
+        //     // const player = accounts[0];
+        // }).reverse();
         // console.log(arrDefuseAlarm);
 
         return { periods }
@@ -26,9 +26,11 @@ class PeriodInfo extends Component {
     renderPeriod() {
         let j = 1;
         const items = this.props.periods.map(address => {
+            const period = Period(address)
+            const defuseAlarm = period.methods.defuseAlarm().call()
+            // console.log(defuseAlarm);
 
             return {
-                link: 'http://localhost:3000/${address}',
                 header: `period : ${j++}`,
                 meta: `period address => ${address}`,
                 description: (
@@ -39,6 +41,7 @@ class PeriodInfo extends Component {
                     </Button>
                 ),
                 fluid: true,
+                href: "#"
                 // color: `${defuseAlarm === true ? '' : 'green'}`
             }
         }).reverse();
