@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const accountSchema = new mongoose.Schema({
-    accID: Number,
-    accAddress: String
+    accAddress: String,
+    accEther: Number
 })
 
 module.exports = mongoose.model("Account", accountSchema);

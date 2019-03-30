@@ -10,11 +10,13 @@ import withAuth from '../../components/hoc/withAuth';
 
 class ManagePlayers extends Component {
     state = {
-        players: []
+        players: [],
+
     }
 
     componentDidMount() {
-        getUserFeed(this.props.auth.user._id).then(players => this.setState({ players }));
+        getUserFeed(this.props.auth.user._id)
+            .then(players => this.setState({ players }));
     }
     
     render() {
@@ -31,7 +33,7 @@ class ManagePlayers extends Component {
                 </Link>
                 <h3>Manage Players</h3>
                 <div style={{float: 'right'}}>Found {players.length} Players.</div>
-                <Table>
+                <Table celled selectable>
                     <Header>
                         <Row>
                             <HeaderCell>No.</HeaderCell>

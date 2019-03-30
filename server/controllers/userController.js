@@ -87,21 +87,14 @@ exports.updateUser = async (req, res) => {
 
 exports.updateStatusUser = async (req, res) => {
     req.body.updateAt = new Date().toISOString();
-    // const { userId, userStatus } = req.params;
+    const { userId, userStatus } = req.params;
 
-    const updateStatusUser = await User.findOneAndUpdate(
-        { _id: req.user._id },
-        { $set: { status: req.user.status } },
-
-        function(err){
-            if(err){
-               return res.send(err);
-            }
-            console.log({message:"status updated"});
-       }
-
+    const updateStatusPlayer = await User.findOneAndUpdate(
+        { _id: userId },
+        { $set: { status: userStatus } }       
     );
-    res.json(updateStatusUser);
+    // res.json(updateStatusPlayer);
+    res.json({message: 'updateStatusPlayer', updateStatusPlayer});
 };
 
 exports.deleteUser = async (req, res) => {

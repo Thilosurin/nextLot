@@ -41,7 +41,6 @@ class PeriodInfo extends Component {
                     </Button>
                 ),
                 fluid: true,
-                href: "#"
                 // color: `${defuseAlarm === true ? '' : 'green'}`
             }
         }).reverse();

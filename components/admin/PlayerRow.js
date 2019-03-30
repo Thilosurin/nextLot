@@ -10,14 +10,10 @@ class PlayerRow extends Component {
   handleStatusChange = () => {
     event.preventDefault();
     const { player } = this.props
-    // console.log(player);
-    // console.log(player._id);
-    // console.log(player.status);
-    // console.log(!player.status);
 
     updateStatusUser(player._id, !player.status)
       // .then(() => setTimeout(() => Router.replace(`/admin/user`), 1000))
-      .then((i) => console.log(i))
+      // .then((player) => console.log(player))
       .catch(this.showError)
   };
 

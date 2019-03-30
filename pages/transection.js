@@ -24,7 +24,6 @@ class Transection extends Component {
                 return period.methods.lotteries(index).call()
             })
         )
-        // console.log(lotteries);
 
         return { address, lotteries, lotteriesCount, period }
     }
@@ -61,6 +60,7 @@ class Transection extends Component {
                             <HeaderCell>No.</HeaderCell>
                             <HeaderCell>LotteryNumber</HeaderCell>
                             <HeaderCell>Player</HeaderCell>
+                            <HeaderCell>Name</HeaderCell>
                             <HeaderCell>Date</HeaderCell>
                             <HeaderCell>Reward</HeaderCell>
                             <HeaderCell>Prize (ETH)</HeaderCell>

@@ -16,8 +16,8 @@ class LotteryRow extends Component {
         <Cell>{lottery.id}</Cell>
         <Cell>{lottery.numberLottery}</Cell>
         <Cell>{lottery.players}</Cell>
+        <Cell>{lottery.numberLottery}</Cell>
         <Cell>{new Date(lottery.timeBuy*1000).toLocaleString()}</Cell>
-        {/* <Cell>{'20/04/2540'}</Cell> */}
         <Cell>{lottery.reward.toString()}</Cell>
         <Cell>{web3.utils.fromWei(lottery.prize, 'ether')}</Cell>
       </Row>
