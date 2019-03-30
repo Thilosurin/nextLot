@@ -4,7 +4,7 @@ const multer = require('multer');
 const jimp = require('jimp');
 
 exports.getUsers = async (req, res) => {
-    const users = await User.find().select('_id name email createdAt updatedAt');
+    const users = await User.find().select('_id name email status account createdAt updatedAt');
     res.json(users);
 };
 
@@ -13,7 +13,7 @@ exports.getAuthUser = (req, res) => {
         res.status(403).json({
             message: "you are unauthenticated. Please sign in or sign up"
         })
-        return res.redirect('/signin')
+        return res.redirect('/auth/signin')
     }
     res.json(req.user)
 };
@@ -87,24 +87,20 @@ exports.updateUser = async (req, res) => {
 
 exports.updateStatusUser = async (req, res) => {
     req.body.updateAt = new Date().toISOString();
-    const { userId, userStatus } = req.params;
+    const user = req.params;
+    const userData = req.body.status;
 
     const updateStatusPlayer = await User.findOneAndUpdate(
-        { _id: userId },
-        { $set: { status: userStatus } }       
+        { _id: user.userId },
+        { $set: { status: !userData } }
     );
-    // res.json(updateStatusPlayer);
-    res.json({message: 'updateStatusPlayer', updateStatusPlayer});
+    // res.json({message: 'Update Status Player!', updateStatusPlayer});
+    res.json(updateStatusPlayer);
 };
 
 exports.deleteUser = async (req, res) => {
     const { userId } = req.params;
 
-    // if (!req.isAuthUser) {
-    //     return res.status(400).json({
-    //         message: "You are not authorized to perform this action"
-    //     })
-    // }
     const deletedUser = await User.findOneAndDelete({ _id: userId });
     res.json(deletedUser);
 };

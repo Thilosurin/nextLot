@@ -69,7 +69,7 @@ export default class Header extends Component {
                   <Dropdown text={user.name} pointing className='link item' style={{ color: `${admin ? 'green' : 'blue'}`, display: 'inline-block' }}>
                     <Dropdown.Menu>
                       <Dropdown.Item>
-                        <Link prefetch route="/profile">
+                        <Link prefetch route={`/profile/${user._id}`}>
                             <a>Profile</a>
                         </Link>
                       </Dropdown.Item>
@@ -81,8 +81,8 @@ export default class Header extends Component {
                         </Dropdown.Item>
                       ) : (
                         <Dropdown.Item>
-                          <Link prefetch route="/show">
-                              <a>Something</a>
+                          <Link prefetch route="/how">
+                              <a>How to</a>
                           </Link>
                         </Dropdown.Item>
                       )}

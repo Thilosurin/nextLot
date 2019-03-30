@@ -35,8 +35,9 @@ router
     userController.uploadAvatar,
     catchErrors(userController.resizeAvatar),
     catchErrors(userController.updateUser),
-    catchErrors(userController.updateStatusUser)
+    // catchErrors(userController.updateStatusUser)
   )
+  .patch(authController.checkAuth, catchErrors(userController.updateStatusUser))
   .delete(authController.checkAuth, catchErrors(userController.deleteUser));
 
 router.get("/api/users", userController.getUsers);

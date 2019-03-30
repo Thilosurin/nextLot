@@ -4,6 +4,7 @@ import web3 from '../../ethereum/web3';
 
 import DeleteUser from './DeleteUser'
 import { updateStatusUser } from "../../lib/api";
+import { Link } from '../../server/routes/routes'
 import Router from "next/router";
 
 class PlayerRow extends Component {
@@ -11,9 +12,8 @@ class PlayerRow extends Component {
     event.preventDefault();
     const { player } = this.props
 
-    updateStatusUser(player._id, !player.status)
-      // .then(() => setTimeout(() => Router.replace(`/admin/user`), 1000))
-      // .then((player) => console.log(player))
+    updateStatusUser(player)
+      .then(() => Router.replace('/success'))
       .catch(this.showError)
   };
 
@@ -28,7 +28,13 @@ class PlayerRow extends Component {
           positive={player.status}
         >
           <Cell>{index+1}</Cell>
-          <Cell>{player.name}</Cell>
+          <Cell>
+            <Link prefetch route={`/profile/${player._id}`}>
+            <a>
+              {player.name}
+            </a>
+            </Link>
+          </Cell>
           <Cell>{player.account}</Cell>
           <Cell>
             <Button color={player.status ? 'green' : 'grey'} basic onClick={this.handleStatusChange}>
