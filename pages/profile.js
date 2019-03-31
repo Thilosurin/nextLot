@@ -5,7 +5,7 @@ import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 import DeleteUser from '../components/admin/DeleteUser'
 import format from "date-fns/format"
-import ProfileRow from '../components/sidebar/ProfileRow'
+import ProfileRow from '../components/tabbar/ProfileRow'
 import { getUser } from '../lib/api'
 import withAuth from '../components/hoc/withAuth'
 
@@ -80,14 +80,22 @@ class Profile extends Component {
                                 </h3>
                             </Segment>
                         )}
-                            <Card>
+                            <Card style={{wordWrap: 'break-word'}}>
                                 <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' />
                                 <Card.Content>
                                 <Card.Header>{userState.name}</Card.Header>
                                 <Card.Meta>
                                     <span className='date'>Joined in {this.formatDate(userState.createdAt)}</span>
                                 </Card.Meta>
-                                <Card.Description>{userState.account}</Card.Description>
+                                <Card.Description>
+                                    Account : <strong style={{color: 'green'}}>{userState.account.length === 0 
+                                        ? 'No Account' 
+                                        : userState.account.map((user, i) => 
+                                            user[i] = userState.account[i]["accAddress"] + '\n')
+                                    }</strong>
+
+                                    {/* {JSON.stringify(userState.account[0]["accAddress"]} */}
+                                </Card.Description>
                                 </Card.Content>
                                 <Card.Content extra>
                                 <a>

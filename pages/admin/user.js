@@ -2,7 +2,6 @@ import { Component } from 'react'
 import { Table } from 'semantic-ui-react'
 import { Link } from '../../server/routes/routes'
 import BaseLayout from '../../components/layouts/BaseLayout'
-import Period from '../../ethereum/period'
 
 import PlayerRow from '../../components/admin/PlayerRow'
 import { getUserFeed } from "../../lib/api";
@@ -10,8 +9,7 @@ import withAuth from '../../components/hoc/withAuth';
 
 class ManagePlayers extends Component {
     state = {
-        players: [],
-
+        players: []
     }
 
     componentDidMount() {

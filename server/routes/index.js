@@ -27,6 +27,11 @@ router.get("/api/auth/signout", authController.signout);
  */
 router.param("userId", userController.getUserById);
 
+// router.patch("/api/account/:userId",
+//   authController.checkAuth,
+//   catchErrors(userController.insertAccountUser)
+// )
+
 router
   .route("/api/users/:userId")
   .get(userController.getAuthUser)
@@ -35,9 +40,13 @@ router
     userController.uploadAvatar,
     catchErrors(userController.resizeAvatar),
     catchErrors(userController.updateUser),
-    // catchErrors(userController.updateStatusUser)
+    // catchErrors(userController.insertAccountUser)
   )
-  .patch(authController.checkAuth, catchErrors(userController.updateStatusUser))
+  .patch(
+    authController.checkAuth,
+    catchErrors(userController.insertAccountUser),
+    catchErrors(userController.updateStatusUser)
+  )
   .delete(authController.checkAuth, catchErrors(userController.deleteUser));
 
 router.get("/api/users", userController.getUsers);
@@ -50,7 +59,6 @@ router.get(
   authController.checkAuth,
   catchErrors(userController.getUserFeed)
 );
-
 
 // router.get("/:address", "/show");
 // router.get("/:address/transection", "/transection");

@@ -86,7 +86,6 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.updateStatusUser = async (req, res) => {
-    req.body.updateAt = new Date().toISOString();
     const user = req.params;
     const userData = req.body.status;
 
@@ -94,8 +93,8 @@ exports.updateStatusUser = async (req, res) => {
         { _id: user.userId },
         { $set: { status: !userData } }
     );
-    // res.json({message: 'Update Status Player!', updateStatusPlayer});
-    res.json(updateStatusPlayer);
+    res.json({message: 'Update Status Player!', updateStatusPlayer});
+    // res.json(updateStatusPlayer);
 };
 
 exports.deleteUser = async (req, res) => {
@@ -103,4 +102,16 @@ exports.deleteUser = async (req, res) => {
 
     const deletedUser = await User.findOneAndDelete({ _id: userId });
     res.json(deletedUser);
+};
+
+
+exports.insertAccountUser = async (req, res) => {
+    const userData = req.body.account;
+
+    const insertAccountedUser = await User.findOneAndUpdate(
+        { _id: req.user._id },
+        { $push: { account: { accAddress: userData } } },
+        { new: true }
+    );
+    res.json(insertAccountedUser);
 };

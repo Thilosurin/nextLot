@@ -14,8 +14,8 @@ const ticketSchema = new mongoose.Schema(
     tkPrize: {
         type: Number
     },
-    tkPeriod: { type: ObjectId, ref: "Period" },
-    tkPlayerBuy: { type: ObjectId, ref: "User" },
+    tkPeriod: [{ type: ObjectId, ref: "Period" }],
+    tkPlayerBuy: [{ type: ObjectId, ref: "User" }],
     tkCreatedAt: {
       type: Date,
       default: Date.now

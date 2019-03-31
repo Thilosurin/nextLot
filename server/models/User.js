@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
       required: "Avatar image is required",
       default: "/static/images/profile-image.jpg"
     },
-    account: [{ type: ObjectId, ref: "Account" }],
+    account: [{ accAddress: String }, { autoIndex: false }],
     status: {
       type: Boolean,
       default: false
@@ -38,12 +38,6 @@ const userSchema = new mongoose.Schema(
   /* gives us "createdAt" and "updatedAt" fields automatically */
   { timestamps: true }
 );
-
-// const autoPopulateFollowingAndFollowers = function(next) {
-//   this.populate("following", "_id name avatar");
-//   this.populate("followers", "_id name avatar");
-//   next();
-// };
 
 // userSchema.pre("findOne", autoPopulateFollowingAndFollowers);
 

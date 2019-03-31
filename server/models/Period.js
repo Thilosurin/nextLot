@@ -9,7 +9,7 @@ const periodSchema = new mongoose.Schema({
     prOpening: Boolean,
     prCreatedAt: Date,
     prAddressCreator: String,
-    prReward: { type: ObjectId, ref: "Reward" }
+    prReward: [{ type: ObjectId, ref: "Reward" }]
 })
 
 module.exports = mongoose.model("Period", periodSchema);

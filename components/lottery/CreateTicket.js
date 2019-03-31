@@ -4,6 +4,8 @@ import Period from '../../ethereum/period'
 import web3 from '../../ethereum/web3'
 import { Router } from '../../server/routes/routes'
 
+import { insertAccountUser, updateUser } from '../../lib/api'
+
 class CreateTicket extends Component {
     state = {
         value: '',
@@ -13,23 +15,43 @@ class CreateTicket extends Component {
 
     onSubmit = async (event) => {
         event.preventDefault()
+        const { address, user } = this.props;
 
-        const period = Period(this.props.address)
+        const period = Period(address)
 
-        this.setState({ loading: true, errorMessage: '' })
+        // this.setState({ loading: true, errorMessage: '' })
 
-        try {
-            const getPeriodInfo = await period.methods.getPeriodInfo().call()
+        // try {
+            // const getPeriodInfo = await period.methods.getPeriodInfo().call()
             const accounts = await web3.eth.getAccounts()
-            await period.methods.createLottery(this.state.value).send({
-                from: accounts[0],
-                value: getPeriodInfo[1]
-            })
+            // await period.methods.createLottery(this.state.value).send({
+            //     from: accounts[0],
+            //     value: getPeriodInfo[1]
+            // })
+            
+            Router.replaceRoute(`/${address}`)
 
-            Router.replaceRoute(`/${this.props.address}`)
-        } catch (err) {
-            this.setState({ errorMessage: err.message })
-        }
+            //// Insert Account : ether to mongo ////
+            const validAcc = user.account.length > 0 
+                ? user.account.find((acc, i) => acc === undefined ? undefined : Object.values(acc[i]))
+                : undefined
+                
+            console.log(validAcc);
+            // console.log(user.account.length!==0 ? Object.values(user.account[0]) : user.account);
+
+            if (validAcc === undefined) {
+                user.account.push(accounts[0]);
+
+                insertAccountUser(user).catch(this.showError)
+            } else {
+                console.log('It\'s duplicate');
+            }
+            console.log(user);
+            
+
+        // } catch (err) {
+        //     this.setState({ errorMessage: err.message })
+        // }
 
         this.setState({ loading: false, value: '' })
     }

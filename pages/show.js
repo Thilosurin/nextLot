@@ -1,15 +1,15 @@
-import { Component } from "react";
-import Period from '../ethereum/period';
-import web3 from '../ethereum/web3';
-import { Card, Grid, Button } from 'semantic-ui-react';
+import { Component } from "react"
+import Period from '../ethereum/period'
+import web3 from '../ethereum/web3'
+import { Card, Grid, Button } from 'semantic-ui-react'
 import BaseLayout from '../components/layouts/BaseLayout'
 import { Link } from '../server/routes/routes'
 
-import Summary from '../components/lottery/Summary'
-import TicketCard from '../components/lottery/TicketCard';
-import CreateTicket from '../components/lottery/CreateTicket';
+import Summary from '../components/admin/Summary'
+import TicketCard from '../components/lottery/TicketCard'
+import CreateTicket from '../components/lottery/CreateTicket'
 
-import withAuth from '../components/hoc/withAuth';
+import withAuth from '../components/hoc/withAuth'
 
 class ShowPeriod extends Component {
 
@@ -23,7 +23,7 @@ class ShowPeriod extends Component {
     const defuseAlarm = await period.methods.defuseAlarm().call()
 
     const accounts = await web3.eth.getAccounts()
-    const player = accounts[0];
+    const account = accounts[0];
     
     const lotteries = await Promise.all(
         Array(parseInt(lotteriesCount))
@@ -31,9 +31,9 @@ class ShowPeriod extends Component {
             .map((element, index) => { return period.methods.lotteries(index).call() })
     )
 
-    const playerLot = lotteries.filter(el => el.players === player)
+    const playerLot = lotteries.filter(el => el.players === account)
 
-    return { 
+    return {
         playerLot,
         summary,
         defuseAlarm,
@@ -95,7 +95,8 @@ class ShowPeriod extends Component {
   }
 
   render() {
-    const { admin } = this.props.auth;
+    const { admin, user } = this.props.auth;
+    const { address, summary, defuseAlarm, playerLot } = this.props;
 
     return (
       <BaseLayout {...this.props.auth}>
@@ -108,7 +109,7 @@ class ShowPeriod extends Component {
                   <Grid.Column width={10}>
                       {this.renderCards()}
 
-                    <Link prefetch route={`/${this.props.address}/transection`} >
+                    <Link prefetch route={`/${address}/transection`} >
                         <a>
                             <Button primary style={{ marginTop: '1.5rem' }}>View Transaction</Button>
                         </a>
@@ -117,13 +118,13 @@ class ShowPeriod extends Component {
 
                 {admin ? (
                     <Grid.Column width={6}>
-                        <Summary summary={this.props.summary}/>
+                        <Summary summary={summary}/>
                     </Grid.Column>
                 ) : (
                     <Grid.Column width={6}>
-                        <CreateTicket address={this.props.address} defuseAlarm={this.props.defuseAlarm} />
+                        <CreateTicket address={address} defuseAlarm={defuseAlarm} user={user} />
                         <br/>
-                        <TicketCard address={this.props.address} playerLot={this.props.playerLot}/>
+                        <TicketCard address={address} playerLot={playerLot}/>
                     </Grid.Column>
                 )}
               </Grid.Row>
