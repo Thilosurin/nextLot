@@ -35,7 +35,15 @@ class PlayerRow extends Component {
             </a>
             </Link>
           </Cell>
-          <Cell>{player.account}</Cell>
+          <Cell>
+            <strong style={{color: 'green'}}>
+              {player.account.length === 0 
+                ? 'No Account' 
+                : player.account.map((user, i) => 
+                    user[i] = player.account[i]["accAddress"] + '\n')
+            }</strong>
+            {/* {player.account} */}
+          </Cell>
           <Cell>
             <Button color={player.status ? 'green' : 'grey'} basic onClick={this.handleStatusChange}>
               <Icon name='user' /> {player.status ? 'Admin' : 'Player'}

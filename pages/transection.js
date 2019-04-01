@@ -59,7 +59,7 @@ class Transection extends Component {
                         <Row>
                             <HeaderCell>No.</HeaderCell>
                             <HeaderCell>LotteryNumber</HeaderCell>
-                            <HeaderCell>Player</HeaderCell>
+                            <HeaderCell>Address</HeaderCell>
                             <HeaderCell>Name</HeaderCell>
                             <HeaderCell>Date</HeaderCell>
                             <HeaderCell>Reward</HeaderCell>

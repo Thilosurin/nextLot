@@ -6,7 +6,10 @@ import Router from "next/router";
 class SuccessPage extends React.Component {
 
 componentDidMount() {
-    setTimeout(() => Router.push(`/admin/user`), 2000)
+    const { admin, address } = this.props.auth
+
+    if (admin)
+      setTimeout(() => Router.push(`/admin/user`), 2000)
 }
 
 render() {

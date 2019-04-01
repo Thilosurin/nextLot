@@ -110,8 +110,7 @@ exports.insertAccountUser = async (req, res) => {
 
     const insertAccountedUser = await User.findOneAndUpdate(
         { _id: req.user._id },
-        { $push: { account: { accAddress: userData } } },
-        { new: true }
+        { $push: { account: { accAddress: userData } } }
     );
     res.json(insertAccountedUser);
 };

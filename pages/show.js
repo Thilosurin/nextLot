@@ -10,6 +10,7 @@ import TicketCard from '../components/lottery/TicketCard'
 import CreateTicket from '../components/lottery/CreateTicket'
 
 import withAuth from '../components/hoc/withAuth'
+import { insertAccountUser, updateUser } from '../lib/api'
 
 class ShowPeriod extends Component {
 
@@ -45,6 +46,33 @@ class ShowPeriod extends Component {
         creator: periodInfo[5]
     }
   }
+
+    componentDidMount() {
+        this.insertAccount()
+    }
+
+    insertAccount = async () => {
+        const { user } = this.props.auth;
+        const accounts = await web3.eth.getAccounts()
+
+        console.log(user.account);
+        console.log(user.account.length);
+        
+        const checkAcc = user.account === undefined 
+        ? true : !user.account.includes(accounts[0])
+        
+        const validAcc = user.account.length === 0 || user.account.length
+        
+        if (checkAcc && validAcc) {
+            user.account.push(accounts[0]);
+            // insertAccountUser(user).catch(this.showError)
+            console.log('PushPushPushPush');
+        } else {
+            console.log('It\'s duplicatedddddd');
+            console.log(user.account.includes(accounts[0]));
+        }
+        console.log(user.account.length);
+    }
 
   renderCards() {
     const {

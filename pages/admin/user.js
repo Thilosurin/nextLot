@@ -49,6 +49,7 @@ class ManagePlayers extends Component {
                 </Table>
             </div>
             }
+                <h1>Admin Only!!!</h1>
             </BaseLayout>
         )
     }

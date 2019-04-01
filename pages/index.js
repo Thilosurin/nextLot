@@ -26,6 +26,11 @@ class PeriodInfo extends Component {
     renderPeriod() {
         let j = 1;
         const items = this.props.periods.map(address => {
+            // const lotteries = await Promise.all(
+                // Array(parseInt(lotteriesCount)).fill().map((element, index) => {
+                    // return period.methods.lotteries(index).call()
+                // })
+            // )
             const period = Period(address)
             const defuseAlarm = period.methods.defuseAlarm().call()
             // console.log(defuseAlarm);
