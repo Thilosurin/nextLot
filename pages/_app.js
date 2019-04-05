@@ -1,7 +1,7 @@
 import React from 'react';
 import App, { Container } from 'next/app';
 
-import auth0 from '../services/auth0';
+// import auth0 from '../services/auth0';
 import { getSessionFromClient, getSessionFromServer } from '../lib/auth'
 
 export default class MyApp extends App {

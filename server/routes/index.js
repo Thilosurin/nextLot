@@ -1,6 +1,8 @@
 const express = require("express");
 const authController = require("../controllers/authController");
 const userController = require("../controllers/userController");
+const ticketController = require("../controllers/ticketController");
+const periodController = require("../controllers/periodController");
 
 const router = express.Router();
 
@@ -27,11 +29,6 @@ router.get("/api/auth/signout", authController.signout);
  */
 router.param("userId", userController.getUserById);
 
-// router.patch("/api/account/:userId",
-//   authController.checkAuth,
-//   catchErrors(userController.insertAccountUser)
-// )
-
 router
   .route("/api/users/:userId")
   .get(userController.getAuthUser)
@@ -47,7 +44,8 @@ router
     catchErrors(userController.insertAccountUser),
     catchErrors(userController.updateStatusUser)
   )
-  .delete(authController.checkAuth, catchErrors(userController.deleteUser));
+  .delete(authController.checkAuth, 
+    catchErrors(userController.deleteUser));
 
 router.get("/api/users", userController.getUsers);
 router.get(
@@ -60,9 +58,19 @@ router.get(
   catchErrors(userController.getUserFeed)
 );
 
-// router.get("/:address", "/show");
-// router.get("/:address/transection", "/transection");
-// router.get("/admin/period", "/admin/period");
-// router.get("/admin/:address/reward", "/admin/reward");
+/**
+ * TICKET ROUTE: /api/ticket
+ */
+router.post("/api/ticket/:userId", 
+  authController.checkAuth,
+  catchErrors(ticketController.validateTicket),
+  catchErrors(ticketController.createTicket));
+
+/**
+ * PERIOD ROUTE: /api/ticket
+ */
+router.post("/api/period/", 
+  authController.checkAuth, 
+  catchErrors(periodController.createdPeriod));
 
 module.exports = router;

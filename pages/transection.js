@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import { Button, Table, Form, Message, Input } from 'semantic-ui-react'
+import { Button, Table, Form, Message, Input, Breadcrumb, Divider } from 'semantic-ui-react'
 import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 import Period from '../ethereum/period'
@@ -40,12 +40,27 @@ class Transection extends Component {
     render() {
         const { Header, Row, HeaderCell, Body } = Table
         const { admin } = this.props.auth;
+        const { Section } = Breadcrumb
 
         return (
             <BaseLayout {...this.props.auth}>
-                <Link prefetch route={`/${this.props.address}`}>
-                    <a>Back</a>
-                </Link>
+                <Breadcrumb size='large'>
+                    <Section link>
+                    <Link prefetch route={`/`}>
+                        <a>Home</a>
+                    </Link>
+                    </Section>
+                    <Breadcrumb.Divider icon='right chevron' />
+                    <Section active>
+                    <Link prefetch route={`/${this.props.address}`}>
+                        <a>Period</a>
+                    </Link>
+                    </Section>
+                    <Breadcrumb.Divider icon='right chevron' />
+                    <Section active>Transection</Section>
+                </Breadcrumb>
+                <Divider hidden />
+                
                 <h3>Transection</h3>
                 {admin &&
                 <Link prefetch route={`/admin/${this.props.address}/reward`}>

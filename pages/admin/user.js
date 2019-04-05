@@ -24,32 +24,33 @@ class ManagePlayers extends Component {
 
         return (
             <BaseLayout {...this.props.auth}>
-            {admin &&
-            <div>
-                <Link prefetch route={`/`}>
-                    <a>Back</a>
-                </Link>
-                <h3>Manage Players</h3>
-                <div style={{float: 'right'}}>Found {players.length} Players.</div>
-                <Table celled selectable>
-                    <Header>
-                        <Row>
-                            <HeaderCell>No.</HeaderCell>
-                            <HeaderCell>Username</HeaderCell>
-                            <HeaderCell>Account</HeaderCell>
-                            <HeaderCell>Change Status</HeaderCell>
-                            <HeaderCell>Delete User</HeaderCell>
-                        </Row>
-                    </Header>
+            {admin ? (
+                <div>
+                    <Link prefetch route={`/`}>
+                        <a>Back</a>
+                    </Link>
+                    <h3>Manage Players</h3>
+                    <div style={{float: 'right'}}>Found {players.length} Players.</div>
+                    <Table celled selectable>
+                        <Header>
+                            <Row>
+                                <HeaderCell>No.</HeaderCell>
+                                <HeaderCell>Username</HeaderCell>
+                                <HeaderCell>Account</HeaderCell>
+                                <HeaderCell>Change Status</HeaderCell>
+                                <HeaderCell>Delete User</HeaderCell>
+                            </Row>
+                        </Header>
 
-                    {players.map((player, index) => (
-                        <PlayerRow key={player._id} index={index} player={player} />
-                    ))}
-                    
-                </Table>
-            </div>
-            }
+                        {players.map((player, index) => (
+                            <PlayerRow key={player._id} index={index} player={player} />
+                        ))}
+                        
+                    </Table>
+                </div>
+            ) : (
                 <h1>Admin Only!!!</h1>
+            )}
             </BaseLayout>
         )
     }

@@ -13,7 +13,7 @@ class AdminNewPeriod extends Component {
         lotteryPerNum: '',
         closingTime: '',
         errorMessage: '',
-        loading: false
+        loading: false,
     }
 
     onSubmit = async (event) => {
@@ -53,30 +53,33 @@ class AdminNewPeriod extends Component {
                 <Link prefetch route={'/'}>
                     <a>Back</a>
                 </Link>
-                <h3>Create a Period!</h3>
-                
+
+                <h3>Create a Period!</h3>   
                 <Form onSubmit={this.onSubmit} error={!!errorMessage}>
                     <Form.Group widths='equal'>
                         <Form.Input fluid 
-                            label='Price Lottery (ether)' 
+                            label='Price Lottery (ETH)' 
                             placeholder='0.001'
                             value={priceLottery}
                             error={isNaN(priceLottery)}
-                            onChange={event => this.setState({ priceLottery: event.target.value })} />
+                            onChange={event => this.setState({ priceLottery: event.target.value })} 
+                        />
                 
                         <Form.Input fluid 
                             label='Amount Lottery / Number' 
                             placeholder='2' 
                             value={lotteryPerNum}
                             error={isNaN(lotteryPerNum)}
-                            onChange={event => this.setState({ lotteryPerNum: event.target.value })} />
+                            onChange={event => this.setState({ lotteryPerNum: event.target.value })} 
+                        />
 
                         <Form.Input fluid 
                             label='Time Out (sec)' 
                             placeholder='1552115292' 
                             value={closingTime}
                             error={isNaN(closingTime)}
-                            onChange={event => this.setState({ closingTime: event.target.value })} />
+                            onChange={event => this.setState({ closingTime: event.target.value })} 
+                        />
                     </Form.Group>
 
                     <Message error header="Oops!" content={errorMessage} />

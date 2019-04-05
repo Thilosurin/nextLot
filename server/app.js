@@ -13,6 +13,8 @@ const compression = require("compression");
 require("dotenv").config();
 /* Require our models here so we can use the mongoose.model() singleton to reference our models across our app */
 require("../../nextLot/server/models/User");
+require("../../nextLot/server/models/Ticket");
+require("../../nextLot/server/models/Period");
 const routes = require("./routes");
 require("./passport");
 

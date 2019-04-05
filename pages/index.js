@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Period from '../ethereum/period';
 import factory from '../ethereum/factory'
 import web3 from '../ethereum/web3';
-import { Card, Button, Segment } from 'semantic-ui-react'
+import { Card, Button, Segment, Embed } from 'semantic-ui-react'
 import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 
@@ -85,7 +85,7 @@ class PeriodInfo extends Component {
                     {this.renderPeriod()}
                 </div>
                 ) : (
-                    <h1>No User</h1>
+                    <Embed aspectRatio='4:3' id='ZsQzYjxEVCo' placeholder='../static/images/timeOnly.jpg' source='youtube' />
                 )}
             </BaseLayout>
         )

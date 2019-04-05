@@ -1,7 +1,7 @@
 import { Component } from "react"
 import Period from '../ethereum/period'
 import web3 from '../ethereum/web3'
-import { Card, Grid, Button } from 'semantic-ui-react'
+import { Card, Grid, Button, Breadcrumb, Divider } from 'semantic-ui-react'
 import BaseLayout from '../components/layouts/BaseLayout'
 import { Link } from '../server/routes/routes'
 
@@ -10,69 +10,63 @@ import TicketCard from '../components/lottery/TicketCard'
 import CreateTicket from '../components/lottery/CreateTicket'
 
 import withAuth from '../components/hoc/withAuth'
-import { insertAccountUser, updateUser } from '../lib/api'
+import { createdPeriod } from '../lib/api'
 
 class ShowPeriod extends Component {
 
-  static async getInitialProps(props) {
-    const period = Period(props.query.address)
-    const lotteriesCount = await period.methods.getLotteriesCount().call()
-    const periodInfo = await period.methods.getPeriodInfo().call()    
+    static async getInitialProps(props) {
+        const period = Period(props.query.address)
+        const lotteriesCount = await period.methods.getLotteriesCount().call()
+        const periodInfo = await period.methods.getPeriodInfo().call()    
+        const summary = await period.methods.getSummary().call()
 
-    const summary = await period.methods.getSummary().call()
+        const defuseAlarm = await period.methods.defuseAlarm().call()
 
-    const defuseAlarm = await period.methods.defuseAlarm().call()
+        const accounts = await web3.eth.getAccounts()
+        const account = accounts[0];
+        
+        const lotteries = await Promise.all(
+            Array(parseInt(lotteriesCount))
+                .fill()
+                .map((element, index) => { return period.methods.lotteries(index).call() })
+        )
 
-    const accounts = await web3.eth.getAccounts()
-    const account = accounts[0];
-    
-    const lotteries = await Promise.all(
-        Array(parseInt(lotteriesCount))
-            .fill()
-            .map((element, index) => { return period.methods.lotteries(index).call() })
-    )
+        const playerLot = lotteries.filter(el => el.players === account)
 
-    const playerLot = lotteries.filter(el => el.players === account)
-
-    return {
-        playerLot,
-        summary,
-        defuseAlarm,
-        address: props.query.address,
-        numPeriod: periodInfo[0], 
-        priceLottery: periodInfo[1],
-        lotteryPerNum: periodInfo[2],
-        timeOut: periodInfo[4],
-        creator: periodInfo[5]
+        return {
+            periodInfo,
+            playerLot,
+            summary,
+            defuseAlarm,
+            address: props.query.address,
+            numPeriod: periodInfo[0], 
+            priceLottery: periodInfo[1],
+            lotteryPerNum: periodInfo[2],
+            timeOut: periodInfo[4],
+            creator: periodInfo[5]
+        }
     }
-  }
 
     componentDidMount() {
-        this.insertAccount()
+        // this.insertAccount()
+        console.log(this.props.periodInfo);
+        createdPeriod(this.props.periodInfo).catch(this.showError)
     }
 
-    insertAccount = async () => {
-        const { user } = this.props.auth;
-        const accounts = await web3.eth.getAccounts()
+    // insertAccount = async () => {
+    //     const { user } = this.props.auth;
+    //     const accounts = await web3.eth.getAccounts()
 
-        console.log(user.account);
-        console.log(user.account.length);
-        
-        const checkAcc = user.account === undefined 
-        ? true : !user.account.includes(accounts[0])
-        
-        const validAcc = user.account.length === 0 || user.account.length
-        
-        if (checkAcc && validAcc) {
-            user.account.push(accounts[0]);
-            // insertAccountUser(user).catch(this.showError)
-            console.log('PushPushPushPush');
-        } else {
-            console.log('It\'s duplicatedddddd');
-            console.log(user.account.includes(accounts[0]));
-        }
-        console.log(user.account.length);
-    }
+    //     const notUndefinedAcc0 = user.account.length > 0 
+    //                             ? user.account[0]['accAddress'] 
+    //                             : false
+    //     const validatePushAccClient = !user.account.includes(accounts[0]) 
+    //                             && notUndefinedAcc0 !== accounts[0]
+                                
+    //     if (validatePushAccClient)
+    //         user.account.forEach(() => user.account.pop())
+    //         user.account.push(accounts[0]);
+    // }
 
   renderCards() {
     const {
@@ -125,12 +119,21 @@ class ShowPeriod extends Component {
   render() {
     const { admin, user } = this.props.auth;
     const { address, summary, defuseAlarm, playerLot } = this.props;
+    const { Section } = Breadcrumb
 
     return (
       <BaseLayout {...this.props.auth}>
-        <Link prefetch route={`/`}>
-            <a>Back</a>
-        </Link>
+        <Breadcrumb size='large'>
+            <Section link>
+            <Link prefetch route={`/`}>
+                <a>Home</a>
+            </Link>
+            </Section>
+            <Breadcrumb.Divider icon='right chevron' />
+            <Section active>Period</Section>
+        </Breadcrumb>
+        <Divider hidden />
+        
         <h3>Period Infomation</h3>
           <Grid>
               <Grid.Row>

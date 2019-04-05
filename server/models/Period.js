@@ -3,11 +3,11 @@ const { ObjectId } = mongoose.Schema;
 
 const periodSchema = new mongoose.Schema({
     prID: Number,
-    prAddress: String,
     prLotteryPrice: Number,
     prAN: Number,
     prOpening: Boolean,
-    prCreatedAt: Date,
+    prClosingTime: Date,
+    prCreatedAt: { type: Date, default: Date.now },
     prAddressCreator: String,
     prReward: [{ type: ObjectId, ref: "Reward" }]
 })

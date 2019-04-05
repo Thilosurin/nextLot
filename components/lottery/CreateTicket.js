@@ -2,10 +2,10 @@ import { Component } from 'react'
 import { Form, Input, Message, Button, Card } from 'semantic-ui-react'
 import Period from '../../ethereum/period'
 import web3 from '../../ethereum/web3'
-import { Router } from '../../server/routes/routes'
-// import Router from "next/router";
+// import { Router } from '../../server/routes/routes'
+import Router from "next/router";
 
-import { insertAccountUser, updateUser } from '../../lib/api'
+import { insertAccountUser, insertTicket } from '../../lib/api'
 
 class CreateTicket extends Component {
     state = {
@@ -13,10 +13,6 @@ class CreateTicket extends Component {
         errorMessage: '',
         loading: false,
     }
-
-    // componentDidMount() {
-        // this.insertAccount()
-    // }
 
     onSubmit = async (event) => {
         event.preventDefault()
@@ -29,28 +25,23 @@ class CreateTicket extends Component {
         // try {
             // const getPeriodInfo = await period.methods.getPeriodInfo().call()
             const accounts = await web3.eth.getAccounts()
-            // await period.methods.createLottery(this.state.value).send({
+            // const ticket = await period.methods.createLottery(this.state.value).send({
             //     from: accounts[0],
             //     value: getPeriodInfo[1]
             // })
             
-            
-            
-//// Insert Account : ether to mongo ////
-            // this.insertAccount()
+            insertTicket(this.state.value).catch(this.showError)
+            // insertTicket(ticket).catch(this.showError)
 
-            // const validAcc = user.account === undefined ? true 
-                                // : !user.account.includes(accounts[0])
-            
-            // if (validAcc) {
-                // user.account.push(accounts[0]);
-                // insertAccountUser(user).catch(this.showError)
-            // } else {
-                // console.log('It\'s duplicate');
-                // console.log(user.account.includes(accounts[0]));
-            // }
-// setTimeout(() => Router.push(`/${address}`), 1000)
-
+            // const checkUserFromClient = user.account.length <= 1
+            //                             ? true 
+            //                             : !user.account.includes(accounts[0])
+            // if (checkUserFromClient && accounts[0] !== undefined)
+            //     if (user.account.length > 1)
+            //         user.account.forEach(() => user.account.pop())
+            //         user.account.push(accounts[0]);
+            //     insertAccountUser(user).catch(this.showError)
+            // setTimeout(() => Router.push(`/${address}`), 1000)
             // Router.replaceRoute(`/${address}`)
 
         // } catch (err) {
@@ -59,24 +50,6 @@ class CreateTicket extends Component {
 
         this.setState({ loading: false, value: '' })
     }
-
-    // insertAccount = async () => {
-        // const { user } = this.props;
-        // const accounts = await web3.eth.getAccounts()
-
-        // console.log(user.account);
-
-        // const validAcc = user.account === undefined 
-                            // ? true : !user.account.includes(accounts[0])
-            
-        // if (validAcc) {
-            // user.account.push(accounts[0]);
-            // insertAccountUser(user).catch(this.showError)
-        // } else {
-            // console.log('It\'s duplicatedddddd');
-            // console.log(user.account.includes(accounts[0]));
-        // }
-    // }
 
     render() {
         const { errorMessage, value, loading } = this.state;

@@ -25,27 +25,17 @@ const userSchema = new mongoose.Schema(
       required: "Avatar image is required",
       default: "/static/images/profile-image.jpg"
     },
-    account: [{ accAddress: String }, { autoIndex: false }],
     status: {
       type: Boolean,
       default: false
-    }
-    /* we wrap 'following' and 'followers' in array so that when they are populated as objects, they are put in an array (to more easily iterate over them) */
-
-    // following: [{ type: ObjectId, ref: "User" }],
-    // followers: [{ type: ObjectId, ref: "User" }]
+    },
+    account: [{ accAddress: String }],
+    tickets: [{ type: ObjectId, ref: "Ticket" }]
   },
-  /* gives us "createdAt" and "updatedAt" fields automatically */
   { timestamps: true }
 );
 
-// userSchema.pre("findOne", autoPopulateFollowingAndFollowers);
-
-/* passportLocalMongoose takes our User schema and sets up a passport "local" authentication strategy using our email as the username field */
 userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
-
-/* The MongoDBErrorHandler plugin gives us a better 'unique' error, rather than: "11000 duplicate key" */
 userSchema.plugin(mongodbErrorHandler);
-
 
 module.exports = mongoose.model("User", userSchema);

@@ -2,6 +2,7 @@ const routes = require('next-routes')();
 
 routes
     .add('/profile', '/profile')
+    .add('/how', '/how')
     .add('/:address', '/show')
     .add('/:address/transection', '/transection')
     // .add('/admin/period', '/admin/period')
