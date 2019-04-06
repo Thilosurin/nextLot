@@ -20,11 +20,11 @@ class PeriodInfo extends Component {
 
     componentDidMount() {
         const pi = this.props.periodsInformation
-        const findNewPeriod = pi.includes(pi[pi.length-1])
-        console.log(pi[pi.length-1]);
-        if (findNewPeriod) {
-            createdPeriod(pi[pi.length-1]).catch(this.showError)
-        }
+        const checkValuePeriod = Object.values(pi).map((p, i) => p)
+        console.log(checkValuePeriod);
+        
+        // if (!checkValuePeriod)
+        //     createdPeriod(pi[pi.length-1]).catch(this.showError)
     }
 
     renderPeriod() {

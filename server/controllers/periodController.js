@@ -13,7 +13,7 @@ exports.createdPeriod = async (req, res) => {
 
     const period = new Period({ prID, prLotteryPrice, prAN, prOpening, prClosingTime, prAddressCreator });
     
-    // period.seve();
+    period.save();
     
     res.json(period)
 };
