@@ -6,34 +6,31 @@ import { Card, Button, Segment, Embed } from 'semantic-ui-react'
 import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 
+import { createdPeriod } from '../lib/api'
+
 class PeriodInfo extends Component {
     static async getInitialProps() {
         const periods = await factory.methods.getDeployedPeriods().call()
 
-        // const arrDefuseAlarm = periods.map(async address => {
-        //     const period = Period(address)
-        //     const defuseAlarm = await period.methods.defuseAlarm().call()
-        //     console.log(defuseAlarm);
-            
-        //     // const accounts = await web3.eth.getAccounts()
-        //     // const player = accounts[0];
-        // }).reverse();
-        // console.log(arrDefuseAlarm);
+        const periodsInformation = await Promise.all(
+            periods.map(address => Period(address).methods.getPeriodInfo().call()))
 
-        return { periods }
+        return { periods, periodsInformation }
+    }
+
+    componentDidMount() {
+        const pi = this.props.periodsInformation
+        const findNewPeriod = pi.includes(pi[pi.length-1])
+        console.log(pi[pi.length-1]);
+        if (findNewPeriod) {
+            createdPeriod(pi[pi.length-1]).catch(this.showError)
+        }
     }
 
     renderPeriod() {
         let j = 1;
-        const items = this.props.periods.map(address => {
-            // const lotteries = await Promise.all(
-                // Array(parseInt(lotteriesCount)).fill().map((element, index) => {
-                    // return period.methods.lotteries(index).call()
-                // })
-            // )
-            const period = Period(address)
-            const defuseAlarm = period.methods.defuseAlarm().call()
-            // console.log(defuseAlarm);
+        const items = this.props.periods.map((address, index) => {
+            // console.log(this.props.periodsInformation[index]);
 
             return {
                 header: `period : ${j++}`,
@@ -46,7 +43,6 @@ class PeriodInfo extends Component {
                     </Button>
                 ),
                 fluid: true,
-                // color: `${defuseAlarm === true ? '' : 'green'}`
             }
         }).reverse();
         return <Card.Group items={items} />

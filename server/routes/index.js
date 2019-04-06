@@ -67,7 +67,7 @@ router.post("/api/ticket/:userId",
   catchErrors(ticketController.createTicket));
 
 /**
- * PERIOD ROUTE: /api/ticket
+ * PERIOD ROUTE: /api/period
  */
 router.post("/api/period/", 
   authController.checkAuth, 

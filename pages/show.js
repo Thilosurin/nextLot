@@ -50,7 +50,10 @@ class ShowPeriod extends Component {
     componentDidMount() {
         // this.insertAccount()
         console.log(this.props.periodInfo);
+        // console.log(Object.values(this.props.periodInfo));
+        // console.log(Object.keys(this.props.periodInfo));
         createdPeriod(this.props.periodInfo).catch(this.showError)
+        // createdPeriod(Object.values(this.props.periodInfo)).catch(this.showError)
     }
 
     // insertAccount = async () => {
@@ -135,31 +138,31 @@ class ShowPeriod extends Component {
         <Divider hidden />
         
         <h3>Period Infomation</h3>
-          <Grid>
-              <Grid.Row>
-                  <Grid.Column width={10}>
-                      {this.renderCards()}
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={10}>
+                        {this.renderCards()}
 
-                    <Link prefetch route={`/${address}/transection`} >
-                        <a>
-                            <Button primary style={{ marginTop: '1.5rem' }}>View Transaction</Button>
-                        </a>
-                    </Link>
-                  </Grid.Column>
+                        <Link prefetch route={`/${address}/transection`} >
+                            <a>
+                                <Button primary style={{ marginTop: '1.5rem' }}>View Transaction</Button>
+                            </a>
+                        </Link>
+                    </Grid.Column>
 
-                {admin ? (
-                    <Grid.Column width={6}>
-                        <Summary summary={summary}/>
-                    </Grid.Column>
-                ) : (
-                    <Grid.Column width={6}>
-                        <CreateTicket address={address} defuseAlarm={defuseAlarm} user={user} />
-                        <br/>
-                        <TicketCard address={address} playerLot={playerLot}/>
-                    </Grid.Column>
-                )}
-              </Grid.Row>
-          </Grid>
+                    {admin ? (
+                        <Grid.Column width={6}>
+                            <Summary summary={summary}/>
+                        </Grid.Column>
+                    ) : (
+                        <Grid.Column width={6}>
+                            <CreateTicket address={address} defuseAlarm={defuseAlarm} user={user} />
+                            <br/>
+                            <TicketCard address={address} playerLot={playerLot}/>
+                        </Grid.Column>
+                    )}
+                </Grid.Row>
+            </Grid>
       </BaseLayout>
     );
   }
