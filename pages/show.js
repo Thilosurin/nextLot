@@ -46,10 +46,10 @@ class ShowPeriod extends Component {
         }
     }
 
-    componentDidMount() {
-        // this.insertAccount()
-        this.createNewTicket()
-    }
+    // componentDidMount() {
+    //     // this.insertAccount()
+    //     this.createNewTicket()
+    // }
 
     createNewTicket = async () => {
         const pl = this.props.playerLot
@@ -160,8 +160,8 @@ class ShowPeriod extends Component {
                         </Grid.Column>
                     ) : (
                         <Grid.Column width={6}>
-                            <CreateTicket address={address} defuseAlarm={defuseAlarm} user={user} />
-                            <br/>
+                            <CreateTicket address={address} defuseAlarm={defuseAlarm} user={user} playerLot={playerLot} />
+                                <br/>
                             <TicketCard address={address} playerLot={playerLot} />
                         </Grid.Column>
                     )}

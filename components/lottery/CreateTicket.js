@@ -4,6 +4,7 @@ import Period from '../../ethereum/period'
 import web3 from '../../ethereum/web3'
 import { Router } from '../../server/routes/routes'
 // import Router from "next/router";
+import { createTicket } from '../../lib/api'
 
 class CreateTicket extends Component {
     state = {
@@ -14,7 +15,7 @@ class CreateTicket extends Component {
 
     onSubmit = async (event) => {
         event.preventDefault()
-        const { address, user } = this.props;
+        const { address } = this.props;
 
         const period = Period(address)
 
@@ -23,12 +24,12 @@ class CreateTicket extends Component {
         try {
             const getPeriodInfo = await period.methods.getPeriodInfo().call()
             const accounts = await web3.eth.getAccounts()
-            const ticket = await period.methods.createLottery(this.state.value).send({
+            await period.methods.createLottery(this.state.value).send({
                 from: accounts[0],
                 value: getPeriodInfo[1]
             })
-            
-            
+
+            Router.replaceRoute(`/${address}`)
             
             // const checkUserFromClient = user.account.length <= 1
             //                             ? true 
@@ -46,6 +47,15 @@ class CreateTicket extends Component {
         }
 
         this.setState({ loading: false, value: '' })
+        this.createTicketToMongo()
+    }
+
+    createTicketToMongo() {
+        const { address, user, playerLot } = this.props;
+
+        createTicket(user._id, playerLot[0])
+            .then(() => Router.replaceRoute(`/${address}`))
+            .catch(this.showError)
     }
 
     render() {
