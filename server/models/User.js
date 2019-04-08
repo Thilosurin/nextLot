@@ -35,6 +35,13 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const autoPopulateTickers = function(next) {
+  this.populate("tickets", "_id tkNumber tkReward tkPrize tkAccount tkCreatedAt tkPeriod");
+  next();
+};
+
+userSchema.pre("findOne", autoPopulateTickers);
+
 userSchema.plugin(passportLocalMongoose, { usernameField: "email" });
 userSchema.plugin(mongodbErrorHandler);
 

@@ -13,11 +13,12 @@ class TicketCard extends Component {
             const showReward = web3.utils.fromWei(playerLot.prize, 'ether') === '0' ? '' :  web3.utils.fromWei(playerLot.prize, 'ether') + ' ETH';
 
             return {
+                key: playerLot.id,
                 header: playerLot.numberLottery,
-                description: showReward,
+                description: [showReward],
                 meta: 'time',
                 meta: new Date(playerLot.timeBuy*1000).toLocaleString(),
-                color: ticketColor,
+                color: [ticketColor],
                 fluid: true
             }
         });

@@ -6,8 +6,6 @@ import { Card, Button, Segment, Embed } from 'semantic-ui-react'
 import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 
-import { createdPeriod } from '../lib/api'
-
 class PeriodInfo extends Component {
     static async getInitialProps() {
         const periods = await factory.methods.getDeployedPeriods().call()
@@ -17,16 +15,7 @@ class PeriodInfo extends Component {
 
         return { periods, periodsInformation }
     }
-
-    componentDidMount() {
-        const pi = this.props.periodsInformation
-        const checkValuePeriod = Object.values(pi).map((p, i) => p)
-        console.log(checkValuePeriod);
-        
-        // if (!checkValuePeriod)
-        //     createdPeriod(pi[pi.length-1]).catch(this.showError)
-    }
-
+    
     renderPeriod() {
         let j = 1;
         const items = this.props.periods.map((address, index) => {

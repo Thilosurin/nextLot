@@ -12,14 +12,16 @@ const ticketSchema = new mongoose.Schema(
       default: false
     },
     tkPrize: {
-      type: Number
+      type: Number,
+      default: 0
     },
-    tkPeriod: [{ type: ObjectId, ref: "Period", required: true }],
-    tkPlayerBuy: [{ type: ObjectId, ref: "User", required: true }],
+    tkAccount: String,
     tkCreatedAt: {
       type: Date,
       default: Date.now
-    }
+    },
+    tkPeriod: [{ type: ObjectId, ref: "Period" }],
+    tkPlayerBuy: [{ type: ObjectId, ref: "User", required: true }],
   },
   { autoIndex: false }
 );
@@ -34,6 +36,6 @@ ticketSchema
   .pre("findOne", autoPopulateTicketBy)
   .pre("find", autoPopulateTicketBy);
 
-ticketSchema.index({ tkPeriod: 1, createdAt: 1 });
+ticketSchema.index({ tkPlayerBuy: 1, createdAt: 1 });
 
 module.exports = mongoose.model("Ticket", ticketSchema);

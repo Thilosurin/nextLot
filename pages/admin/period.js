@@ -6,6 +6,7 @@ import web3 from '../../ethereum/web3'
 import { Link, Router } from '../../server/routes/routes'
 
 import withAuth from '../../components/hoc/withAuth';
+import { createPeriod } from '../../lib/api'
 
 class AdminNewPeriod extends Component {
     state = {
@@ -24,14 +25,16 @@ class AdminNewPeriod extends Component {
         try {
             const accounts = await web3.eth.getAccounts();
 
-            await factory.methods
+            const newPeriod = await factory.methods
                 .createPeriod(
                     web3.utils.toWei(this.state.priceLottery, 'ether'), 
                     this.state.lotteryPerNum, 
                     this.state.closingTime)
                 .send({ from: accounts[0] })
-            
-            Router.pushRoute('/')
+
+            createPeriod(newPeriod)
+                .then(() => Router.pushRoute('/'))
+                .catch(this.showError)
             
         } catch (err) {
             this.setState({ errorMessage: err.message })

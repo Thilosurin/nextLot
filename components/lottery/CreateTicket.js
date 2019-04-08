@@ -2,10 +2,8 @@ import { Component } from 'react'
 import { Form, Input, Message, Button, Card } from 'semantic-ui-react'
 import Period from '../../ethereum/period'
 import web3 from '../../ethereum/web3'
-// import { Router } from '../../server/routes/routes'
-import Router from "next/router";
-
-import { insertAccountUser, insertTicket } from '../../lib/api'
+import { Router } from '../../server/routes/routes'
+// import Router from "next/router";
 
 class CreateTicket extends Component {
     state = {
@@ -20,19 +18,18 @@ class CreateTicket extends Component {
 
         const period = Period(address)
 
-        // this.setState({ loading: true, errorMessage: '' })
+        this.setState({ loading: true, errorMessage: '' })
 
-        // try {
-            // const getPeriodInfo = await period.methods.getPeriodInfo().call()
+        try {
+            const getPeriodInfo = await period.methods.getPeriodInfo().call()
             const accounts = await web3.eth.getAccounts()
-            // const ticket = await period.methods.createLottery(this.state.value).send({
-            //     from: accounts[0],
-            //     value: getPeriodInfo[1]
-            // })
+            const ticket = await period.methods.createLottery(this.state.value).send({
+                from: accounts[0],
+                value: getPeriodInfo[1]
+            })
             
-            insertTicket(this.state.value).catch(this.showError)
-            // insertTicket(ticket).catch(this.showError)
-
+            
+            
             // const checkUserFromClient = user.account.length <= 1
             //                             ? true 
             //                             : !user.account.includes(accounts[0])
@@ -44,9 +41,9 @@ class CreateTicket extends Component {
             // setTimeout(() => Router.push(`/${address}`), 1000)
             // Router.replaceRoute(`/${address}`)
 
-        // } catch (err) {
-        //     this.setState({ errorMessage: err.message })
-        // }
+        } catch (err) {
+            this.setState({ errorMessage: err.message })
+        }
 
         this.setState({ loading: false, value: '' })
     }

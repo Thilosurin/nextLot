@@ -1,37 +1,41 @@
 const mongoose = require('mongoose');
 const Ticket = mongoose.model('Ticket');
+const User = mongoose.model('User');
 
-exports.validateTicket = (req, res, next) => {
-    req.sanitizeBody('ticket');
-
-    req.checkBody('ticket', 'Ticket a name').notEmpty();
-    req.checkBody('ticket', 'Ticket must be 6 digis').isLength(6);
-
-    const errors = req.validationErrors();
-    if (errors) {
-        const firstError = errors.map(error => error.msg)[0];
-        return res.status(400).send(firstError);
-    }
-    next();
-};
-
-exports.createTicket = async (req, res, next) => {
+exports.createdTicket = async (req, res, next) => {
+    const user = req.params;
     const ticketData = req.body;
-    let creator;
+    // ticketData.tkPlayerBuy = user.userId
+    // let creator;
     const ticket = await new Ticket({
-        tkNumber: ticketData,
-        tkPrize: ticketData,
-        tkPeriod: 5555,
-        tkPlayerBuy: req.userId
-    });
-    await ticket
-        .save()
+        tkNumber: ticketData.numberLottery,
+        tkAccount: ticketData.players,
+        // tkPeriod: 5555,
+        tkPlayerBuy: user.userId
+    }).save()
+
+    // await Ticket
+    //     .populate(ticket, {
+    //         path: 'tkPlayerBuy',
+    //         select: '_id name account'
+    // });
+    // res.json(ticket, user.userId);
+
+
+    await Ticket.populate(ticket, { 
+            path: 'tkPlayerBuy', 
+            select: '_id name account'
+        })
         .then(result => {
-            return User.findById(req.userId);
+            return User.findById(user.userId);
         })
         .then(user => {
             creator = user;
-            user.tickets.push(ticket);
+            user.tickets.push(ticket)
+            User.populate(user, {
+                path: 'tickets',
+                select: '_id tkNumber tkReward tkPrize tkAccount tkCreatedAt tkPeriod'
+            })
             return user.save();
         })
         .then(result => {
@@ -47,4 +51,6 @@ exports.createTicket = async (req, res, next) => {
             }
             next(err);
         });
+
+
 };
