@@ -3,7 +3,6 @@ import { Form, Input, Message, Button, Card } from 'semantic-ui-react'
 import Period from '../../ethereum/period'
 import web3 from '../../ethereum/web3'
 import { Router } from '../../server/routes/routes'
-// import Router from "next/router";
 import { createTicket } from '../../lib/api'
 
 class CreateTicket extends Component {
@@ -27,27 +26,15 @@ class CreateTicket extends Component {
             await period.methods.createLottery(this.state.value).send({
                 from: accounts[0],
                 value: getPeriodInfo[1]
-            })
-
-            Router.replaceRoute(`/${address}`)
-            
-            // const checkUserFromClient = user.account.length <= 1
-            //                             ? true 
-            //                             : !user.account.includes(accounts[0])
-            // if (checkUserFromClient && accounts[0] !== undefined)
-            //     if (user.account.length > 1)
-            //         user.account.forEach(() => user.account.pop())
-            //         user.account.push(accounts[0]);
-            //     insertAccountUser(user).catch(this.showError)
-            // setTimeout(() => Router.push(`/${address}`), 1000)
-            // Router.replaceRoute(`/${address}`)
+            }).then(() => Router.replaceRoute(`/${address}`))
 
         } catch (err) {
             this.setState({ errorMessage: err.message })
         }
 
+        this.createTicketToMongo() // waiting from change
+        
         this.setState({ loading: false, value: '' })
-        this.createTicketToMongo()
     }
 
     createTicketToMongo() {

@@ -5,8 +5,7 @@ const User = mongoose.model('User');
 exports.createdTicket = async (req, res, next) => {
     const user = req.params;
     const ticketData = req.body;
-    // ticketData.tkPlayerBuy = user.userId
-    // let creator;
+    let creator;
     const ticket = await new Ticket({
         tkNumber: ticketData.numberLottery,
         tkAccount: ticketData.players,
@@ -24,7 +23,7 @@ exports.createdTicket = async (req, res, next) => {
 
     await Ticket.populate(ticket, { 
             path: 'tkPlayerBuy', 
-            select: '_id name account'
+            select: '_id name email'
         })
         .then(result => {
             return User.findById(user.userId);
@@ -42,7 +41,7 @@ exports.createdTicket = async (req, res, next) => {
             res.status(201).json({
                 message: 'Ticket created successfully!',
                 ticket: ticket,
-                creator: { _id: creator._id, name: creator.name }
+                creator: { _id: creator._id, name: creator.name, tickets: creator.tickets }
             });
         })
         .catch(err => {
@@ -51,6 +50,11 @@ exports.createdTicket = async (req, res, next) => {
             }
             next(err);
         });
+};
 
-
+exports.getTicketsByUser = async (req, res) => {
+    const tickets = await Ticket.find({ tkPlayerBuy: req.profile._id }).sort({
+        createAt: "desc"
+    });
+    res.json(tickets);
 };

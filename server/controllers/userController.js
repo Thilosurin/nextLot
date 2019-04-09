@@ -42,7 +42,7 @@ exports.getUserProfile = (req, res) => {
 
 exports.getUserFeed = async (req, res) => {
     const users = await User.find()
-                .select('_id name account status')
+                .select('_id name status account tickets')
     res.json(users);
 };
 

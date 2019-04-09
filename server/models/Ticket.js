@@ -27,7 +27,7 @@ const ticketSchema = new mongoose.Schema(
 );
 
 const autoPopulateTicketBy = function(next) {
-  this.populate("tkPlayerBuy", "_id name account");
+  this.populate("tkPlayerBuy", "_id name email");
   this.populate("tkPeriod", "_id prID prAddress prOpening prCreatedAt");
   next();
 };

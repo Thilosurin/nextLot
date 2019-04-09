@@ -7,7 +7,20 @@ import { updateStatusUser } from "../../lib/api";
 import { Link } from '../../server/routes/routes'
 import Router from "next/router";
 
+import { getTicketsByUser } from '../../lib/api'
+
 class PlayerRow extends Component {
+  state = {
+    tickets: []
+  }
+
+  componentDidMount() {
+    const { player } = this.props
+    
+    getTicketsByUser(player._id)
+      .then((tickets) => this.setState({ tickets }))
+  }
+  
   handleStatusChange = () => {
     event.preventDefault();
     const { player } = this.props
@@ -18,8 +31,11 @@ class PlayerRow extends Component {
   };
 
   render() {
-    const { Row, Cell, Body } = Table;
-    const { player, index } = this.props;
+    const { Row, Cell, Body } = Table
+    const { player, index } = this.props
+    const { tickets } = this.state
+    let acc = []
+    tickets.map((tk, i) => acc.length===0 || !acc.includes(tickets[i]["tkAccount"]) ? acc.push(tickets[i]["tkAccount"]) : '')
     
     return (
       <Body>
@@ -30,19 +46,17 @@ class PlayerRow extends Component {
           <Cell>{index+1}</Cell>
           <Cell>
             <Link prefetch route={`/profile/${player._id}`}>
-            <a>
-              {player.name}
-            </a>
+              <a>
+                {player.name}
+              </a>
             </Link>
           </Cell>
-          <Cell>
-            <strong style={{color: 'green'}}>
-              {player.account.length === 0 
+          <Cell style={{width: '50%'}}>
+            <strong style={{color: 'green'}}>       
+              {tickets.length === 0 
                 ? 'No Account' 
-                : player.account.map((user, i) => 
-                    user[i] = player.account[i]["accAddress"] + '\n')
-            }</strong>
-            {/* {player.account} */}
+                : acc.map(i => i + '\n')}
+            </strong>
           </Cell>
           <Cell>
             <Button color={player.status ? 'green' : 'grey'} basic onClick={this.handleStatusChange}>

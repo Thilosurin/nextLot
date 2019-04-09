@@ -31,7 +31,7 @@ class ManagePlayers extends Component {
                     </Link>
                     <h3>Manage Players</h3>
                     <div style={{float: 'right'}}>Found {players.length} Players.</div>
-                    <Table celled selectable>
+                    <Table celled selectable textAlign="center">
                         <Header>
                             <Row>
                                 <HeaderCell>No.</HeaderCell>
