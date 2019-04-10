@@ -6,18 +6,22 @@ import BaseLayout from '../components/layouts/BaseLayout'
 import DeleteUser from '../components/admin/DeleteUser'
 import format from "date-fns/format"
 import ProfileRow from '../components/tabbar/ProfileRow'
-import { getUser } from '../lib/api'
+import { getUser, getTicketsByUser } from '../lib/api'
 import withAuth from '../components/hoc/withAuth'
 
 class Profile extends Component {
     state = {
-        userState: null,
+        userState: [],
+        tickets: [],
         isAuth: false,
         isLoading: true,
     }
 
     componentDidMount() {
         const { user, router } = this.props.auth;
+
+        getTicketsByUser(router.query.userId)
+            .then((tickets) => this.setState({ tickets }))
         
         getUser(router.query.userId).then(async userState => {
             const isAuth = router.query.userId === user._id;
@@ -42,9 +46,11 @@ class Profile extends Component {
     formatDate = date => format(date, "dddd, MMMM Do, YYYY");
     
     render() {
-        const { isLoading, userState, isAuth } = this.state;
+        const { isLoading, userState, isAuth, tickets } = this.state;
         const { user } = this.props.auth;
         const { Header, Body, Row, HeaderCell } = Table;
+        let acc = []
+        tickets.map((tk, i) => acc.length===0 || !acc.includes(tickets[i]["tkAccount"]) ? acc.push(tickets[i]["tkAccount"]) : '')
         
         return(
             <BaseLayout {...this.props.auth}>
@@ -55,10 +61,17 @@ class Profile extends Component {
                 <Grid>
                 {isLoading ? (
                     <Grid.Column width={16}>
+                    <Segment>
                         <Dimmer active inverted inline='centered'>
                             <Loader size='massive'>Loading</Loader>
                         </Dimmer>
-                        <Image src='/images/wireframe/paragraph.png' />
+                        <p>
+                            <Image src='/static/images/paragraph.png' />
+                        </p>
+                        <p>
+                            <Image src='/static/images/paragraph.png' />
+                        </p>
+                    </Segment>
                     </Grid.Column>
                 ) : (
                     <Grid.Row>
@@ -85,16 +98,13 @@ class Profile extends Component {
                                 <Card.Content>
                                 <Card.Header>{userState.name}</Card.Header>
                                 <Card.Meta>
-                                    <span className='date'>Joined in {this.formatDate(userState.createdAt)}</span>
+                                    <span className='date'>Joined : {this.formatDate(userState.createdAt)}</span>
                                 </Card.Meta>
                                 <Card.Description>
-                                    Account : <strong style={{color: 'green'}}>{userState.account.length === 0 
+                                    Account : <strong style={{color: 'green'}}>{tickets.length === 0 
                                         ? 'No Account' 
-                                        : userState.account.map((user, i) => 
-                                            user[i] = userState.account[i]["accAddress"] + '\n')
+                                        : acc.map(i => i + '\n')
                                     }</strong>
-
-                                    {/* {JSON.stringify(userState.account[0]["accAddress"]} */}
                                 </Card.Description>
                                 </Card.Content>
                                 <Card.Content extra>
