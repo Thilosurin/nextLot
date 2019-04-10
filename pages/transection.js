@@ -5,10 +5,13 @@ import BaseLayout from '../components/layouts/BaseLayout'
 import Period from '../ethereum/period'
 import LotteryRow from '../components/lottery/LotteryRow'
 
+import { getUserFeed, getTicketsByUser } from '../lib/api'
 import withAuth from '../components/hoc/withAuth';
 
 class Transection extends Component {
     state = {
+        players: [],
+        lotteries: [],
         reward: '',
         loading: false,
         errorMessage: '',
@@ -25,14 +28,33 @@ class Transection extends Component {
             })
         )
 
+        // return { address, lotteriesCount, period }
         return { address, lotteries, lotteriesCount, period }
     }
 
+    componentDidMount() {
+        getUserFeed(this.props.auth.user._id)
+            .then(players => players.filter(players => this.setState({ players })))
+                // console.log(players.map(id => id = id['_id'])))
+        
+        // getUserFeed(this.props.auth.user._id)
+        //     .then(players => 
+        //         players.map(player => 
+        //             getTicketsByUser(player['_id'])
+        //                 .then((lotteries) => this.setState({ lotteries }))))
+    }
+
     renderRows() {
+        // console.log(this.state.lotteries);
+        console.log(this.state.players);
+        
+        // return this.state.lotteries.map((lottery, index) => {
         return this.props.lotteries.map((lottery, index) => {
             return <LotteryRow 
                 key={index}
+                index={index}
                 lottery={lottery}
+                players={this.state.players}
             />
         })
     }

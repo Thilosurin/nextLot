@@ -42,6 +42,18 @@ class Profile extends Component {
     //         />
     //     })
     // }
+
+    renderRows() {
+        const { tickets } = this.state;
+
+        return tickets.map((ticket, index) => {
+            return <ProfileRow 
+                key={index}
+                index={index}
+                ticket={ticket}
+            />
+        })
+    }
     
     formatDate = date => format(date, "dddd, MMMM Do, YYYY");
     
@@ -49,8 +61,12 @@ class Profile extends Component {
         const { isLoading, userState, isAuth, tickets } = this.state;
         const { user } = this.props.auth;
         const { Header, Body, Row, HeaderCell } = Table;
+        
+        const sumPrize = tickets.map((tk, i)=> tk[i] = tickets[i]['tkPrize'])
         let acc = []
-        tickets.map((tk, i) => acc.length===0 || !acc.includes(tickets[i]["tkAccount"]) ? acc.push(tickets[i]["tkAccount"]) : '')
+        const handleAcc = tickets.map((tk, i) => acc.length===0 
+            || !acc.includes(tickets[i]["tkAccount"]) 
+            ? acc.push(tickets[i]["tkAccount"]) : '')
         
         return(
             <BaseLayout {...this.props.auth}>
@@ -126,34 +142,33 @@ class Profile extends Component {
 
                                     <Statistic>
                                         <Statistic.Value>4</Statistic.Value>
-                                        <Statistic.Label>Period</Statistic.Label>
+                                        <Statistic.Label>Periods</Statistic.Label>
                                     </Statistic>
 
                                     <Statistic>
                                         <Statistic.Value>
-                                            {/* <Icon name='ticket' /> */}
-                                            5
+                                            { tickets.length }
                                         </Statistic.Value>
                                         <Statistic.Label>
-                                            Ticket
+                                            Tickets
                                         </Statistic.Label>
                                     </Statistic>
 
                                     <Statistic>
                                         <Statistic.Value>
-                                            {/* <Image src='https://react.semantic-ui.com/images/avatar/small/joe.jpg' className='circular inline' /> */}
-                                            {/* <Icon name='star' /> */}
-                                            0
+                                            { sumPrize.length !== 0
+                                                ? sumPrize.reduce((a, p) => a += p)
+                                                : 0 }
                                         </Statistic.Value>
                                         <Statistic.Label>
-                                            Reward Prize(ETH)
+                                            Prize(ETH)
                                         </Statistic.Label>
                                     </Statistic>
                                 </Statistic.Group>
 
                                 <Divider />
 
-                                <Table>
+                                <Table celled>
                                     <Header>
                                         <Row>
                                             <HeaderCell>No.</HeaderCell>
@@ -163,8 +178,7 @@ class Profile extends Component {
                                             <HeaderCell>Prize (ETH)</HeaderCell>
                                         </Row>
                                     </Header>
-                                    {/* <Body>{this.renderRows()}</Body> */}
-                                    <Body><ProfileRow /></Body>
+                                    <Body>{this.renderRows()}</Body>
                                 </Table>
                             </Segment>
                         </Grid.Column>

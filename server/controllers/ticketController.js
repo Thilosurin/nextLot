@@ -13,14 +13,6 @@ exports.createdTicket = async (req, res, next) => {
         tkPlayerBuy: user.userId
     }).save()
 
-    // await Ticket
-    //     .populate(ticket, {
-    //         path: 'tkPlayerBuy',
-    //         select: '_id name account'
-    // });
-    // res.json(ticket, user.userId);
-
-
     await Ticket.populate(ticket, { 
             path: 'tkPlayerBuy', 
             select: '_id name email'

@@ -6,18 +6,18 @@ class ProfileRow extends Component {
 
   render() {
       const { Row, Cell } = Table;
-      const { } = this.props;
+      const { index, ticket } = this.props;
 
       return (
         <Row
-          disabled={false}
-          positive={false}
+          disabled={ticket.tkReward.toString() === 'true'}
+          positive={ticket.tkPrize !== 0}
         >
-          <Cell>{555555}</Cell>
-          <Cell>{555555}</Cell>
-          <Cell>{555555}</Cell>
-          <Cell>{555555}</Cell>
-          <Cell>{555555}</Cell>
+          <Cell>{index+1}</Cell>
+          <Cell>{ticket.tkNumber}</Cell>
+          <Cell>{ticket.tkPeriod}</Cell>
+          <Cell>{ticket.tkReward.toString()}</Cell>
+          <Cell>{ticket.tkPrize}</Cell>
         </Row>
       );
   }
