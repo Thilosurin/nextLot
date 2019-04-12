@@ -3,6 +3,7 @@ const { ObjectId } = mongoose.Schema;
 
 const periodSchema = new mongoose.Schema({
     prID: Number,
+    prAccount: String,
     prLotteryPrice: Number,
     prAN: Number,
     prOpening: Boolean,

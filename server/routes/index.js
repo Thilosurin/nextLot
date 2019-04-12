@@ -61,12 +61,20 @@ router.get(
 /**
  * TICKET ROUTE: /api/ticket
  */
+router.param("periodId", ticketController.getPeriodById);
+
 router.post("/api/ticket/:userId", 
   authController.checkAuth,
   catchErrors(ticketController.createdTicket));
+  
+router.get("/api/ticket/from/:periodId",
+  authController.checkAuth,
+  catchErrors(ticketController.getTicketsByPeriod));
 
-router.get("/api/ticket/by/:userId", 
+router.get("/api/ticket/by/:userId",
+  authController.checkAuth,
   catchErrors(ticketController.getTicketsByUser));
+
 
 /**
  * PERIOD ROUTE: /api/period

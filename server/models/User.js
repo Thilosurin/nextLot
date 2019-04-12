@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    messages: [{ type: String }],
     tickets: [{ type: ObjectId, ref: "Ticket" }]
   },
   { timestamps: true }

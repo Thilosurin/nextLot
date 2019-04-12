@@ -1,22 +1,32 @@
 const mongoose = require('mongoose');
 const Ticket = mongoose.model('Ticket');
 const User = mongoose.model('User');
+const Period = mongoose.model('Period');
 
 exports.createdTicket = async (req, res, next) => {
     const user = req.params;
     const ticketData = req.body;
     let creator;
+    const findPeriod = await Period.findOne({ prAccount: ticketData.address })
+
     const ticket = await new Ticket({
         tkNumber: ticketData.numberLottery,
         tkAccount: ticketData.players,
-        // tkPeriod: 5555,
-        tkPlayerBuy: user.userId
+        tkPeriod: findPeriod._id,
+        tkPlayerBuy: user.userId,
     }).save()
 
-    await Ticket.populate(ticket, { 
+    await Ticket
+        .findOne({ _id: ticket._id })
+        .populate({ 
             path: 'tkPlayerBuy', 
             select: '_id name email'
         })
+        .populate({ 
+            path: 'tkPeriod', 
+            select: '_id prID prAccount prAddressCreator prOpening prCreatedAt prClosingTime'
+        })
+        .exec()
         .then(result => {
             return User.findById(user.userId);
         })
@@ -42,6 +52,12 @@ exports.createdTicket = async (req, res, next) => {
             }
             next(err);
         });
+    
+    // await Ticket
+    //     .populate(ticket, { 
+    //         path: 'tkPeriod', 
+    //         select: '_id prID prAccount prAddressCreator prOpening prCreatedAt prClosingTime'
+    //     })
 };
 
 exports.getTicketsByUser = async (req, res) => {
@@ -49,4 +65,18 @@ exports.getTicketsByUser = async (req, res) => {
         createAt: "desc"
     });
     res.json(tickets);
+};
+
+exports.getPeriodById = async (req, res, next, id) => {
+    const pr = await Period.findOne({ prAccount: id });
+    req.period = pr;
+    next();
+};
+
+exports.getTicketsByPeriod = async (req, res) => {
+    const tickets = await Ticket.find({ tkPeriod: req.period._id }).sort({
+        createAt: "desc"
+    });
+    res.json({ message: req.period.id, tickets });
+    // res.json(tickets);
 };

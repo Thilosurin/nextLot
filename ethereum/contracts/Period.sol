@@ -73,7 +73,7 @@ contract Period {
         lotteryCount += 1;
         totalPrice += price;
     }
-    function checkPerNum(uint num) internal  {
+    function checkPerNum(uint num) internal {
         for (uint p = 0; p < lotteries.length; p++) {
             if (num == lotteries[p].numberLottery) {
                 require(lotteries[p].repeat < LPN);

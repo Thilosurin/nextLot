@@ -20,7 +20,7 @@ const ticketSchema = new mongoose.Schema(
       type: Date,
       default: Date.now
     },
-    tkPeriod: [{ type: ObjectId, ref: "Period" }],
+    tkPeriod: [{ type: ObjectId, ref: "Period", required: true }],
     tkPlayerBuy: [{ type: ObjectId, ref: "User", required: true }],
   },
   { autoIndex: false }
@@ -28,7 +28,7 @@ const ticketSchema = new mongoose.Schema(
 
 const autoPopulateTicketBy = function(next) {
   this.populate("tkPlayerBuy", "_id name email");
-  this.populate("tkPeriod", "_id prID prAddress prOpening prCreatedAt");
+  this.populate("tkPeriod", "_id prID prAccount prAddressCreator prOpening prCreatedAt prClosingTime");
   next();
 };
 

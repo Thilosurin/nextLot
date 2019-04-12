@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { Form, Button, Message } from 'semantic-ui-react'
 import BaseLayout from '../../components/layouts/BaseLayout'
 import factory from '../../ethereum/factory'
+import Period from '../../ethereum/period'
 import web3 from '../../ethereum/web3'
 import { Link, Router } from '../../server/routes/routes'
 
@@ -31,10 +32,18 @@ class AdminNewPeriod extends Component {
                     this.state.lotteryPerNum, 
                     this.state.closingTime)
                 .send({ from: accounts[0] })
-
-            createPeriod(newPeriod)
-                .then(() => Router.pushRoute('/'))
-                .catch(this.showError)
+            
+            if (newPeriod) {
+                const periodId = await factory.methods.getDeployedPeriods().call()
+                    .then(prs => prs[prs.length-1])
+                const period = Period(periodId)
+                const periodInfo = await period.methods.getPeriodInfo().call()
+                periodInfo.address = periodId
+                
+                createPeriod(periodInfo)
+                    // .then(() => Router.pushRoute('/'))
+                    .catch(this.showError)
+            }
             
         } catch (err) {
             this.setState({ errorMessage: err.message })

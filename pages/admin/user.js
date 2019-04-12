@@ -33,15 +33,15 @@ class ManagePlayers extends Component {
                     <h3>Manage Players</h3>
                     <Grid>
                         {isLoading ? (
-                        <Grid.Column width={16}>
+                        <Grid.Column>
                             <Dimmer active inverted inline='centered'>
                                 <Loader size='massive'>Loading</Loader>
                             </Dimmer>
                             <p>
-                                <Image src='/static/images/paragraph.png' />
+                                <Image src='/static/images/paragraph.png' centered />
                             </p>
                             <p>
-                                <Image src='/static/images/paragraph.png' />
+                                <Image src='/static/images/paragraph.png' centered />
                             </p>
                         </Grid.Column>
                         ) : (

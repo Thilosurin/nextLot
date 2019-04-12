@@ -10,8 +10,9 @@ exports.createdPeriod = async (req, res) => {
     const prOpening = periodData[3];
     const prClosingTime = new Date(periodData[4]*1000);
     const prAddressCreator = periodData[5];
+    const prAccount = periodData.address;
 
-    const period = new Period({ prID, prLotteryPrice, prAN, prOpening, prClosingTime, prAddressCreator });
+    const period = new Period({ prID, prAccount, prLotteryPrice, prAN, prOpening, prClosingTime, prAddressCreator });
     
     period.save();
     

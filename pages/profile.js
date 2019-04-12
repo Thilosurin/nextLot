@@ -82,10 +82,10 @@ class Profile extends Component {
                             <Loader size='massive'>Loading</Loader>
                         </Dimmer>
                         <p>
-                            <Image src='/static/images/paragraph.png' />
+                            <Image src='/static/images/paragraph.png' centered />
                         </p>
                         <p>
-                            <Image src='/static/images/paragraph.png' />
+                            <Image src='/static/images/paragraph.png' centered />
                         </p>
                     </Segment>
                     </Grid.Column>

@@ -5,11 +5,11 @@ import BaseLayout from '../components/layouts/BaseLayout'
 import Period from '../ethereum/period'
 import LotteryRow from '../components/lottery/LotteryRow'
 
-import { getUserFeed, getTicketsByUser, getTicketsByPeriod } from '../lib/api'
 import withAuth from '../components/hoc/withAuth';
 
 class Transection extends Component {
     state = {
+        players: [],
         lotteries: [],
         reward: '',
         loading: false,
@@ -19,34 +19,26 @@ class Transection extends Component {
 
     static async getInitialProps(props) {
         const { address } = props.query;
-        return { address }
-    }
+        const period = Period(address)
+        const lotteriesCount = await period.methods.getLotteriesCount().call()
 
-    componentDidMount() {
-        // getUserFeed(this.props.auth.user._id)
-        //     .then(players => 
-        //         players.map(player => 
-        //             getTicketsByUser(player['_id'])
-        //                 .then((l) => this.setState({ lotteries:                         this.state.lotteries.concat(l), isLoading: false }))))
+        const lotteries = await Promise.all(
+            Array(parseInt(lotteriesCount)).fill().map((element, index) => {
+                return period.methods.lotteries(index).call()
+            })
+        )
 
-        getTicketsByPeriod(this.props.address)
-            .then((lotteries) => this.setState({ lotteries, isLoading: false }))
-            // .then((l) => this.setState({ lotteries: this.state.lotteries.concat(l), isLoading: false }))
+        return { address, lotteries, lotteriesCount, period }
     }
 
     renderRows() {
-        const { lotteries } = this.state
-        console.log(lotteries);
-
-        if (lotteries) {
-            return lotteries.map((lottery, index) => {
-                return <LotteryRow 
-                    key={index}
-                    index={index}
-                    lottery={lottery}
-                />
-            })    
-        }
+        return this.props.lotteries.map((lottery, index) => {
+            return <LotteryRow 
+                key={index}
+                index={index}
+                lottery={lottery}
+            />
+        })
     }
     
     render() {
@@ -75,15 +67,15 @@ class Transection extends Component {
                 
                 <h3>Transection</h3>
                 {this.state.isLoading ? (
-                    <Segment >
+                    <Segment>
                         <Dimmer active inverted inline='centered'>
                             <Loader size='massive'>Loading</Loader>
                         </Dimmer>
                         <p>
-                            <Image src='/static/images/paragraph.png' centered />
+                            <Image src='/static/images/paragraph.png' />
                         </p>
                         <p>
-                            <Image src='/static/images/paragraph.png' centered />
+                            <Image src='/static/images/paragraph.png' />
                         </p>
                     </Segment>
                     ) : (
@@ -109,7 +101,7 @@ class Transection extends Component {
                                 </Header>
                                 <Body>{this.renderRows()}</Body>
                             </Table>
-                            <div style={{float: 'right'}}>Found {this.state.lotteries ? this.state.lotteries.length : 0} Lotteries.</div>
+                            <div style={{float: 'right'}}>Found {this.props.lotteriesCount} Lotteries.</div>
                         </div>
                     )}
             </BaseLayout>

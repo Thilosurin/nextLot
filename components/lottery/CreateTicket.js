@@ -14,7 +14,7 @@ class CreateTicket extends Component {
 
     onSubmit = async (event) => {
         event.preventDefault()
-        const { address } = this.props;
+        const { user, address, playerLot } = this.props;
 
         const period = Period(address)
 
@@ -26,25 +26,18 @@ class CreateTicket extends Component {
             await period.methods.createLottery(this.state.value).send({
                 from: accounts[0],
                 value: getPeriodInfo[1]
-            }).then(() => Router.replaceRoute(`/${address}`))
+            })
+            Router.replaceRoute(`/${address}`)
 
+            playerLot[0].address = address // Obj add Key: Value
+            createTicket(user._id, playerLot[0]).catch(this.showError)
         } catch (err) {
             this.setState({ errorMessage: err.message })
         }
-
-        this.createTicketToMongo() // waiting from change
-        
+    
         this.setState({ loading: false, value: '' })
     }
-
-    createTicketToMongo() {
-        const { address, user, playerLot } = this.props;
-
-        createTicket(user._id, playerLot[0])
-            .then(() => Router.replaceRoute(`/${address}`))
-            .catch(this.showError)
-    }
-
+       
     render() {
         const { errorMessage, value, loading } = this.state;
         const { defuseAlarm } = this.props;
