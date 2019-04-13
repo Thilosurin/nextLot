@@ -14,7 +14,7 @@ class CreateTicket extends Component {
 
     onSubmit = async (event) => {
         event.preventDefault()
-        const { user, address, playerLot } = this.props;
+        const { user, address } = this.props;
 
         const period = Period(address)
 
@@ -23,14 +23,22 @@ class CreateTicket extends Component {
         try {
             const getPeriodInfo = await period.methods.getPeriodInfo().call()
             const accounts = await web3.eth.getAccounts()
-            await period.methods.createLottery(this.state.value).send({
+            const lottery = await period.methods.createLottery(this.state.value).send({
                 from: accounts[0],
                 value: getPeriodInfo[1]
             })
             Router.replaceRoute(`/${address}`)
 
-            playerLot[0].address = address // Obj add Key: Value
-            createTicket(user._id, playerLot[0]).catch(this.showError)
+            if (lottery) {
+                const lotteriesCount = await period.methods.getLotteriesCount().call()
+                const lotteries = await Promise.all(
+                    Array(parseInt(lotteriesCount)).fill()
+                        .map((element, index) => { return period.methods.lotteries(index).call() })
+                )
+                const newLottery = lotteries[lotteries.length-1]
+                newLottery.address = address // Obj add Key: Value
+                createTicket(user._id, newLottery).catch(this.showError)
+            }
         } catch (err) {
             this.setState({ errorMessage: err.message })
         }

@@ -2,10 +2,9 @@ import { Component } from 'react'
 import { Button, Table, Segment, Dimmer, Image, Breadcrumb, Divider, Loader } from 'semantic-ui-react'
 import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
-import Period from '../ethereum/period'
 import LotteryRow from '../components/lottery/LotteryRow'
 
-import { getUserFeed, getTicketsByUser, getTicketsByPeriod } from '../lib/api'
+import { getTicketsByPeriod } from '../lib/api'
 import withAuth from '../components/hoc/withAuth';
 
 class Transection extends Component {
@@ -23,20 +22,12 @@ class Transection extends Component {
     }
 
     componentDidMount() {
-        // getUserFeed(this.props.auth.user._id)
-        //     .then(players => 
-        //         players.map(player => 
-        //             getTicketsByUser(player['_id'])
-        //                 .then((l) => this.setState({ lotteries:                         this.state.lotteries.concat(l), isLoading: false }))))
-
         getTicketsByPeriod(this.props.address)
             .then((lotteries) => this.setState({ lotteries, isLoading: false }))
-            // .then((l) => this.setState({ lotteries: this.state.lotteries.concat(l), isLoading: false }))
     }
 
     renderRows() {
         const { lotteries } = this.state
-        console.log(lotteries);
 
         if (lotteries) {
             return lotteries.map((lottery, index) => {

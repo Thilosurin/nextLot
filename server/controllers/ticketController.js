@@ -52,12 +52,6 @@ exports.createdTicket = async (req, res, next) => {
             }
             next(err);
         });
-    
-    // await Ticket
-    //     .populate(ticket, { 
-    //         path: 'tkPeriod', 
-    //         select: '_id prID prAccount prAddressCreator prOpening prCreatedAt prClosingTime'
-    //     })
 };
 
 exports.getTicketsByUser = async (req, res) => {
@@ -77,6 +71,6 @@ exports.getTicketsByPeriod = async (req, res) => {
     const tickets = await Ticket.find({ tkPeriod: req.period._id }).sort({
         createAt: "desc"
     });
-    res.json({ message: req.period.id, tickets });
-    // res.json(tickets);
+    // res.json({ message: req.period.id, tickets });
+    res.json(tickets);
 };

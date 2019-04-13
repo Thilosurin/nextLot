@@ -46,35 +46,6 @@ class ShowPeriod extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     // this.insertAccount()
-    //     this.createNewTicket()
-    // }
-
-    createNewTicket = async () => {
-        const pl = this.props.playerLot
-        // console.log(pl[pl.length-1]);
-        if (false)
-            await createTicket(this.props.auth.user._id, pl[pl.length-1])
-                    .then(() => Router.replaceRoute(`/${address}`))
-                    .catch(this.showError)
-    }
-
-    // insertAccount = async () => {
-    //     const { user } = this.props.auth;
-    //     const accounts = await web3.eth.getAccounts()
-
-    //     const notUndefinedAcc0 = user.account.length > 0 
-    //                             ? user.account[0]['accAddress'] 
-    //                             : false
-    //     const validatePushAccClient = !user.account.includes(accounts[0]) 
-    //                             && notUndefinedAcc0 !== accounts[0]
-                                
-    //     if (validatePushAccClient)
-    //         user.account.forEach(() => user.account.pop())
-    //         user.account.push(accounts[0]);
-    // }
-
     renderCards() {
         const {
             defuseAlarm,
@@ -160,7 +131,7 @@ class ShowPeriod extends Component {
                         </Grid.Column>
                     ) : (
                         <Grid.Column width={6}>
-                            <CreateTicket address={address} defuseAlarm={defuseAlarm} user={user} playerLot={playerLot} />
+                            <CreateTicket address={address} defuseAlarm={defuseAlarm} user={user} />
                                 <br/>
                             <TicketCard address={address} playerLot={playerLot} />
                         </Grid.Column>

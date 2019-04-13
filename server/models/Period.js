@@ -13,4 +13,13 @@ const periodSchema = new mongoose.Schema({
     prReward: [{ type: ObjectId, ref: "Reward" }]
 })
 
+const autoPopulateRewardBy = function(next) {
+    this.populate("prReward", "_id rwNumber rwName rwPrize");
+    next();
+};
+
+periodSchema
+  .pre("findOne", autoPopulateRewardBy)
+  .pre("find", autoPopulateRewardBy);
+
 module.exports = mongoose.model("Period", periodSchema);

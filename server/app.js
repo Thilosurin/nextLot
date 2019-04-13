@@ -15,6 +15,7 @@ require("dotenv").config();
 require("../../nextLot/server/models/User");
 require("../../nextLot/server/models/Ticket");
 require("../../nextLot/server/models/Period");
+require("../../nextLot/server/models/Reward");
 const routes = require("./routes");
 require("./passport");
 
