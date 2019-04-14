@@ -37,11 +37,9 @@ router
     userController.uploadAvatar,
     catchErrors(userController.resizeAvatar),
     catchErrors(userController.updateUser),
-    // catchErrors(userController.insertAccountUser)
   )
   .patch(
     authController.checkAuth,
-    catchErrors(userController.insertAccountUser),
     catchErrors(userController.updateStatusUser)
   )
   .delete(authController.checkAuth, 
@@ -82,5 +80,13 @@ router.get("/api/ticket/by/:userId",
 router.post("/api/period/", 
   authController.checkAuth, 
   catchErrors(periodController.createdPeriod));
+
+module.exports = router;
+/**
+ * REWARD ROUTE: /api/reward
+ */
+router.post("/api/reward/:periodId", 
+  authController.checkAuth, 
+  catchErrors(periodController.createdReward));
 
 module.exports = router;

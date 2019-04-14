@@ -21,7 +21,6 @@ class Profile extends Component {
         const { user, router } = this.props.auth;
 
         getTicketsByUser(router.query.userId)
-            // .then((tickets) => console.log(tickets))
             .then((tickets) => this.setState({ tickets }))
         
         getUser(router.query.userId).then(async userState => {

@@ -8,7 +8,6 @@ class ProfileRow extends Component {
       const { Row, Cell } = Table;
       const { index, ticket } = this.props;
       const objTicket = ticket.tkPeriod.pop()
-      // console.log(Object.values(objTicket)[2]);
       
       return (
         <Row
@@ -21,17 +20,6 @@ class ProfileRow extends Component {
           <Cell>{ticket.tkReward.toString()}</Cell>
           <Cell>{ticket.tkPrize}</Cell>
         </Row>
-
-        // <Row
-        //   disabled={ticket.tkReward.toString() === 'true'}
-        //   positive={ticket.tkPrize !== 0}
-        // >
-        //   <Cell>{index+1}</Cell>
-        //   <Cell>{ticket.tkNumber}</Cell>
-        //   <Cell>{ticket.tkPeriod}</Cell>
-        //   <Cell>{ticket.tkReward.toString()}</Cell>
-        //   <Cell>{ticket.tkPrize}</Cell>
-        // </Row>
       );
   }
 }

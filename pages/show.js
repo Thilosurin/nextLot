@@ -1,7 +1,7 @@
 import { Component } from "react"
 import Period from '../ethereum/period'
 import web3 from '../ethereum/web3'
-import { Card, Grid, Button, Breadcrumb, Divider } from 'semantic-ui-react'
+import { Card, Grid, Button, Breadcrumb, Divider, Header, Icon, Table } from 'semantic-ui-react'
 import BaseLayout from '../components/layouts/BaseLayout'
 import { Link } from '../server/routes/routes'
 
@@ -10,8 +10,6 @@ import TicketCard from '../components/lottery/TicketCard'
 import CreateTicket from '../components/lottery/CreateTicket'
 
 import withAuth from '../components/hoc/withAuth'
-import { createTicket } from '../lib/api'
-import { Router } from '../server/routes/routes'
 
 class ShowPeriod extends Component {
 
@@ -46,69 +44,29 @@ class ShowPeriod extends Component {
         }
     }
 
-    renderCards() {
-        const {
-            defuseAlarm,
-            numPeriod,
-            priceLottery,
-            lotteryPerNum,
-            timeOut,
-            creator
-        } = this.props;
-
+    render() {
+        const { admin, user } = this.props.auth;
+        const { address, summary, playerLot, defuseAlarm,
+                numPeriod,
+                priceLottery,
+                lotteryPerNum,
+                timeOut,
+                creator } = this.props;
         const myDate = new Date(timeOut*1000);
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         const dateTimeOut = myDate.toLocaleString('thai', options);
         const timeTimeOut = myDate.toLocaleTimeString();
-        
-        const items = [
-            {
-                header: numPeriod,
-                meta: 'Period Number'
-            },
-            {
-                header: web3.utils.fromWei(priceLottery, 'ether'),
-                meta: 'Lottery Price (ether)'
-            },
-            {
-                header: lotteryPerNum,
-                meta: 'Amount / Number'
-            },
-            {
-                header: `${!defuseAlarm === true ? 'OPEN' : 'CLOSED'}`,
-                meta: 'Status Period',
-                color: `${!defuseAlarm === true ? 'blue' : 'red'}`
-            },
-            {
-                header: `${dateTimeOut} .... ${timeTimeOut}`,
-                meta: 'Time to Stop Buy Lottery (sec)',
-                color: `${!defuseAlarm === true ? 'blue' : 'red'}`
-            },
-            {
-                header: creator,
-                meta: 'Address Creator',
-                style: { overflowWrap: 'break-word' }
-            }
-        ]
-
-        return <Card.Group items={items} />
-    }
-
-    render() {
-        const { admin, user } = this.props.auth;
-        const { address, summary, defuseAlarm, playerLot } = this.props;
-        const { Section } = Breadcrumb
 
     return (
         <BaseLayout {...this.props.auth}>
             <Breadcrumb size='large'>
-                <Section link>
+                <Breadcrumb.Section link>
                     <Link prefetch route={`/`}>
                         <a>Home</a>
                     </Link>
-                </Section>
+                </Breadcrumb.Section>
                 <Breadcrumb.Divider icon='right chevron' />
-                <Section active>Period</Section>
+                <Breadcrumb.Section active>Period</Breadcrumb.Section>
             </Breadcrumb>
             <Divider hidden />
             
@@ -116,13 +74,57 @@ class ShowPeriod extends Component {
             <Grid>
                 <Grid.Row>
                     <Grid.Column width={10}>
-                        {this.renderCards()}
+                        <Divider horizontal>
+                            <Header as='h4'>
+                                <Icon name='tag' />
+                                Description
+                            </Header>
+                        </Divider>
 
-                        <Link prefetch route={`/${address}/transection`} >
-                            <a>
-                                <Button primary style={{ marginTop: '1.5rem' }}>View Transaction</Button>
-                            </a>
-                        </Link>
+                        <p style={{textAlign: 'center'}}>Investment risk investors, study the information before making investment decisions.</p>
+
+                        <Divider horizontal>
+                            <Header as='h4'>
+                                <Icon name='bar chart' />
+                                Period Specifications
+                            </Header>
+                        </Divider>
+
+                        <Table definition>
+                            <Table.Body>
+                                <Table.Row>
+                                    <Table.Cell width={4}>Period Number</Table.Cell>
+                                    <Table.Cell>{ numPeriod }</Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>Lottery Price (ether)</Table.Cell>
+                                    <Table.Cell>{ web3.utils.fromWei(priceLottery, 'ether') }</Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>Amount / Number</Table.Cell>
+                                    <Table.Cell>{ lotteryPerNum }</Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>Status Period</Table.Cell>
+                                    <Table.Cell>{ !defuseAlarm === true ? 'OPEN' : 'CLOSED' }</Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>Closing Time</Table.Cell>
+                                    <Table.Cell>{ timeTimeOut + ', ' +  dateTimeOut }</Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
+                                    <Table.Cell>Account Creator</Table.Cell>
+                                    <Table.Cell>{ creator }</Table.Cell>
+                                </Table.Row>
+                            </Table.Body>
+                        </Table>
+
+                        <Button primary style={{ marginTop: '1.5rem' }}>
+                            <Link prefetch route={`/${address}/transection`} >
+                                <a style={{color: 'white'}}>View Transaction</a>
+                            </Link>
+                        </Button>
+
                     </Grid.Column>
 
                     {admin ? (

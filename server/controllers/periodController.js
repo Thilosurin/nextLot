@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Period = mongoose.model('Period');
+const Reward = mongoose.model('Reward');
 
 exports.createdPeriod = async (req, res) => {
     const periodData = req.body;
@@ -12,12 +13,25 @@ exports.createdPeriod = async (req, res) => {
     const prAddressCreator = periodData[5];
     const prAccount = periodData.address;
 
-    const period = new Period({ prID, prAccount, prLotteryPrice, prAN, prOpening, prClosingTime, prAddressCreator });
-    
-    period.save();
+    const period = await new Period({ prID, prAccount, prLotteryPrice, prAN, prOpening, prClosingTime, prAddressCreator }).save();
     
     res.json(period)
 };
 
+exports.createdReward = async (req, res) => {
+    const rewardData = req.body;
 
-// prReward: periodData[0], // add before : set Reward
+    const rwNumber = rewardData[0].prizeNumber;
+    const rwName = rewardData[0].nameReward;
+    const rwPrize = rewardData[0].prizeReward;
+
+    const reward = await new Reward({ rwNumber, rwName, rwPrize }).save();
+
+    await Period.findOne({ prAccount: req.params.periodId })
+                .then(period => {
+                    period.prReward.push(reward._id)
+                    Period.populate(period, { path: 'prReward', select: '_id rwNumber rwName rwPrize' })
+                    return period.save()
+                })
+    res.json(reward)
+}
