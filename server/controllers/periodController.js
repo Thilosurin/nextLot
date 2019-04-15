@@ -24,8 +24,10 @@ exports.createdReward = async (req, res) => {
     const rwNumber = rewardData[0].prizeNumber;
     const rwName = rewardData[0].nameReward;
     const rwPrize = rewardData[0].prizeReward;
+    const rwPlayerAmount = rewardData[0].getPlayer;
+    const rwTotalPrize = rewardData[0].getPrize;
 
-    const reward = await new Reward({ rwNumber, rwName, rwPrize }).save();
+    const reward = await new Reward({ rwNumber, rwName, rwPrize, rwPlayerAmount, rwTotalPrize }).save();
 
     await Period.findOne({ prAccount: req.params.periodId })
                 .then(period => {

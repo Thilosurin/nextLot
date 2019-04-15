@@ -23,7 +23,7 @@ class Transection extends Component {
 
     componentDidMount() {
         getTicketsByPeriod(this.props.address)
-            .then((lotteries) => this.setState({ lotteries, isLoading: false }))
+            .then(lotteries => this.setState({ lotteries, isLoading: false }))
     }
 
     renderRows() {

@@ -5,19 +5,19 @@ import web3 from '../../ethereum/web3'
 import { Link, Router } from '../../server/routes/routes'
 import BaseLayout from '../../components/layouts/BaseLayout'
 
-import { createReward } from '../../lib/api'
+import { createReward, getTicketsByPeriod } from '../../lib/api'
 import withAuth from '../../components/hoc/withAuth';
 
 class GetReward extends Component {
     state = {
-        prizeNumber: '',
+        prizeNumber: 477477,
         prizeReward: '',
         nameReward: '',
         loading: false,
         errorMessage: '',
         reward: '',
-        getPlayer: '',
-        getPrize: '',
+        getPlayer: 0,
+        getPrize: 0,
         total: '',
         show: true
     }
@@ -32,7 +32,7 @@ class GetReward extends Component {
         event.preventDefault()
 
         const period = Period(this.props.address)
-        const { prizeReward, prizeNumber, nameReward } = this.state
+        const { prizeReward, prizeNumber, nameReward, getPlayer, getPrize } = this.state
 
         this.setState({ loading: true, errorMessage: '' })
 
@@ -43,9 +43,6 @@ class GetReward extends Component {
                 web3.utils.toWei(prizeReward, 'ether')
             ).send({ from: accounts[0] })
 
-
-
-        //     // Router.pushRoute(`/admin/${this.props.address}`)
         } catch (err) {
             this.setState({ errorMessage: err.message })
         }
@@ -54,7 +51,7 @@ class GetReward extends Component {
         console.log(getCheckReward);
         getCheckReward === '' ? 0 : this.setState({ show: !this.state.show, getPlayer: getCheckReward[1], getPrize: getCheckReward[0] })
 
-        const arr = [{prizeNumber, nameReward, prizeReward}]
+        const arr = [{prizeNumber, nameReward, prizeReward, getPlayer, getPrize}]
         createReward(this.props.address, arr)
         
         // console.log(getCheckReward[0], getCheckReward[1]);
@@ -70,19 +67,25 @@ class GetReward extends Component {
 
         this.setState({ loading: true, errorMessage: '' })
 
-        try {
-            await period.methods.sendReward().send({
-                value: web3.utils.toWei(this.state.reward, 'ether'),
-                from: accounts[0]
-            })
+        // try {
+        //     await period.methods.sendReward().send({
+        //         value: web3.utils.toWei(this.state.reward, 'ether'),
+        //         from: accounts[0]
+        //     })
 
             // Add Message
+            const messages = `Congratulations, you are rewarded from \n Lottery Number: ${this.state.prizeNumber} \n Reward Prize: ${this.state.prizeReward} \n period address : ${this.props.address}`
+            getTicketsByPeriod(this.props.address)
+                .then(lotteries => lotteries.filter(l => l.tkNumber === this.state.prizeNumber))
+                .then((lwin) => lwin.map(() => lwin.pop().tkPlayerBuy[0]._id))
+                .then((pId) => console.log(pId, messages))
 
-            Router.pushRoute(`/${this.props.address}/transection`)
-        } catch (err) {
-            this.setState({ errorMessage: err.message })
-        }
-        this.setState({ prizeNumber: '', prizeReward: '', loading: false, errorMessage: '', reward: '', getPlayer: '',getPrize: '', total: '', show: true })
+        //     this.setState({ prizeNumber: '', prizeReward: '', loading: false, errorMessage: '', reward: '', getPlayer: 0,getPrize: 0, total: '', show: true })
+       
+        //     Router.pushRoute(`/${this.props.address}/transection`)
+        // } catch (err) {
+        //     this.setState({ errorMessage: err.message })
+        // }
     }
     
     render() {
@@ -129,7 +132,7 @@ class GetReward extends Component {
                 <br/><br/><br/>
 
                 
-                {!!show ? null : (
+                {!show ? null : (
                     <div>
                         <Message success header="Reward Infomation!" 
                                 list={[

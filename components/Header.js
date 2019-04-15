@@ -7,8 +7,10 @@ import {
   Menu,
   Button,
   Visibility,
+  Label,
+  Icon
 } from 'semantic-ui-react'
-import auth0 from '../services/auth0'
+// import auth0 from '../services/auth0'
 import { signoutUser } from '../lib/auth';
 
 const menuStyle = {
@@ -64,10 +66,24 @@ export default class Header extends Component {
               </Menu.Item> 
               
               <Menu.Menu position='right'>
+              {user && true ? (
+                <Menu.Item>
+                  <a>
+                    <Label as='a' size='medium' basic color='blue'>
+                      <Icon name='mail' />
+                      23
+                      <Label.Detail>Messages</Label.Detail>
+                    </Label>
+                  </a>
+                </Menu.Item> 
+              ) : (
+                null
+              )}
               {isAuthenticated && user ? (
                 <div>
-                  <Dropdown text={user.name} pointing className='link item' style={{ color: `${admin ? 'green' : 'blue'}`, display: 'inline-block' }}>
+                  <Dropdown text={user.name} pointing className='link item' style={{ color: `${admin ? 'green' : 'blue'}`, height: '100%' }}>
                     <Dropdown.Menu>
+                      
                       <Dropdown.Item>
                         <Link prefetch route={`/profile/${user._id}`}>
                             <a>Profile</a>
@@ -80,11 +96,11 @@ export default class Header extends Component {
                           </Link>
                         </Dropdown.Item>
                       ) : (
-                        <Dropdown.Item>
-                          <Link prefetch route="/how">
-                              <a>How to</a>
-                          </Link>
-                        </Dropdown.Item>
+                          <Dropdown.Item>
+                            <Link prefetch route="/how">
+                                <a>How to</a>
+                            </Link>
+                          </Dropdown.Item>
                       )}
                       <Dropdown.Divider />
                       {/* <Dropdown.Item onClick={auth0.logout}>logout</Dropdown.Item> */}
