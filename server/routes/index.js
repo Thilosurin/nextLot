@@ -77,7 +77,11 @@ router.get("/api/ticket/by/:userId",
 /**
  * PERIOD ROUTE: /api/period
  */
-router.post("/api/period/", 
+router.get("/api/periods/", 
+  authController.checkAuth, 
+  catchErrors(periodController.getPeriods));
+
+router.post("/api/period/add", 
   authController.checkAuth, 
   catchErrors(periodController.createdPeriod));
 
@@ -88,5 +92,9 @@ module.exports = router;
 router.post("/api/reward/:periodId", 
   authController.checkAuth, 
   catchErrors(periodController.createdReward));
+
+router.patch("/api/messages/:userId", 
+  authController.checkAuth, 
+  catchErrors(userController.createdMessages));
 
 module.exports = router;

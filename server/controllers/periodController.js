@@ -18,6 +18,11 @@ exports.createdPeriod = async (req, res) => {
     res.json(period)
 };
 
+exports.getPeriods = async (req, res) => {
+    const periods = await Period.find()
+    res.json(periods);
+};
+
 exports.createdReward = async (req, res) => {
     const rewardData = req.body;
 

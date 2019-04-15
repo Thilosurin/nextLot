@@ -93,8 +93,7 @@ exports.updateStatusUser = async (req, res) => {
         { _id: user.userId },
         { $set: { status: !userData } }
     );
-    res.json({message: 'Update Status Player!', updateStatusPlayer});
-    // res.json(updateStatusPlayer);
+    res.json(updateStatusPlayer);
 };
 
 exports.deleteUser = async (req, res) => {
@@ -105,12 +104,24 @@ exports.deleteUser = async (req, res) => {
 };
 
 
-exports.insertAccountUser = async (req, res) => {
-    const userData = req.body.account;
+exports.createdMessages = async (req, res) => {
+    const { userId } = req.params;
+    const message = req.body;
 
-    const insertAccountedUser = await User.findOneAndUpdate(
-        { _id: req.user._id },
-        { $push: { account: { accAddress: userData } } }
-    );
-    res.json(insertAccountedUser);
+    const addMessages = await User.findOneAndUpdate(
+        { _id: userId },
+        { $push: { messages: Object.values(message) } }
+    )
+    res.json(addMessages);
+};
+
+exports.createdMessages = async (req, res) => {
+    const { userId } = req.params;
+    const message = req.body;
+
+    const addMessages = await User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { messages: Object.values(message) } }
+    )
+    res.json(addMessages);
 };

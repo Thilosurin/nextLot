@@ -5,7 +5,7 @@ import web3 from '../../ethereum/web3'
 import { Link, Router } from '../../server/routes/routes'
 import BaseLayout from '../../components/layouts/BaseLayout'
 
-import { createReward, getTicketsByPeriod } from '../../lib/api'
+import { createReward, getTicketsByPeriod, createMessages } from '../../lib/api'
 import withAuth from '../../components/hoc/withAuth';
 
 class GetReward extends Component {
@@ -78,7 +78,7 @@ class GetReward extends Component {
             getTicketsByPeriod(this.props.address)
                 .then(lotteries => lotteries.filter(l => l.tkNumber === this.state.prizeNumber))
                 .then((lwin) => lwin.map(() => lwin.pop().tkPlayerBuy[0]._id))
-                .then((pId) => console.log(pId, messages))
+                .then((pId) => pId.filter(id => createMessages(id, {messages})))
 
         //     this.setState({ prizeNumber: '', prizeReward: '', loading: false, errorMessage: '', reward: '', getPlayer: 0,getPrize: 0, total: '', show: true })
        

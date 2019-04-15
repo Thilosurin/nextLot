@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
 import Period from '../ethereum/period';
 import factory from '../ethereum/factory'
-import web3 from '../ethereum/web3';
-import { Card, Button, Segment, Embed, Item, Image, Icon, Label } from 'semantic-ui-react'
+import { Button, Segment, Embed, Item, Icon, Label } from 'semantic-ui-react'
 import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 
+import { getPeriods } from '../lib/api'
+
 class PeriodInfo extends Component {
+    state = {
+        periodsDB: [],
+    }
+
     static async getInitialProps() {
         const periods = await factory.methods.getDeployedPeriods().call()
 
@@ -15,57 +20,25 @@ class PeriodInfo extends Component {
 
         return { periods, periodsInformation }
     }
-    
-    renderPeriod() {
-        let j = 1;
 
-        const items = this.props.periods.map((address, index) => {
-            // console.log(this.props.periodsInformation[index]);
+    componentDidMount() {
+        getPeriods().then(p => this.setState({ periodsDB: p }))
+    }
 
-            return (
-                <Item key={index}>
-                    <Item.Image src='/static/images/profile-image.jpg' />
-
-                    <Item.Content>
-                        <Item.Header as='a'>12 Years a Slave</Item.Header>
-                        <Item.Meta>
-                        <span className='cinema'>Union Square 14</span>
-                        </Item.Meta>
-                        <Item.Description>{paragraph}</Item.Description>
-                        <Item.Extra>
-                        <Label>IMAX</Label>
-                        <Label icon='globe' content='Additional Languages' />
-                        </Item.Extra>
-                    </Item.Content>
-                </Item>
-            )
-        }).reverse();
-        return <Item.Group divided items={items} />
-
-        //     return {
-        //         header: `period : ${j++}`,
-        //         meta: `period address => ${address}`,
-        //         description: (
-        //             <Button floated='right' inverted color="grey">
-        //                 <Link prefetch route={`/${address}`}>
-        //                     <a>Go to Period</a>
-        //                 </Link>
-        //             </Button>
-        //         ),
-        //         fluid: true,
-        //     }
-        // }).reverse();
-        // return <Card.Group items={items} />
+    datetime = (pt) => {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        if (pt) {
+            const myDate = new Date(pt)
+            return myDate.toLocaleString('thai', options) + ', ' + myDate.toLocaleTimeString()
+        }
+        return new Date().toLocaleTimeString() + '\n — \n' + new Date().toLocaleString('thai', options)
     }
     
     render() {
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const date = new Date().toLocaleString('thai', options);
-        const time = new Date().toLocaleTimeString();
+        const { periodsDB } = this.state;
         const { admin, user, isAuthenticated } = this.props.auth;
-        const nameUndefined = !!user ? user : 'No User!';
 
-        // const paragraph = <Image src='/static/images/paragraph.png' />
+        const nameUndefined = !!user ? user : 'No User!';
 
         return (
             <BaseLayout {...this.props.auth}>
@@ -87,36 +60,39 @@ class PeriodInfo extends Component {
                         ) : (
                             <h4>Hi : {nameUndefined.name}!</h4>
                         )}
-                        <h5>{time}<br/>{date}</h5>
+                        <h5>{this.datetime()}</h5>
                     </Segment>
 
-                    {/* {this.renderPeriod()} */}
-
                     <Item.Group divided >
-                    {this.props.periods.map((address, index) => {
+                    {/* {this.props.periods.map((address, index) => { */}
+                    {periodsDB.map(period => {
+                        const p = Period(period.prAccount)
+                        const defuseAlarm = p.methods.defuseAlarm().call()
+                        
                         return (
                             <Item>
                                 <Item.Image src='/static/images/ETHEREUM.png' />
 
                                 <Item.Content>
-                                    <Item.Header as='a'>Period Number : {index+1}</Item.Header>
+                                    <Item.Header as='a'>Period Number : {period.prID}</Item.Header>
                                     <Item.Meta>
-                                        <span className='cinema'>created in : 04/04/2562</span>
+                                        <span className='cinema'>created in : {this.datetime(period.prCreatedAt)}</span>
                                     </Item.Meta>
-                                    {/* <Item.Description>{paragraph}</Item.Description> */}
                                     <Item.Description>
                                         <br/>
-                                        period address : 516584515151213212
+                                        period address : {period.prAccount}
+                                        <br/>
+                                        creator address : {period.prAddressCreator}
                                     </Item.Description>
                                     <Item.Extra>
                                         <Button floated='right'>
-                                            <Link prefetch route={`/${address}`}>
+                                            <Link prefetch route={`/${period.prAccount}`}>
                                                 <a>Go to Period</a>
                                             </Link>
                                             <Icon name='right chevron' />
                                         </Button>
-                                        <Label color='green'>OPEN</Label>
-                                        <Label icon='time' content='closed in : 20/04/2562' />
+                                        <Label color={defuseAlarm ? 'green' : 'black'}>{defuseAlarm ? 'OPEN' : 'CLOSED'}</Label>
+                                        <Label icon='time' content={`closed in : ${this.datetime(period.prClosingTime)}`} />
                                     </Item.Extra>
                                 </Item.Content>
                             </Item>
