@@ -61,6 +61,12 @@ exports.getTicketsByUser = async (req, res) => {
     res.json(tickets);
 };
 
+exports.getTicketById = async (req, res, next, id) => {
+    const tk = await Ticket.findOne({ _id: id });
+    req.ticket = tk;
+    next();
+};
+
 exports.getPeriodById = async (req, res, next, id) => {
     const pr = await Period.findOne({ prAccount: id });
     req.period = pr;
@@ -71,6 +77,15 @@ exports.getTicketsByPeriod = async (req, res) => {
     const tickets = await Ticket.find({ tkPeriod: req.period._id }).sort({
         createAt: "desc"
     });
-    // res.json({ message: req.period.id, tickets });
     res.json(tickets);
+};
+
+exports.getUpdatedReward = async (req, res) => {
+    const { tkID, reward, prize } = req.body;
+    
+    const updateReward = await Ticket.findOneAndUpdate(
+        { _id: tkID },
+        { $set: { tkReward: reward, tkPrize: prize } } ,
+    )
+    res.json(updateReward);
 };

@@ -28,7 +28,8 @@ class Transection extends Component {
 
     renderRows() {
         const { lotteries } = this.state
-
+        console.log(lotteries);
+        
         if (lotteries) {
             return lotteries.map((lottery, index) => {
                 return <LotteryRow 

@@ -110,12 +110,12 @@ exports.createdMessages = async (req, res) => {
 
     const addMessages = await User.findOneAndUpdate(
         { _id: userId },
-        { $push: { messages: Object.values(message) } }
+        { $push: { messages: Object.values(message) } },
     )
     res.json(addMessages);
 };
 
-exports.createdMessages = async (req, res) => {
+exports.deleteMessages = async (req, res) => {
     const { userId } = req.params;
     const message = req.body;
 

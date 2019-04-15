@@ -60,6 +60,7 @@ router.get(
  * TICKET ROUTE: /api/ticket
  */
 router.param("periodId", ticketController.getPeriodById);
+router.param("ticketId", ticketController.getTicketById);
 
 router.post("/api/ticket/:userId", 
   authController.checkAuth,
@@ -72,6 +73,10 @@ router.get("/api/ticket/from/:periodId",
 router.get("/api/ticket/by/:userId",
   authController.checkAuth,
   catchErrors(ticketController.getTicketsByUser));
+
+router.patch("/api/ticket/update/:ticketId",
+  authController.checkAuth,
+  catchErrors(ticketController.getUpdatedReward));
 
 
 /**
