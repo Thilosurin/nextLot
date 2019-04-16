@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from '../server/routes/routes'
+import { Link, Router } from '../server/routes/routes'
 
 import {
   Container,
@@ -8,10 +8,12 @@ import {
   Button,
   Visibility,
   Label,
-  Icon
+  Icon,
+  Modal
 } from 'semantic-ui-react'
 // import auth0 from '../services/auth0'
 import { signoutUser } from '../lib/auth';
+import { deleteMessages } from '../lib/api';
 
 const menuStyle = {
   boxShadow: 'none',
@@ -28,15 +30,25 @@ const fixedMenuStyle = {
 
 export default class Header extends Component {
   state = {
-    menuFixed: false
+    menuFixed: false,
+    open: false,
+    delete: false
   }
+
+  closeConfigShow = (closeOnDimmerClick) => () => {
+    this.setState({ closeOnDimmerClick, open: true })
+  }
+
+  deleteMss = () => this.setState({ delete: true })
+
+  close = () => this.setState({ open: false })
 
   stickTopMenu = () => this.setState({ menuFixed: true })
 
   unStickTopMenu = () => this.setState({ menuFixed: false })
 
   render() {
-    const { menuFixed } = this.state
+    const { menuFixed, open, closeOnDimmerClick } = this.state
     const { user, isAuthenticated, admin, router } = this.props;
     
     return (
@@ -66,12 +78,12 @@ export default class Header extends Component {
               </Menu.Item> 
               
               <Menu.Menu position='right'>
-              {user && true ? (
+              {isAuthenticated && user && !admin ? (
                 <Menu.Item>
-                  <a>
+                  <a onClick={this.closeConfigShow(true, false)}>
                     <Label as='a' size='medium' basic color='blue'>
                       <Icon name='mail' />
-                      23
+                      {user.messages ? user.messages.length : 0}
                       <Label.Detail>Messages</Label.Detail>
                     </Label>
                   </a>
@@ -140,6 +152,37 @@ export default class Header extends Component {
           </Menu>
         </Visibility>
 
+        <Modal
+          dimmer='inverted'
+          open={open}
+          closeOnDimmerClick={closeOnDimmerClick}
+          onClose={this.close}
+        >
+          <Modal.Header>Your Messages</Modal.Header>
+          {open ? user.messages.map(m => {
+            return (
+              <Modal.Content>
+                <p>{m}</p>
+              </Modal.Content>
+          )}) : null}
+          <Modal.Actions>
+            <Button onClick={this.deleteMss} negative>
+            { this.state.delete 
+              ? deleteMessages(user._id)
+                .then(() => this.close)
+                .then(() => this.setState({ delete: false }))
+                .then(() => Router.replaceRoute('/'))
+              : 'Delete' }
+            </Button>
+            <Button
+              onClick={this.close}
+              positive
+              labelPosition='right'
+              icon='checkmark'
+              content='OK!'
+            />
+          </Modal.Actions>
+        </Modal>
       </div>
     )
   }

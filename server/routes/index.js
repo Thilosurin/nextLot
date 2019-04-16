@@ -98,8 +98,12 @@ router.post("/api/reward/:periodId",
   authController.checkAuth, 
   catchErrors(periodController.createdReward));
 
-router.patch("/api/messages/:userId", 
+router.patch("/api/messages/add/:userId", 
   authController.checkAuth, 
   catchErrors(userController.createdMessages));
+
+router.put("/api/messages/delete/:userId", 
+  authController.checkAuth, 
+  catchErrors(userController.deletedMessages));
 
 module.exports = router;

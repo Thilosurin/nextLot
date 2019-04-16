@@ -10,8 +10,8 @@ import withAuth from '../../components/hoc/withAuth';
 
 class GetReward extends Component {
     state = {
-        prizeNumber: 477477,
-        prizeReward: 0,
+        prizeNumber: '',
+        prizeReward: '',
         nameReward: '',
         loading: false,
         errorMessage: '',
@@ -67,26 +67,29 @@ class GetReward extends Component {
 
         this.setState({ loading: true, errorMessage: '' })
 
-        // try {
-        //     await period.methods.sendReward().send({
-        //         value: web3.utils.toWei(this.state.reward, 'ether'),
-        //         from: accounts[0]
-        //     })
+        try {
+            await period.methods.sendReward().send({
+                value: web3.utils.toWei(this.state.reward, 'ether'),
+                from: accounts[0]
+            })
 
-            // Add Message
-            // const messages = `Congratulations, you are rewarded from \n Lottery Number: ${this.state.prizeNumber} \n Reward Prize: ${this.state.prizeReward} \n period address : ${this.props.address}`
-            // getTicketsByPeriod(this.props.address)
-            //     .then(lotteries => lotteries.filter(l => l.tkNumber === this.state.prizeNumber))
-            //     .then((lwin) => lwin.map(() => lwin.pop().tkPlayerBuy[0]._id))
-            //     .then((pId) => pId.filter(id => createMessages(id, {messages})))
-            getUpdateReward({tkID: "5cb0afd760a20134d476f1cf", reward: true, prize: this.state.prizeReward})
+            const messages = `Congratulations, you are rewarded from \n lottery number: < ${this.state.prizeNumber} > \n reward prize: < ${this.state.prizeReward} > \n period address : < ${this.props.address} >`
+            getTicketsByPeriod(this.props.address)
+                .then(lotteries => lotteries.filter(l => l.tkNumber === this.state.prizeNumber))
+                .then(lwin => lwin.map(() => lwin.pop().tkPlayerBuy[0]._id))
+                .then(uId => uId.filter(id => createMessages(id, {messages})))
 
-        //     this.setState({ prizeNumber: '', prizeReward: 0, loading: false, errorMessage: '', reward: '', getPlayer: 0,getPrize: 0, total: '', show: true })
-       
-        //     Router.pushRoute(`/${this.props.address}/transection`)
-        // } catch (err) {
-        //     this.setState({ errorMessage: err.message })
-        // }
+            getTicketsByPeriod(this.props.address)
+                .then(lotteries => lotteries.filter(l => l.tkNumber === this.state.prizeNumber))
+                .then(lwin => lwin.map(() => lwin.pop()._id))
+                .then(tkId =>  tkId.map(() => getUpdateReward({tkID: tkId, reward: true, prize: this.state.prizeReward})))
+
+            this.setState({ prizeNumber: '', prizeReward: '', loading: false, errorMessage: '', reward: '', getPlayer: 0,getPrize: 0, total: '', show: true })
+    
+            Router.pushRoute(`/${this.props.address}/transection`)
+        } catch (err) {
+            this.setState({ errorMessage: err.message })
+        }
     }
     
     render() {
@@ -133,11 +136,10 @@ class GetReward extends Component {
                 <br/><br/><br/>
 
                 
-                {!show ? null : (
+                {!!show ? null : (
                     <div>
                         <Message success header="Reward Infomation!" 
-                                list={[
-                                    `player win : ${getPlayer} player`, `value prize : ${web3.utils.fromWei((getPrize).toString(), 'ether')} ether` ]}
+                                list={[`player win : ${getPlayer} player`, `value prize : ${web3.utils.fromWei((getPrize).toString(), 'ether')} ether` ]}
                         />
                         <Message success header={`You must send reward :  ${web3.utils.fromWei((total).toString(), 'ether')} ether`} />
                         <Form onSubmit={this.onSendHandler} error={!!errorMessage} style={{ float: "right" }} >

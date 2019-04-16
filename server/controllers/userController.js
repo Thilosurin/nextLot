@@ -115,13 +115,11 @@ exports.createdMessages = async (req, res) => {
     res.json(addMessages);
 };
 
-exports.deleteMessages = async (req, res) => {
+exports.deletedMessages = async (req, res) => {
     const { userId } = req.params;
-    const message = req.body;
 
-    const addMessages = await User.findOneAndUpdate(
-        { _id: userId },
-        { $pull: { messages: Object.values(message) } }
-    )
-    res.json(addMessages);
+    const deleteMessages = await User.findOne({ _id: userId })
+                            // .then(user => user.messages.pull().save())
+
+    res.json({ id: userId, output: deleteMessages });
 };

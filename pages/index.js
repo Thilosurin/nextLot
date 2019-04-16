@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Period from '../ethereum/period';
 import factory from '../ethereum/factory'
-import { Button, Segment, Embed, Item, Icon, Label } from 'semantic-ui-react'
+import { Button, Segment, Embed, Item, Icon, Label, Dimmer, Image, Loader } from 'semantic-ui-react'
 import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 
@@ -10,6 +10,7 @@ import { getPeriods } from '../lib/api'
 class PeriodInfo extends Component {
     state = {
         periodsDB: [],
+        isLoading: true,
     }
 
     static async getInitialProps() {
@@ -22,7 +23,7 @@ class PeriodInfo extends Component {
     }
 
     componentDidMount() {
-        getPeriods().then(p => this.setState({ periodsDB: p }))
+        getPeriods().then(p => this.setState({ periodsDB: p, isLoading: false }))
     }
 
     datetime = (pt) => {
@@ -35,7 +36,7 @@ class PeriodInfo extends Component {
     }
     
     render() {
-        const { periodsDB } = this.state;
+        const { periodsDB, isLoading } = this.state;
         const { admin, user, isAuthenticated } = this.props.auth;
 
         const nameUndefined = !!user ? user : 'No User!';
@@ -43,62 +44,77 @@ class PeriodInfo extends Component {
         return (
             <BaseLayout {...this.props.auth}>
                 {isAuthenticated && user ? (
-                <div>
-                    <Segment raised color={admin ? 'green' : 'blue'}>
-                        <h3>Periods</h3>
-                        {admin ? (
-                            <Link prefetch route="/admin/period">
-                                <a>
-                                    <Button 
-                                        content="Create Period"
-                                        icon="add circle"
-                                        floated="right"
-                                        positive
-                                    />
-                                </a>
-                            </Link>
+                    <div>
+                        {isLoading ? (
+                            <Segment>
+                                <Dimmer active inverted inline='centered'>
+                                    <Loader size='massive'>Loading</Loader>
+                                </Dimmer>
+                                <p>
+                                    <Image src='/static/images/paragraph.png' centered />
+                                </p>
+                                <p>
+                                    <Image src='/static/images/paragraph.png' centered />
+                                </p>
+                            </Segment>
                         ) : (
-                            <h4>Hi : {nameUndefined.name}!</h4>
+                        <div>
+                            <Segment raised color={admin ? 'green' : 'blue'}>
+                                <h3>Periods</h3>
+                                {admin ? (
+                                    <Link prefetch route="/admin/period">
+                                        <a>
+                                            <Button 
+                                                content="Create Period"
+                                                icon="add circle"
+                                                floated="right"
+                                                positive
+                                            />
+                                        </a>
+                                    </Link>
+                                ) : (
+                                    <h4>Hi : {nameUndefined.name}!</h4>
+                                )}
+                                <h5>{this.datetime()}</h5>
+                            </Segment>
+
+                            <Item.Group divided >
+                            {periodsDB.map(period => {
+                                const p = Period(period.prAccount)
+                                const defuseAlarm = p.methods.defuseAlarm().call()
+                                
+                                return (
+                                    <Item key={period.prID}>
+                                        <Item.Image src='/static/images/ETHEREUM.png' />
+
+                                        <Item.Content>
+                                            <Item.Header as='a'>Period Number : {period.prID}</Item.Header>
+                                            <Item.Meta>
+                                                <span className='cinema'>created in : {this.datetime(period.prCreatedAt)}</span>
+                                            </Item.Meta>
+                                            <Item.Description>
+                                                <br/>
+                                                period address : {period.prAccount}
+                                                <br/>
+                                                creator address : {period.prAddressCreator}
+                                            </Item.Description>
+                                            <Item.Extra>
+                                                <Button floated='right'>
+                                                    <Link prefetch route={`/${period.prAccount}`}>
+                                                        <a>Go to Period</a>
+                                                    </Link>
+                                                    <Icon name='right chevron' />
+                                                </Button>
+                                                <Label color={defuseAlarm ? 'green' : 'black'}>{defuseAlarm ? 'OPEN' : 'CLOSED'}</Label>
+                                                <Label icon='time' content={`closed in : ${this.datetime(period.prClosingTime)}`} />
+                                            </Item.Extra>
+                                        </Item.Content>
+                                    </Item>
+                                )
+                            }).reverse()}
+                            </Item.Group>
+                        </div>
                         )}
-                        <h5>{this.datetime()}</h5>
-                    </Segment>
-
-                    <Item.Group divided >
-                    {/* {this.props.periods.map((address, index) => { */}
-                    {periodsDB.map(period => {
-                        const p = Period(period.prAccount)
-                        const defuseAlarm = p.methods.defuseAlarm().call()
-                        
-                        return (
-                            <Item>
-                                <Item.Image src='/static/images/ETHEREUM.png' />
-
-                                <Item.Content>
-                                    <Item.Header as='a'>Period Number : {period.prID}</Item.Header>
-                                    <Item.Meta>
-                                        <span className='cinema'>created in : {this.datetime(period.prCreatedAt)}</span>
-                                    </Item.Meta>
-                                    <Item.Description>
-                                        <br/>
-                                        period address : {period.prAccount}
-                                        <br/>
-                                        creator address : {period.prAddressCreator}
-                                    </Item.Description>
-                                    <Item.Extra>
-                                        <Button floated='right'>
-                                            <Link prefetch route={`/${period.prAccount}`}>
-                                                <a>Go to Period</a>
-                                            </Link>
-                                            <Icon name='right chevron' />
-                                        </Button>
-                                        <Label color={defuseAlarm ? 'green' : 'black'}>{defuseAlarm ? 'OPEN' : 'CLOSED'}</Label>
-                                        <Label icon='time' content={`closed in : ${this.datetime(period.prClosingTime)}`} />
-                                    </Item.Extra>
-                                </Item.Content>
-                            </Item>
-                        )
-                    }).reverse()}
-                    </Item.Group>
                 </div>
                 ) : (
                     <Embed aspectRatio='4:3' id='ZsQzYjxEVCo' placeholder='../static/images/timeOnly.jpg' source='youtube' />

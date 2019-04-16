@@ -54,6 +54,26 @@ class Profile extends Component {
             />
         })
     }
+
+    sumPeriod() {
+        let arrPeriod = []
+        this.state.tickets.map((tk, i) => {
+            tk[i] = this.state.tickets[i]['tkPeriod'][0]['prID']
+            if (!arrPeriod.includes(tk[i])) {
+                return arrPeriod.push(tk[i])
+            }
+        })
+        return arrPeriod
+    }
+
+    handleAcc() {
+        let acc = []
+        const { tickets } = this.state
+        tickets.map((tk, i) => acc.length===0 
+            || !acc.includes(tickets[i]["tkAccount"]) 
+            ? acc.push(tickets[i]["tkAccount"]) : '')
+        return acc
+    }
     
     formatDate = date => format(date, "dddd, MMMM Do, YYYY");
     
@@ -62,11 +82,7 @@ class Profile extends Component {
         const { user } = this.props.auth;
         const { Header, Body, Row, HeaderCell } = Table;
         
-        const sumPrize = tickets.map((tk, i)=> tk[i] = tickets[i]['tkPrize'])
-        let acc = []
-        const handleAcc = tickets.map((tk, i) => acc.length===0 
-            || !acc.includes(tickets[i]["tkAccount"]) 
-            ? acc.push(tickets[i]["tkAccount"]) : '')
+        const sumPrize = tickets.map((tk, i) => tk[i] = tickets[i]['tkPrize'])
         
         return(
             <BaseLayout {...this.props.auth}>
@@ -119,7 +135,7 @@ class Profile extends Component {
                                 <Card.Description>
                                     Account : <strong style={{color: 'green'}}>{tickets.length === 0 
                                         ? 'No Account' 
-                                        : acc.map(i => i + '\n')
+                                        : this.handleAcc().map(i => i + '\n')
                                     }</strong>
                                 </Card.Description>
                                 </Card.Content>
@@ -141,7 +157,7 @@ class Profile extends Component {
                                     </Statistic>
 
                                     <Statistic>
-                                        <Statistic.Value>4</Statistic.Value>
+                                        <Statistic.Value>{this.sumPeriod().length}</Statistic.Value>
                                         <Statistic.Label>Periods</Statistic.Label>
                                     </Statistic>
 

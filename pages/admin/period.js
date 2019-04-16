@@ -41,7 +41,7 @@ class AdminNewPeriod extends Component {
                 periodInfo.address = periodId
                 
                 createPeriod(periodInfo)
-                    // .then(() => Router.pushRoute('/'))
+                    .then(() => Router.pushRoute('/'))
                     .catch(this.showError)
             }
             

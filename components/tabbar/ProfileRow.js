@@ -7,6 +7,7 @@ class ProfileRow extends Component {
   render() {
       const { Row, Cell } = Table;
       const { index, ticket } = this.props;
+      
       const objTicket = ticket.tkPeriod.pop()
       
       return (
