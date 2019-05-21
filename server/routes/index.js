@@ -55,6 +55,11 @@ router.get(
   authController.checkAuth,
   catchErrors(userController.getUserFeed)
 );
+router.patch(
+  "/api/users/eth/:userId",
+  authController.checkAuth,
+  catchErrors(userController.updatedEther)
+);
 
 /**
  * TICKET ROUTE: /api/ticket

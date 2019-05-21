@@ -73,7 +73,7 @@ class GetReward extends Component {
                 from: accounts[0]
             })
 
-            const messages = `Congratulations, you are rewarded from \n lottery number: < ${this.state.prizeNumber} > \n reward prize: < ${this.state.prizeReward} > \n period address : < ${this.props.address} >`
+            const messages = `Congratulations, you are rewarded from |\n lottery number: ${this.state.prizeNumber} |\n reward prize: ${this.state.prizeReward} |\n period address : ${this.props.address}`
             getTicketsByPeriod(this.props.address)
                 .then(lotteries => lotteries.filter(l => l.tkNumber === this.state.prizeNumber))
                 .then(lwin => lwin.map(() => lwin.pop().tkPlayerBuy[0]._id))

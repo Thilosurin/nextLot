@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    ethereum: {
+      type: Number,
+      default: 0
+    },
     messages: [{ type: String }],
     tickets: [{ type: ObjectId, ref: "Ticket" }]
   },

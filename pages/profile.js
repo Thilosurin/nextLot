@@ -1,12 +1,12 @@
 import { Component } from 'react'
+import web3 from '../ethereum/web3'
 import { Grid, Card, Icon, Image, Segment, Button, Statistic, Divider, Table, Dimmer, Loader } from 'semantic-ui-react'
-
 import { Link } from '../server/routes/routes'
 import BaseLayout from '../components/layouts/BaseLayout'
 import DeleteUser from '../components/admin/DeleteUser'
 import format from "date-fns/format"
 import ProfileRow from '../components/tabbar/ProfileRow'
-import { getUser, getTicketsByUser } from '../lib/api'
+import { getUser, getTicketsByUser, updateEther } from '../lib/api'
 import withAuth from '../components/hoc/withAuth'
 
 class Profile extends Component {
@@ -15,10 +15,15 @@ class Profile extends Component {
         tickets: [],
         isAuth: false,
         isLoading: true,
+        ether: 0
     }
 
-    componentDidMount() {
+    componentDidMount = async() => {
         const { user, router } = this.props.auth;
+
+        const accounts = await web3.eth.getAccounts()
+        const getEther = await web3.eth.getBalance(accounts[0])
+        this.setState({ ether: web3.utils.fromWei(getEther, 'ether') })
 
         getTicketsByUser(router.query.userId)
             .then((tickets) => this.setState({ tickets }))
@@ -32,6 +37,13 @@ class Profile extends Component {
                 isLoading: false
             });
         });
+    }
+
+    updatedEthereum() {
+        const eth = parseFloat(this.state.ether).toFixed(2)
+        if (this.state.isAuth) 
+            updateEther(this.props.auth.user._id, {ethereum: eth})
+        return this.props.auth.user.ethereum
     }
 
     // renderRows() {
@@ -152,7 +164,9 @@ class Profile extends Component {
                             <Segment piled>
                                 <Statistic.Group widths='four' color="grey">
                                     <Statistic>
-                                        <Statistic.Value>22</Statistic.Value>
+                                        <Statistic.Value>
+                                            {isAuth ? this.updatedEthereum() : userState.ethereum}
+                                        </Statistic.Value>
                                         <Statistic.Label>ETH</Statistic.Label>
                                     </Statistic>
 

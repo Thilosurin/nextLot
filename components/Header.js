@@ -32,14 +32,20 @@ export default class Header extends Component {
   state = {
     menuFixed: false,
     open: false,
-    delete: false
+    delete: false,
+    AmountMss: 0
+  }
+
+  componentDidMount = () => {
+    if (this.props.isAuthenticated && this.props.user)
+      this.setState({ AmountMss: this.props.user.messages.length })
   }
 
   closeConfigShow = (closeOnDimmerClick) => () => {
     this.setState({ closeOnDimmerClick, open: true })
   }
 
-  deleteMss = () => this.setState({ delete: true })
+  deleteMss = () => this.setState({ open: false, delete: true })
 
   close = () => this.setState({ open: false })
 
@@ -83,7 +89,7 @@ export default class Header extends Component {
                   <a onClick={this.closeConfigShow(true, false)}>
                     <Label as='a' size='medium' basic color='blue'>
                       <Icon name='mail' />
-                      {user.messages ? user.messages.length : 0}
+                      {this.state.AmountMss}
                       <Label.Detail>Messages</Label.Detail>
                     </Label>
                   </a>
@@ -169,9 +175,8 @@ export default class Header extends Component {
             <Button onClick={this.deleteMss} negative>
             { this.state.delete 
               ? deleteMessages(user._id)
-                .then(() => this.close)
-                .then(() => this.setState({ delete: false }))
-                .then(() => Router.replaceRoute('/'))
+              .then(() => this.setState({ delete: false, AmountMss: 0 }))
+              .then(setTimeout(() => Router.reload('/'), 1000))
               : 'Delete' }
             </Button>
             <Button

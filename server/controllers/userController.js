@@ -118,8 +118,16 @@ exports.createdMessages = async (req, res) => {
 exports.deletedMessages = async (req, res) => {
     const { userId } = req.params;
 
-    const deleteMessages = await User.findOne({ _id: userId })
-                            // .then(user => user.messages.pull().save())
+    const deleteMessages = await User.findOneAndUpdate({ _id: userId }, { $set: { messages: [] } })
 
     res.json({ id: userId, output: deleteMessages });
+};
+
+exports.updatedEther = async (req, res) => {
+    const { userId } = req.params;
+    const { ethereum } = req.body
+
+    const updateEther = await User.findOneAndUpdate({ _id: userId }, { $set: { ethereum: ethereum } })
+
+    res.json(updateEther);
 };

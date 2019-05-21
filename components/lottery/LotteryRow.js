@@ -13,7 +13,7 @@ class LotteryRow extends Component {
 
     return (
       <Row
-        disabled={ticket[0]}
+        disabled={ticket[0] === 'true'}
         positive={ticket[8] > 0}
       >
         <Cell>{index+1}</Cell>
